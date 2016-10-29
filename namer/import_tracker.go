@@ -50,6 +50,18 @@ func NewDefaultImportTracker(local types.Name) DefaultImportTracker {
 	}
 }
 
+func (tracker *DefaultImportTracker) Add(path string) {
+	if len(path) == 0 {
+		return
+	}
+	if _, ok := tracker.pathToName[path]; ok {
+		return
+	}
+	name := tracker.LocalName(types.Name{Package: path})
+	tracker.nameToPath[name] = path
+	tracker.pathToName[path] = name
+}
+
 func (tracker *DefaultImportTracker) AddTypes(types ...*types.Type) {
 	for _, t := range types {
 		tracker.AddType(t)

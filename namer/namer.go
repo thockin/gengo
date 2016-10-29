@@ -280,6 +280,7 @@ func (ns *NameStrategy) Name(t *types.Type) string {
 // ImportTracker allows a raw namer to keep track of the packages needed for
 // import. You can implement yourself or use the one in the generation package.
 type ImportTracker interface {
+	Add(packagePath string)
 	AddType(*types.Type)
 	LocalNameOf(packagePath string) string
 	PathOf(localName string) (string, bool)
