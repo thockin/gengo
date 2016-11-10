@@ -496,25 +496,32 @@ func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, sw *generator.Snip
 			name = m.Name
 		}
 		sw.Do("// "+m.Name+"\n", nil)
-		if i > 0 {
-			//FIXME: convert back to `sw.Do`
-			//FIXME: register and provide a public func
-			sw.Do(`
+		if m.Embedded {
+			//FIXME: embedded output includes wrapping "{}"
+			//FIXME: embedded primitives use typename
+			//FIXME: embedded empty structs
+			g.emitMarshalerForEmbedded(m.Type, sw, i > 0)
+		} else {
+			if i > 0 {
+				//FIXME: convert back to `sw.Do`?
+				//FIXME: register and provide a public func
+				sw.Do(`
 				if _, err := buf.WriteString(","); err != nil {
 					return err
 				}
 				`, nil)
-		}
-		sw.Do(`
+			}
+			sw.Do(`
 			if _, err := buf.WriteString("\"`+name+`\": "); err != nil {
 				return err
 			} else {
 				obj := obj.`+m.Name+`
 			`, nil)
-		g.emitMarshalerFor(m.Type, sw)
-		sw.Do(`
+			g.emitMarshalerFor(m.Type, sw)
+			sw.Do(`
 			}
 			`, nil)
+		}
 	}
 	sw.Do(`
 		if _, err := buf.WriteString("}"); err != nil {
@@ -632,21 +639,25 @@ func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, sw *generator.Snippet
 		return fmt.Errorf("map key for type must be string (%v)", tKey)
 	}
 
+	g.imports.Add("sort")
 	sw.Do(`
 		if _, err := buf.WriteString("{"); err != nil {
 			return err
 		}
 	    {
-			i := 0
-			for k, v := range obj {
+			keys := make([]string, 0, len(obj))
+			for k := range obj {
+				keys = append(keys, k)
+			}
+			sort.Strings(keys)
+			for i := range keys {
 				if i > 0 {
 					if _, err := buf.WriteString(","); err != nil {
 						return err
 					}
 				}
-				i++
 		    	{
-					obj := k
+					obj := keys[i]
 		`, nil)
 	g.emitMarshalerFor(tKey, sw)
 	sw.Do(`
@@ -655,7 +666,7 @@ func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, sw *generator.Snippet
 					return err
 				}
 				{
-					obj := v
+					obj := obj[keys[i]]
 		`, nil)
 	g.emitMarshalerFor(t.Elem, sw)
 	sw.Do(`
