@@ -228,12 +228,6 @@ func (g *jsonGenerator) Namers(c *generator.Context) namer.NameSystems {
 	// Have the raw namer for this file track what it imports.
 	return namer.NameSystems{
 		"raw": namer.NewRawNamer(g.targetPackage, g.imports),
-		//FIXME
-		//"dcFnName": &dcFnNamer{
-		//	public:    deepCopyNamer(),
-		//	tracker:   g.imports,
-		//	myPackage: g.targetPackage,
-		//},
 	}
 }
 
@@ -314,33 +308,12 @@ func argsFromType(t *types.Type) generator.Args {
 	}
 }
 
-/* FIXME:
-type dcFnNamer struct {
-	public    namer.Namer
-	tracker   namer.ImportTracker
-	myPackage string
-}
-
-func (n *dcFnNamer) Name(t *types.Type) string {
-	pubName := n.public.Name(t)
-	n.tracker.AddType(t)
-	if t.Name.Package == n.myPackage {
-		return "DeepCopy_" + pubName
-	}
-	return fmt.Sprintf("%s.DeepCopy_%s", n.tracker.LocalNameOf(t.Name.Package), pubName)
-}
-*/
-
 func (g *jsonGenerator) Init(c *generator.Context, w io.Writer) error {
+	g.imports.Add("k8s.io/gengo/examples/json-gen/libjson")
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
+	//FIXME: register
 	sw.Do("func init() {\n", nil)
 	sw.Do("}\n", nil)
-	// TODO: move all these to a common json_runtime pkg, including all builtins
-	sw.Do(`
-		var trueBytes = []byte("true")
-	    var falseBytes = []byte("false")
-	    var nullBytes = []byte("null")
-		`, nil)
 	return sw.Error()
 }
 
@@ -352,13 +325,7 @@ func (g *jsonGenerator) GenerateType(c *generator.Context, t *types.Type, w io.W
 	}
 
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
-	//FIXME: always take pointer?  benchmark  Maybe only for struct
-	g.imports.Add("bytes")
-	//FIXME: make private names once they are registered
-	sw.Do("func Marshal_$.type|public$(obj $.type|raw$, buf *bytes.Buffer) error {\n", argsFromType(t))
-	g.emitMarshalerFor(t, sw)
-	sw.Do("\nreturn nil\n", nil)
-	sw.Do("}\n\n", nil)
+	g.emitFunctionsFor(t, g.emitMarshalerFor, c, sw)
 	return sw.Error()
 }
 
@@ -388,19 +355,42 @@ func (g *jsonGenerator) needsGeneration(t *types.Type) bool {
 	return true
 }
 
-// emitMarshalerFor emits (via sw) a block of code which marshals an instance
-// of t.  The emitted code will return if it hits an error.
-func (g *jsonGenerator) emitMarshalerFor(t *types.Type, sw *generator.SnippetWriter) {
-	// If the type implements Marshaler on its own, use that.
-	if hasMarshalMethod(t) {
-		sw.Do(`
-			if b, err := obj.MarshalJSON(); err != nil {
-				return err
-			} else if _, err := buf.Write(b); err != nil {
+func (g *jsonGenerator) emitFunctionsFor(t *types.Type, body func(t *types.Type, c *generator.Context) string, c *generator.Context, sw *generator.SnippetWriter) {
+	g.imports.Add("bytes")
+	//FIXME: use private names once they are registered
+	sw.Do(`
+		func Marshal_$.type|public$(obj $.type|raw$, buf *bytes.Buffer) error {
+			val, err := ast_$.type|public$(obj)
+			if err != nil {
 				return err
 			}
-			`, nil)
-		return
+			return val.Render(buf)
+		}
+		func ast_$.type|public$(obj $.type|raw$) (libjson.Value, error) {
+			`+body(t, c)+`
+		}
+		`, argsFromType(t))
+}
+
+// Just a shortcut helper function.
+func formatName(c *generator.Context, namer string, t *types.Type) string {
+	return c.Namers[namer].Name(t)
+}
+
+// emitMarshalerFor emits a block of code which returns a libjson.Value
+// representing t, or an error.
+func (g *jsonGenerator) emitMarshalerFor(t *types.Type, c *generator.Context) string {
+	// If the type implements Marshaler on its own, use that.
+	if hasMarshalMethod(t) {
+		g.imports.Add("fmt")
+		//FIME: shoiuld also handle MarsalText
+		return `
+			if b, err := obj.MarshalJSON(); err != nil {
+				return nil, fmt.Errorf("failed to marshal %T: %v", obj, err)
+			} else {
+				return libjson.Raw(string(b)), nil
+			}
+			`
 	}
 
 	// Peel away a layer of alias.
@@ -409,25 +399,21 @@ func (g *jsonGenerator) emitMarshalerFor(t *types.Type, sw *generator.SnippetWri
 	}
 	// Just call another function for simple cases.
 	if t.Kind == types.Alias || t.Kind == types.Builtin {
-		sw.Do(`
-			if err := Marshal_$.type|public$($.type|public$(obj), buf); err != nil {
-				return err
-			}
-			`, argsFromType(t))
 		if t.Kind == types.Builtin {
 			// We will emit common marshalers for builtins later.
 			g.builtinsNeeded[t.String()] = t
 		}
-		return
+		return `return ast_` + formatName(c, "public", t) + `(` + formatName(c, "raw", t) + `(obj))`
 	}
 
-	var f func(*types.Type, *generator.SnippetWriter) error
+	var f func(*types.Type, *generator.Context) string
 
 	// Handle more complex cases.  Each of these functions will emit a block
 	// of code to marshal the respective types.  The emitted code should return
 	// if it hits an error, but NOT if it is successful.  This allows these
 	// blocks to be used in multiple contexts, and the contexts will handle
 	// successful returns.
+	//FIXME: check inBounds?
 	switch t.Kind {
 	case types.Pointer:
 		f = g.emitMarshalerForPointer
@@ -437,28 +423,22 @@ func (g *jsonGenerator) emitMarshalerFor(t *types.Type, sw *generator.SnippetWri
 		f = g.emitMarshalerForSlice
 	case types.Map:
 		f = g.emitMarshalerForMap
+	//FIXME: interfaces
 	default:
+		//FIXME: decide on error handling
 		panic("unsupported kind: " + string(t.Kind) + " for type " + string(t.String()))
 	}
-	if err := f(t, sw); err != nil {
-		panic("can't emit marshaler for " + string(t.String()) + ": " + err.Error())
-	}
+	return f(t, c)
 }
 
-func (g *jsonGenerator) emitMarshalerForPointer(t *types.Type, sw *generator.SnippetWriter) error {
-	sw.Do(`
+func (g *jsonGenerator) emitMarshalerForPointer(t *types.Type, c *generator.Context) string {
+	return `
 		if obj == nil {
-	    	if _, err := buf.Write(nullBytes); err != nil {
-				return err
-			}
+			return libjson.Null{}, nil
 		} else {
-			err := Marshal_$.type|public$(($.type|raw$)(*obj), buf)
-		  	if err != nil {
-		  		return err
-		    }
+			return ast_` + formatName(c, "public", t.Elem) + `((` + formatName(c, "raw", t.Elem) + `)(*obj))
 		}
-		`, argsFromType(t.Elem))
-	return nil
+		`
 }
 
 type jsonTag struct {
@@ -466,68 +446,67 @@ type jsonTag struct {
 	omitempty bool
 }
 
-//FIXME: formatting output on emit
-func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, sw *generator.SnippetWriter) error {
+func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Context) string {
 	if len(t.Members) == 0 {
 		// at least do something with args to avoid "not used" errors
-		sw.Do("_ = obj\n", nil)
+		return "_ = obj\n"
 	}
 
-	sw.Do(`
-		if _, err := buf.WriteString("{"); err != nil {
-			return err
-		}
-		`, nil)
-	for i, m := range t.Members {
+	result := "result := libjson.Object{}\n"
+	for _, m := range t.Members {
+		result += "// " + m.Name + "\n"
 		name := ""
 		if m.Tags != "" {
 			glog.V(3).Infof("found struct tags for %v.%s", t, m.Name)
 			tag, err := parseTag(m.Tags)
 			if err != nil {
-				return fmt.Errorf("failed to parse struct tag for %s.%s: %v", t, m.Name, err)
+				panic(fmt.Sprintf("failed to parse struct tag for %s.%s: %v", t, m.Name, err))
 			}
 			name = tag.name
 			if name == "-" {
 				// Skip this field
 				continue
 			}
+			//FIXME: handle omitempty
 		}
+		//FIXME: handle the 'string' tag option
 		if name == "" {
 			name = m.Name
 		}
-		sw.Do("// "+m.Name+"\n", nil)
 		if m.Embedded {
-			//FIXME: embedded output includes wrapping "{}"
-			//FIXME: embedded primitives use typename
-			//FIXME: embedded empty structs
-			g.emitMarshalerForEmbedded(m.Type, sw, i > 0)
+			//FIXME: left off here:
+			// In case of dup fields:
+			// 1) least-nested solo, not ignored
+			// 2) least-nested tagged
+			// 3) ignore dups
+			// Maybe need to do a pre-processing step on t, apply these rules first.
+			glog.Errorf("TIM: %s is embedded", name)
+			//FIXME: embedded output must not include {}
+			//FIXME: embedded primitives simply use typename
+			//FIXME: test embedded empty structs
 		} else {
-			if i > 0 {
-				//FIXME: convert back to `sw.Do`?
-				//FIXME: register and provide a public func
-				sw.Do(`
-				if _, err := buf.WriteString(","); err != nil {
-					return err
+			//FIXME: register and provide a public func
+			//FIXME: do these codeblocks as []string, to avoid the extra newlines in `...`
+			result += `
+				{
+				    obj := obj.` + m.Name + `
+					val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(m.Type, c) + `}()
+					if err != nil {
+						return nil, err
+					}
+					nv := libjson.NamedValue{
+						Name: "` + name + `",
+						Value: val,
+					}
+					result = append(result, nv)
 				}
-				`, nil)
-			}
-			sw.Do(`
-			if _, err := buf.WriteString("\"`+name+`\": "); err != nil {
-				return err
-			} else {
-				obj := obj.`+m.Name+`
-			`, nil)
-			g.emitMarshalerFor(m.Type, sw)
-			sw.Do(`
-			}
-			`, nil)
+			`
 		}
 	}
-	sw.Do(`
-		if _, err := buf.WriteString("}"); err != nil {
-			return err
-		}`, nil)
-	return nil
+	result += `
+	    return result, nil
+		`
+	return result
 }
 
 type kv struct {
@@ -603,81 +582,57 @@ func parseTag(str string) (jsonTag, error) {
 	return result, nil
 }
 
-func (g *jsonGenerator) emitMarshalerForSlice(t *types.Type, sw *generator.SnippetWriter) error {
-	//FIXME: here and other similar - pass obj to func?
-	//FIXME: maybe emit Marshal_string() into a common pkg?
-	sw.Do(`
-		if _, err := buf.WriteString("["); err != nil {
-			return err
-		}
+func (g *jsonGenerator) emitMarshalerForSlice(t *types.Type, c *generator.Context) string {
+	//FIXME: special case []byte
+	return `
+		result := libjson.Array{}
 		for i := range obj {
 			obj := obj[i]
-			if i > 0 {
-				if _, err := buf.WriteString(","); err != nil {
-					return err
-				}
+			val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(t.Elem, c) + `}()
+			if err != nil {
+				return nil, err
 			}
-		`, nil)
-	g.emitMarshalerFor(t.Elem, sw)
-	sw.Do(`
+			result = append(result, val)
 		}
-	    if _, err := buf.WriteString("]"); err != nil {
-			return err
-		}
-		`, nil)
-	return nil
+	    return result, nil
+		`
 }
 
-func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, sw *generator.SnippetWriter) error {
+func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, c *generator.Context) string {
 	tKey := t.Key
 	// Peel away layers of alias.
 	for tKey.Kind == types.Alias {
 		tKey = tKey.Underlying
 	}
 	// Map keys must be strings.
+	//FIXME: or ints or TextMarshaler
 	if tKey != types.String {
-		return fmt.Errorf("map key for type must be string (%v)", tKey)
+		//FIXME: do beter than panic?
+		panic(fmt.Sprintf("map key for type must be string (%v)", t.Key))
 	}
 
 	g.imports.Add("sort")
-	sw.Do(`
-		if _, err := buf.WriteString("{"); err != nil {
-			return err
+	return `
+		result := libjson.Object{}
+		keys := make([]string, 0, len(obj))
+		for k := range obj {
+			keys = append(keys, string(k))
 		}
-	    {
-			keys := make([]string, 0, len(obj))
-			for k := range obj {
-				keys = append(keys, k)
-			}
-			sort.Strings(keys)
-			for i := range keys {
-				if i > 0 {
-					if _, err := buf.WriteString(","); err != nil {
-						return err
-					}
+		sort.Strings(keys)
+		for _, k := range keys {
+			    obj := obj[` + formatName(c, "raw", t.Key) + `(k)]
+				val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(t.Elem, c) + `}()
+				if err != nil {
+					return nil, err
 				}
-		    	{
-					obj := keys[i]
-		`, nil)
-	g.emitMarshalerFor(tKey, sw)
-	sw.Do(`
+				nv := libjson.NamedValue{
+					Name: k,
+					Value: val,
 				}
-				if _, err := buf.WriteString(":"); err != nil {
-					return err
-				}
-				{
-					obj := obj[keys[i]]
-		`, nil)
-	g.emitMarshalerFor(t.Elem, sw)
-	sw.Do(`
-				}
-			}
+				result = append(result, nv)
 		}
-		if _, err := buf.WriteString("}"); err != nil {
-			return err
-		}
-		`, nil)
-	return nil
+	    return result, nil
+		`
 }
 
 func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {
@@ -685,55 +640,25 @@ func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
 	for _, t := range g.builtinsNeeded {
 		//FIXME: always take pointer?  benchmark
-		//FIXME: this signature is a dup with above
-		sw.Do("func Marshal_$.type|public$(obj $.type|raw$, buf *bytes.Buffer) error {\n", argsFromType(t))
-		g.emitMarshalerForBuiltin(t, sw)
-		sw.Do("\nreturn nil\n", nil)
-		sw.Do("}\n", nil)
+		g.emitFunctionsFor(t, g.emitMarshalerForBuiltin, c, sw)
 	}
 	return sw.Error()
 }
 
-func (g *jsonGenerator) emitMarshalerForBuiltin(t *types.Type, sw *generator.SnippetWriter) {
-	//FIXME: check inBounds?
+func (g *jsonGenerator) emitMarshalerForBuiltin(t *types.Type, c *generator.Context) string {
 	switch t {
 	case types.String:
-		//FIXME: escapes
-		sw.Do(`
-			if _, err := buf.Write([]byte("\"" + obj + "\"")); err != nil {
-		    	return err
-		    }
-			`, nil)
+		return `return libjson.String(obj), nil`
 	case types.Bool:
-		sw.Do(`
-			{
-		    	var b []byte = falseBytes
-		        if obj { b = trueBytes }
-		        if _, err := buf.Write(b); err != nil {
-		        	return err
-		        }
-			}
-			`, nil)
+		return `return libjson.Bool(obj), nil`
 	case types.Int, types.Int64, types.Int32, types.Int16:
-		g.imports.Add("strconv")
-		sw.Do(`
-			if _, err := buf.WriteString(strconv.FormatInt(int64(obj), 10)); err != nil {
-		    	return err
-		    }
-			`, nil)
+		fallthrough
 	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uintptr, types.Byte:
-		g.imports.Add("strconv")
-		sw.Do(`
-			if _, err := buf.WriteString(strconv.FormatUint(uint64(obj), 10)); err != nil {
-		    	return err
-		    }
-			`, nil)
+		fallthrough
 	case types.Float, types.Float64, types.Float32:
-		g.imports.Add("strconv")
-		sw.Do(`
-			if _, err := buf.WriteString(strconv.FormatFloat(float64(obj), 'g', 64, 64)); err != nil {
-		    	return err
-		    }
-			`, nil)
+		return `return libjson.Number(float64(obj)), nil`
+	default:
+		//FIXME: glog and exit?
+		panic("unknown builtin \"" + t.String() + "\"")
 	}
 }
