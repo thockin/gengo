@@ -447,14 +447,106 @@ type jsonTag struct {
 }
 
 func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Context) string {
+	result := `
+		result := libjson.Object{}
+		`
+
 	if len(t.Members) == 0 {
 		// at least do something with args to avoid "not used" errors
-		return "_ = obj\n"
+		result += "_ = obj\n"
 	}
 
-	result := "result := libjson.Object{}\n"
+	structMeta := collectFields(t, 0, "")
+	for _, name := range structMeta.FieldNames {
+		field := structMeta.Fields[name]
+		result += "// " + field.FieldName + "\n"
+		//FIXME: register and provide a public func
+		//FIXME: do these codeblocks as []string, to avoid the extra newlines in `...`
+		result += `
+			{
+			    obj := obj.` + field.FieldName + `
+				val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(field.Type, c) + `}()
+				if err != nil {
+					return nil, err
+				}
+				nv := libjson.NamedValue{
+					Name: "` + name + `",
+					Value: val,
+				}
+				result = append(result, nv)
+			}
+			`
+		//FIXME: outdent trailing ` lines
+	}
+	result += `
+	    return result, nil
+		`
+	return result
+}
+
+// Keep track of fields as we process embedded structs.  This is required to be
+// compatible with Go's `json` package.
+type fieldMeta struct {
+	FieldName string
+	Type      *types.Type
+	Nesting   int
+	Tagged    bool
+}
+
+type structMeta struct {
+	Type       *types.Type
+	FieldNames []string
+	Fields     map[string]*fieldMeta
+}
+
+func newStructMeta(t *types.Type) structMeta {
+	return structMeta{
+		Type:       t,
+		FieldNames: []string{},
+		Fields:     map[string]*fieldMeta{},
+	}
+}
+
+func mergeField(sm *structMeta, name string, fm *fieldMeta) {
+	existing := sm.Fields[name]
+	if existing == nil {
+		sm.FieldNames = append(sm.FieldNames, name)
+		sm.Fields[name] = fm
+	} else if existing.Nesting != fm.Nesting {
+		keep := existing
+		drop := fm
+		if fm.Nesting < existing.Nesting {
+			sm.Fields[name] = fm
+			keep = fm
+			drop = existing
+		}
+		glog.Errorf("WARNING: JSON field %s.%s conflict: keeping %s, dropping %s (less nested)", sm.Type, name, keep.FieldName, drop.FieldName)
+	} else if existing.Tagged != fm.Tagged {
+		keep := existing
+		drop := fm
+		if fm.Tagged {
+			sm.Fields[name] = fm
+			keep = fm
+			drop = existing
+		}
+		glog.Errorf("WARNING: JSON field %s.%s conflict: keeping %s, dropping %s (tagged)", sm.Type, name, keep.FieldName, drop.FieldName)
+	} else {
+		glog.Errorf("WARNING: JSON field %s.%s conflict: dropping both %s and %s", sm.Type, name, existing.FieldName, fm.FieldName)
+	}
+}
+
+// collectFields returns a flattened map of field information for the given
+// type. This processes embedded fields according to Go's `json` package docs.
+func collectFields(t *types.Type, nesting int, fieldpath string) structMeta {
+	structMeta := newStructMeta(t)
+
 	for _, m := range t.Members {
-		result += "// " + m.Name + "\n"
+		fm := &fieldMeta{
+			FieldName: prefixFieldName(m.Name, fieldpath),
+			Type:      m.Type,
+			Nesting:   nesting,
+		}
+
 		name := ""
 		if m.Tags != "" {
 			glog.V(3).Infof("found struct tags for %v.%s", t, m.Name)
@@ -467,46 +559,35 @@ func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Conte
 				// Skip this field
 				continue
 			}
+			fm.Tagged = true
 			//FIXME: handle omitempty
 		}
 		//FIXME: handle the 'string' tag option
 		if name == "" {
 			name = m.Name
 		}
-		if m.Embedded {
-			//FIXME: left off here:
-			// In case of dup fields:
-			// 1) least-nested solo, not ignored
-			// 2) least-nested tagged
-			// 3) ignore dups
-			// Maybe need to do a pre-processing step on t, apply these rules first.
-			glog.Errorf("TIM: %s is embedded", name)
-			//FIXME: embedded output must not include {}
-			//FIXME: embedded primitives simply use typename
-			//FIXME: test embedded empty structs
-		} else {
-			//FIXME: register and provide a public func
-			//FIXME: do these codeblocks as []string, to avoid the extra newlines in `...`
-			result += `
-				{
-				    obj := obj.` + m.Name + `
-					val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(m.Type, c) + `}()
-					if err != nil {
-						return nil, err
-					}
-					nv := libjson.NamedValue{
-						Name: "` + name + `",
-						Value: val,
-					}
-					result = append(result, nv)
-				}
-			`
+
+		// If the field is either not embedded or is not a struct (e.g. an
+		// embedded string), save it.
+		if !m.Embedded || m.Type.Kind != types.Struct {
+			mergeField(&structMeta, name, fm)
+			continue
+		}
+
+		embeddedStructMeta := collectFields(m.Type, nesting+1, prefixFieldName(m.Name, fieldpath))
+		for _, name := range embeddedStructMeta.FieldNames {
+			field := embeddedStructMeta.Fields[name]
+			mergeField(&structMeta, name, field)
 		}
 	}
-	result += `
-	    return result, nil
-		`
-	return result
+	return structMeta
+}
+
+func prefixFieldName(name string, path string) string {
+	if path == "" {
+		return name
+	}
+	return path + "." + name
 }
 
 type kv struct {
