@@ -435,9 +435,8 @@ func (g *jsonGenerator) emitMarshalerForPointer(t *types.Type, c *generator.Cont
 	return `
 		if obj == nil {
 			return libjson.Null{}, nil
-		} else {
-			return ast_` + formatName(c, "public", t.Elem) + `((` + formatName(c, "raw", t.Elem) + `)(*obj))
 		}
+		return ast_` + formatName(c, "public", t.Elem) + `((` + formatName(c, "raw", t.Elem) + `)(*obj))
 		`
 }
 
@@ -664,29 +663,63 @@ func parseTag(str string) (jsonTag, error) {
 }
 
 func (g *jsonGenerator) emitMarshalerForSlice(t *types.Type, c *generator.Context) string {
-	//FIXME: special case []byte
-	return `
-		result := libjson.Array{}
-		for i := range obj {
-			obj := obj[i]
-			val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(t.Elem, c) + `}()
-			if err != nil {
-				return nil, err
-			}
-			result = append(result, val)
+	result := `
+		if obj == nil {
+			return libjson.Null{}, nil
 		}
-	    return result, nil
 		`
+	if rootType(t.Elem) == types.Byte {
+		// Go's json package special-cases []byte
+		g.imports.Add("encoding/base64")
+		result += `
+			buf := bytes.Buffer{}
+			b64 := base64.NewEncoder(base64.StdEncoding, &buf)
+			`
+		if t.Elem == types.Byte {
+			result += `
+				b64.Write(obj)
+				`
+		} else {
+			// Can't just cast []ByteAlias to []byte. :(
+			result += `
+				for _, b := range obj {
+					b64.Write([]byte{byte(b)})
+				}
+				`
+		}
+		result += `
+			b64.Close()
+			return libjson.String(buf.String()), nil
+			`
+	} else {
+		result += `
+			result := libjson.Array{}
+			for i := range obj {
+				obj := obj[i]
+				val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(t.Elem, c) + `}()
+				if err != nil {
+					return nil, err
+				}
+				result = append(result, val)
+			}
+	    	return result, nil
+		`
+	}
+	return result
+}
+
+func rootType(t *types.Type) *types.Type {
+	// Peel away layers of alias.
+	for t.Kind == types.Alias {
+		t = t.Underlying
+	}
+	return t
 }
 
 func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, c *generator.Context) string {
-	tKey := t.Key
-	// Peel away layers of alias.
-	for tKey.Kind == types.Alias {
-		tKey = tKey.Underlying
-	}
 	// Map keys must be strings.
 	//FIXME: or ints or TextMarshaler
+	tKey := rootType(t.Key)
 	if tKey != types.String {
 		//FIXME: do beter than panic?
 		panic(fmt.Sprintf("map key for type must be string (%v)", t.Key))
