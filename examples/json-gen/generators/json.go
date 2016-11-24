@@ -265,11 +265,31 @@ func isRootedUnder(pkg string, roots []string) bool {
 var nameOfByteSlice = types.Name{Name: "[]byte"}
 var nameOfError = types.Name{Name: "error"}
 
-// hasMarshalMethod returns true if an appropriate MarshalJSON() method is
+// hasJSONMarshalMethod returns true if an appropriate MarshalJSON() method is
 // defined for the given type.
-func hasMarshalMethod(t *types.Type) bool {
+func hasJSONMarshalMethod(t *types.Type) bool {
 	for mn, mt := range t.Methods {
 		if mn != "MarshalJSON" {
+			continue
+		}
+		if len(mt.Signature.Parameters) != 0 {
+			return false
+		}
+		if len(mt.Signature.Results) != 2 ||
+			mt.Signature.Results[0].Name != nameOfByteSlice ||
+			mt.Signature.Results[1].Name != nameOfError {
+			return false
+		}
+		return true
+	}
+	return false
+}
+
+// hasTextMarshalMethod returns true if an appropriate MarshalText() method is
+// defined for the given type.
+func hasTextMarshalMethod(t *types.Type) bool {
+	for mn, mt := range t.Methods {
+		if mn != "MarshalText" {
 			continue
 		}
 		if len(mt.Signature.Parameters) != 0 {
@@ -381,17 +401,17 @@ func formatName(c *generator.Context, namer string, t *types.Type) string {
 // representing t, or an error.
 func (g *jsonGenerator) emitMarshalerFor(t *types.Type, c *generator.Context) string {
 	// If the type implements Marshaler on its own, use that.
-	if hasMarshalMethod(t) {
+	if hasJSONMarshalMethod(t) {
 		g.imports.Add("fmt")
-		//FIME: shoiuld also handle MarsalText
 		return `
 			if b, err := obj.MarshalJSON(); err != nil {
-				return nil, fmt.Errorf("failed to marshal %T: %v", obj, err)
+				return nil, fmt.Errorf("failed %T.MarshalJSON: %v", obj, err)
 			} else {
 				return libjson.Raw(string(b)), nil
 			}
 			`
 	}
+	//FIXME: encoding.TextMarshaler.MarshalText
 
 	// Peel away a layer of alias.
 	if t.Kind == types.Alias {
@@ -719,35 +739,60 @@ func rootType(t *types.Type) *types.Type {
 func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, c *generator.Context) string {
 	result := ""
 
-	// Map keys must be strings or ints.
-	//FIXME: encoding.TextMarshaler.MarshalText
-	switch rootType(t.Key) {
-	case types.String:
+	// Map keys must be derived from string, encoding.TextMarshaler, or integral types.
+	if rootType(t.Key) == types.String {
 		result += `
-			stringify := func(s ` + formatName(c, "raw", t.Key) + `) string { return string(s) }
+			stringify := func(s ` + formatName(c, "raw", t.Key) + `) (string, error) {
+				return string(s), nil
+			}
 			`
-	case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
-		g.imports.Add("strconv")
+	} else if hasTextMarshalMethod(t.Key) {
 		result += `
-			stringify := func(i ` + formatName(c, "raw", t.Key) + `) string { return strconv.FormatInt(int64(i), 10) }
+			stringify := func(tm ` + formatName(c, "raw", t.Key) + `) (string, error) {
+				if b, err := tm.MarshalText(); err != nil {
+					return "", fmt.Errorf("failed %T.MarshalText: %v", obj, err)
+				} else {
+					return string(b), nil
+				}
+			}
 			`
-	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr:
-		g.imports.Add("strconv")
-		result += `
-			stringify := func(i ` + formatName(c, "raw", t.Key) + `) string { return strconv.FormatUint(uint64(i), 10) }
+	} else {
+		switch rootType(t.Key) {
+		case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
+			g.imports.Add("strconv")
+			result += `
+			stringify := func(i ` + formatName(c, "raw", t.Key) + `) (string, error) {
+				return strconv.FormatInt(int64(i), 10), nil
+			}
 			`
-	default:
-		//FIXME: do beter than panic?
-		panic(fmt.Sprintf("map key must be string or int (%v)", t.Key))
+		case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr:
+			g.imports.Add("strconv")
+			result += `
+			stringify := func(i ` + formatName(c, "raw", t.Key) + `) (string, error) {
+				return strconv.FormatUint(uint64(i), 10), nil
+			}
+			`
+		default:
+			//FIXME: do beter than panic?
+			panic(fmt.Sprintf("map key must be string or int (%v)", t.Key))
+		}
 	}
 
-	//FIXME: sort ints by number?
+	//TODO(thockin): It would be nice to sort ints by numeric value.  The
+	//standard `sort` package doesn't have functions for a int64 and uint64,
+	//and I am too lazy to emit those myself right now.  Idea is to move the
+	//defn of `keys` into the above sections and provide a `keyify` func and a
+	//`sort` func.  Main loop extracts into `keys` via `keyify`, and then calls
+	//`sort`, then emits via stringify.
 	g.imports.Add("sort")
 	return result + `
 		m := make(map[string]libjson.Value, len(obj))
 		keys := make([]string, 0, len(obj))
 		for k, v := range obj {
-			ks := stringify(k)
+			ks, err := stringify(k)
+			if err != nil {
+				return nil, err
+			}
 			keys = append(keys, ks)
 			obj := v
 			jv, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(t.Elem, c) + `}()
