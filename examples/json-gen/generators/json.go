@@ -19,8 +19,8 @@ package generators
 import (
 	"fmt"
 	"io"
+	"reflect"
 	"strings"
-	"unicode"
 
 	"k8s.io/gengo/args"
 	"k8s.io/gengo/generator"
@@ -482,7 +482,6 @@ func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Conte
 	for _, name := range structMeta.FieldNames {
 		field := structMeta.Fields[name]
 		//FIXME: register and provide a public func
-		//FIXME: do these codeblocks as []string, to avoid the extra newlines in `...`
 		result += `
 			// ` + field.FieldName + `
 			{
@@ -533,7 +532,6 @@ func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Conte
 				}
 			}
 			`
-		//FIXME: outdent trailing ` lines
 	}
 	result += `
 	    return result, nil
@@ -668,63 +666,22 @@ type jsonTag struct {
 }
 
 func parseTag(str string) (jsonTag, error) {
-	tags := []kv{}
-
-	key := ""
-	val := ""
-	state := stateKey
-	pos := 0
-	for _, r := range str {
-		switch state {
-		case stateKey:
-			//FIXME: look up spec for tag names
-			if unicode.IsLetter(r) || unicode.IsNumber(r) || r == '_' || r == '.' {
-				key += string(r)
-			} else if r == ':' {
-				state = stateColon
-			} else {
-				return jsonTag{}, fmt.Errorf("unexpected character[%d] '%v' parsing tag name", pos, r)
-			}
-		case stateColon:
-			if r == '"' {
-				state = stateValue
-			} else {
-				return jsonTag{}, fmt.Errorf("unexpected character[%d] '%v' parsing tag value", pos, r)
-			}
-		case stateValue:
-			if r == '\\' {
-				state = stateEscape
-			} else if r == '"' {
-				glog.V(5).Infof("parsed tag %s:%q", key, val)
-				tags = append(tags, kv{key: key, val: val})
-				state = stateKey
-			} else {
-				val += string(r)
-			}
-		case stateEscape:
-			//FIXME: look up what escapes are supported
-			val += string(r)
-		}
-		pos++
-	}
+	tag := reflect.StructTag(str)
 
 	result := jsonTag{}
-	for _, tag := range tags {
-		if tag.key != "json" {
-			continue
-		}
-		parts := strings.Split(tag.val, ",")
-		if len(parts) >= 1 {
-			result.name = parts[0]
-		}
-		for i := 1; i < len(parts); i++ {
-			if parts[i] == "omitempty" {
-				result.omitempty = true
-			} else if parts[i] == "string" {
-				result.asString = true
-			} else {
-				glog.Errorf("WARNING: unknown tag option %q in json tag", parts[i])
-			}
+
+	jt := tag.Get("json")
+	parts := strings.Split(jt, ",")
+	if len(parts) >= 1 {
+		result.name = parts[0]
+	}
+	for i := 1; i < len(parts); i++ {
+		if parts[i] == "omitempty" {
+			result.omitempty = true
+		} else if parts[i] == "string" {
+			result.asString = true
+		} else {
+			glog.Errorf("WARNING: unknown tag option %q in json tag", parts[i])
 		}
 	}
 	return result, nil
