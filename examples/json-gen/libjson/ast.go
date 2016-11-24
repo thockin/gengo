@@ -7,6 +7,7 @@ import (
 
 type Value interface {
 	Render(buf *bytes.Buffer) error
+	Empty() bool
 }
 
 type String string
@@ -16,10 +17,18 @@ func (value String) Render(buf *bytes.Buffer) error {
 	return writeString(buf, `"`+string(value)+`"`)
 }
 
+func (value String) Empty() bool {
+	return value == ""
+}
+
 type Number float64
 
 func (value Number) Render(buf *bytes.Buffer) error {
 	return writeString(buf, strconv.FormatFloat(float64(value), 'g', 64, 64))
+}
+
+func (value Number) Empty() bool {
+	return value == 0
 }
 
 type Bool bool
@@ -34,12 +43,20 @@ func (value Bool) Render(buf *bytes.Buffer) error {
 	return write(buf, falseBytes)
 }
 
+func (value Bool) Empty() bool {
+	return value == false
+}
+
 type Null struct{}
 
 var nullBytes = []byte("null")
 
 func (Null) Render(buf *bytes.Buffer) error {
 	return write(buf, nullBytes)
+}
+
+func (Null) Empty() bool {
+	return true
 }
 
 type Object []NamedValue
@@ -72,6 +89,10 @@ func (value Object) Render(buf *bytes.Buffer) error {
 	return nil
 }
 
+func (value Object) Empty() bool {
+	return len(value) == 0
+}
+
 type Array []Value
 
 func (value Array) Render(buf *bytes.Buffer) error {
@@ -94,10 +115,18 @@ func (value Array) Render(buf *bytes.Buffer) error {
 	return nil
 }
 
+func (value Array) Empty() bool {
+	return len(value) == 0
+}
+
 type Raw string
 
 func (value Raw) Render(buf *bytes.Buffer) error {
 	return writeString(buf, string(value))
+}
+
+func (value Raw) Empty() bool {
+	return len(value) == 0
 }
 
 func write(buf *bytes.Buffer, val []byte) error {

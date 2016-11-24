@@ -24,57 +24,70 @@ import (
 
 func Test_Render(t *testing.T) {
 	testCases := []struct {
-		in  Value
-		out string
-		err bool
+		in    Value
+		out   string
+		empty bool
+		err   bool
 	}{
 		{
-			in:  String(""),
-			out: `""`,
+			in:    String(""),
+			out:   `""`,
+			empty: true,
 		},
 		{
-			in:  String("abc123"),
-			out: `"abc123"`,
+			in:    String("abc123"),
+			out:   `"abc123"`,
+			empty: false,
 		},
 		{
-			in:  String("abc 123"),
-			out: `"abc 123"`,
+			in:    String("abc 123"),
+			out:   `"abc 123"`,
+			empty: false,
 		},
 		{
-			in:  Number(0),
-			out: "0",
+			in:    Number(0),
+			out:   "0",
+			empty: true,
 		},
 		{
-			in:  Number(1),
-			out: "1",
+			in:    Number(1),
+			out:   "1",
+			empty: false,
 		},
 		{
-			in:  Number(math.Exp2(53) - 1),
-			out: "9007199254740991",
+			in:    Number(math.Exp2(53) - 1),
+			out:   "9007199254740991",
+			empty: false,
 		},
 		{
-			in:  Number(-math.Exp2(53)),
-			out: "-9007199254740992",
+			in:    Number(-math.Exp2(53)),
+			out:   "-9007199254740992",
+			empty: false,
 		},
 		{
-			in:  Number(3.5),
-			out: "3.5",
+			in:    Number(3.5),
+			out:   "3.5",
+			empty: false,
 		},
 		{
-			in:  Bool(true),
-			out: "true",
+			in:    Bool(true),
+			out:   "true",
+			empty: false,
 		},
 		{
-			in:  Bool(false),
-			out: "false",
+			in:    Bool(false),
+			out:   "false",
+			empty: true,
 		},
 		{
-			in:  Null{},
-			out: "null",
+			in:    Null{},
+			out:   "null",
+			empty: true,
 		},
 		{
-			in:  Object{},
-			out: `{}`,
+			in:    Object{},
+			out:   `{}`,
+			empty: true,
 		},
 		{
 			in: Object{
@@ -82,23 +95,28 @@ func Test_Render(t *testing.T) {
 				NamedValue{"k2", Number(2)},
 				NamedValue{"k3", Bool(true)},
 			},
-			out: `{"k1":"v1","k2":2,"k3":true}`,
+			out:   `{"k1":"v1","k2":2,"k3":true}`,
+			empty: false,
 		},
 		{
-			in:  Array{},
-			out: `[]`,
+			in:    Array{},
+			out:   `[]`,
+			empty: true,
 		},
 		{
-			in:  Array{String("v1"), String("v2"), String("v3")},
-			out: `["v1","v2","v3"]`,
+			in:    Array{String("v1"), String("v2"), String("v3")},
+			out:   `["v1","v2","v3"]`,
+			empty: false,
 		},
 		{
-			in:  Raw(``),
-			out: ``,
+			in:    Raw(``),
+			out:   ``,
+			empty: true,
 		},
 		{
-			in:  Raw(`{"a": 1, "b": 2}`),
-			out: `{"a": 1, "b": 2}`,
+			in:    Raw(`{"a": 1, "b": 2}`),
+			out:   `{"a": 1, "b": 2}`,
+			empty: false,
 		},
 	}
 
@@ -111,6 +129,8 @@ func Test_Render(t *testing.T) {
 			t.Errorf("[%d] expected error, got nil", i)
 		} else if buf.String() != tc.out {
 			t.Errorf("[%d] expected %q, got %q", i, tc.out, buf.String())
+		} else if tc.in.Empty() != tc.empty {
+			t.Errorf("[%d] expected Empty() = %t", i, tc.in.Empty())
 		}
 	}
 }

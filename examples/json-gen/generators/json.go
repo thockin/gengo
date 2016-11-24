@@ -468,11 +468,6 @@ func (g *jsonGenerator) emitMarshalerForPointer(t *types.Type, c *generator.Cont
 		`
 }
 
-type jsonTag struct {
-	name      string
-	omitempty bool
-}
-
 func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Context) string {
 	result := `
 		result := libjson.Object{}
@@ -486,21 +481,34 @@ func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Conte
 	structMeta := collectFields(t, 0, "")
 	for _, name := range structMeta.FieldNames {
 		field := structMeta.Fields[name]
-		result += "// " + field.FieldName + "\n"
 		//FIXME: register and provide a public func
 		//FIXME: do these codeblocks as []string, to avoid the extra newlines in `...`
 		result += `
+			// ` + field.FieldName + `
 			{
 			    obj := obj.` + field.FieldName + `
+			`
+		if field.OmitEmpty {
+			result += `
+				empty := func(jv libjson.Value) bool { return jv.Empty() }
+				`
+		} else {
+			result += `
+				empty := func(libjson.Value) bool { return false }
+				`
+		}
+		result += `
 				val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(field.Type, c) + `}()
 				if err != nil {
 					return nil, err
 				}
-				nv := libjson.NamedValue{
-					Name: "` + name + `",
-					Value: val,
+				if !empty(val) {
+					nv := libjson.NamedValue{
+						Name: "` + name + `",
+						Value: val,
+					}
+					result = append(result, nv)
 				}
-				result = append(result, nv)
 			}
 			`
 		//FIXME: outdent trailing ` lines
@@ -518,6 +526,7 @@ type fieldMeta struct {
 	Type      *types.Type
 	Nesting   int
 	Tagged    bool
+	OmitEmpty bool
 }
 
 type structMeta struct {
@@ -587,7 +596,7 @@ func collectFields(t *types.Type, nesting int, fieldpath string) structMeta {
 				continue
 			}
 			fm.Tagged = true
-			//FIXME: handle omitempty
+			fm.OmitEmpty = tag.omitempty
 		}
 		//FIXME: handle the 'string' tag option
 		if name == "" {
@@ -628,6 +637,11 @@ const (
 	stateValue
 	stateEscape
 )
+
+type jsonTag struct {
+	name      string
+	omitempty bool
+}
 
 func parseTag(str string) (jsonTag, error) {
 	tags := []kv{}
