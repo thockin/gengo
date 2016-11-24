@@ -488,6 +488,7 @@ func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Conte
 			{
 			    obj := obj.` + field.FieldName + `
 			`
+
 		if field.OmitEmpty {
 			result += `
 				empty := func(jv libjson.Value) bool { return jv.Empty() }
@@ -497,15 +498,36 @@ func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Conte
 				empty := func(libjson.Value) bool { return false }
 				`
 		}
+
+		if field.String {
+			result += `
+				finalize := func(jv libjson.Value) (libjson.Value, error) {
+					buf := bytes.Buffer{}
+					if err := jv.Render(&buf); err != nil {
+						return nil, err
+					}
+					return libjson.String(buf.String()), nil
+				}
+				`
+		} else {
+			result += `
+				finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
+				`
+		}
+
 		result += `
 				val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(field.Type, c) + `}()
 				if err != nil {
 					return nil, err
 				}
 				if !empty(val) {
+					fv, err := finalize(val)
+					if err != nil {
+						return nil, err
+					}
 					nv := libjson.NamedValue{
-						Name: "` + name + `",
-						Value: val,
+						Name: libjson.String("` + name + `"),
+						Value: fv,
 					}
 					result = append(result, nv)
 				}
@@ -524,9 +546,10 @@ func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Conte
 type fieldMeta struct {
 	FieldName string
 	Type      *types.Type
-	Nesting   int
-	Tagged    bool
-	OmitEmpty bool
+	Nesting   int  // how many nesting levels
+	Tagged    bool // had a tag-defined name
+	OmitEmpty bool // the `omitempty` tag opion
+	String    bool // the `string` tag option
 }
 
 type structMeta struct {
@@ -597,8 +620,8 @@ func collectFields(t *types.Type, nesting int, fieldpath string) structMeta {
 			}
 			fm.Tagged = true
 			fm.OmitEmpty = tag.omitempty
+			fm.String = tag.asString
 		}
-		//FIXME: handle the 'string' tag option
 		if name == "" {
 			name = m.Name
 		}
@@ -641,6 +664,7 @@ const (
 type jsonTag struct {
 	name      string
 	omitempty bool
+	asString  bool
 }
 
 func parseTag(str string) (jsonTag, error) {
@@ -696,8 +720,10 @@ func parseTag(str string) (jsonTag, error) {
 		for i := 1; i < len(parts); i++ {
 			if parts[i] == "omitempty" {
 				result.omitempty = true
+			} else if parts[i] == "string" {
+				result.asString = true
 			} else {
-				return jsonTag{}, fmt.Errorf("unexpected tag-item %q in json tag", parts[i])
+				glog.Errorf("WARNING: unknown tag option %q in json tag", parts[i])
 			}
 		}
 	}
@@ -827,7 +853,7 @@ func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, c *generator.Context)
 		sort.Strings(keys)
 		for _, ks := range keys {
 			nv := libjson.NamedValue{
-				Name: ks,
+				Name: libjson.String(ks),
 				Value: m[ks],
 			}
 			result = append(result, nv)

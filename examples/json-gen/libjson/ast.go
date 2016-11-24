@@ -102,7 +102,7 @@ func (Null) Empty() bool {
 type Object []NamedValue
 
 type NamedValue struct {
-	Name  string
+	Name  String
 	Value Value
 }
 
@@ -116,7 +116,10 @@ func (value Object) Render(buf *bytes.Buffer) error {
 				return err
 			}
 		}
-		if err := writeString(buf, `"`+nv.Name+`":`); err != nil {
+		if err := nv.Name.Render(buf); err != nil {
+			return err
+		}
+		if err := writeString(buf, ":"); err != nil {
 			return err
 		}
 		if err := nv.Value.Render(buf); err != nil {
