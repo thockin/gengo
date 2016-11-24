@@ -717,33 +717,53 @@ func rootType(t *types.Type) *types.Type {
 }
 
 func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, c *generator.Context) string {
-	// Map keys must be strings.
-	//FIXME: or ints or TextMarshaler
-	tKey := rootType(t.Key)
-	if tKey != types.String {
+	result := ""
+
+	// Map keys must be strings or ints.
+	//FIXME: encoding.TextMarshaler.MarshalText
+	switch rootType(t.Key) {
+	case types.String:
+		result += `
+			stringify := func(s ` + formatName(c, "raw", t.Key) + `) string { return string(s) }
+			`
+	case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
+		g.imports.Add("strconv")
+		result += `
+			stringify := func(i ` + formatName(c, "raw", t.Key) + `) string { return strconv.FormatInt(int64(i), 10) }
+			`
+	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr:
+		g.imports.Add("strconv")
+		result += `
+			stringify := func(i ` + formatName(c, "raw", t.Key) + `) string { return strconv.FormatUint(uint64(i), 10) }
+			`
+	default:
 		//FIXME: do beter than panic?
-		panic(fmt.Sprintf("map key for type must be string (%v)", t.Key))
+		panic(fmt.Sprintf("map key must be string or int (%v)", t.Key))
 	}
 
+	//FIXME: sort ints by number?
 	g.imports.Add("sort")
-	return `
-		result := libjson.Object{}
+	return result + `
+		m := make(map[string]libjson.Value, len(obj))
 		keys := make([]string, 0, len(obj))
-		for k := range obj {
-			keys = append(keys, string(k))
+		for k, v := range obj {
+			ks := stringify(k)
+			keys = append(keys, ks)
+			obj := v
+			jv, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(t.Elem, c) + `}()
+			if err != nil {
+				return nil, err
+			}
+			m[ks] = jv
 		}
+		result := libjson.Object{}
 		sort.Strings(keys)
-		for _, k := range keys {
-			    obj := obj[` + formatName(c, "raw", t.Key) + `(k)]
-				val, err := func() (libjson.Value, error) {` + g.emitMarshalerFor(t.Elem, c) + `}()
-				if err != nil {
-					return nil, err
-				}
-				nv := libjson.NamedValue{
-					Name: k,
-					Value: val,
-				}
-				result = append(result, nv)
+		for _, ks := range keys {
+			nv := libjson.NamedValue{
+				Name: ks,
+				Value: m[ks],
+			}
+			result = append(result, nv)
 		}
 	    return result, nil
 		`
@@ -765,9 +785,10 @@ func (g *jsonGenerator) emitMarshalerForBuiltin(t *types.Type, c *generator.Cont
 		return `return libjson.String(obj), nil`
 	case types.Bool:
 		return `return libjson.Bool(obj), nil`
-	case types.Int, types.Int64, types.Int32, types.Int16:
+	case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
 		fallthrough
-	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uintptr, types.Byte:
+	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr, types.Byte:
+		//FIXME: test byte in stdlib
 		fallthrough
 	case types.Float, types.Float64, types.Float32:
 		return `return libjson.Number(float64(obj)), nil`
