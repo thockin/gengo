@@ -411,7 +411,15 @@ func (g *jsonGenerator) emitMarshalerFor(t *types.Type, c *generator.Context) st
 			}
 			`
 	}
-	//FIXME: encoding.TextMarshaler.MarshalText
+	if hasTextMarshalMethod(t) {
+		return `
+			if b, err := obj.MarshalText(); err != nil {
+				return nil, fmt.Errorf("failed %T.MarshalText: %v", obj, err)
+			} else {
+				return libjson.String(string(b)), nil
+			}
+			`
+	}
 
 	// Peel away a layer of alias.
 	if t.Kind == types.Alias {
