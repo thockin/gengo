@@ -45,6 +45,11 @@ func Test_Render(t *testing.T) {
 			empty: false,
 		},
 		{
+			in:    String("abc<>&\\\n\r\t\u2028\u2029\u2030\x00\x1f"),
+			out:   "\"abc\\u003c\\u003e\\u0026\\\\\\n\\r\\t\\u2028\\u2029\u2030\\u0000\\u001f\"",
+			empty: false,
+		},
+		{
 			in:    Number(0),
 			out:   "0",
 			empty: true,

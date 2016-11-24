@@ -13,12 +13,52 @@ type Value interface {
 type String string
 
 func (value String) Render(buf *bytes.Buffer) error {
-	//FIXME: escapes and go-JSON compat
-	return writeString(buf, `"`+string(value)+`"`)
+	return writeString(buf, `"`+escape(string(value))+`"`)
 }
 
 func (value String) Empty() bool {
 	return value == ""
+}
+
+const hexits = "0123456789abcdef"
+
+// escape ensures that a string does not hold characters that need to be
+// escaped in JSON strings.  This is almost entirely derived from Go's JSON
+// encoder - see the comments there for justifications.  This DOES NOT wrap
+// the result in quotes.
+func escape(str string) string {
+	buf := bytes.Buffer{}
+	runes := []rune(str)
+	for _, r := range runes {
+		switch r {
+		case '\n':
+			buf.WriteString(`\n`)
+		case '\r':
+			buf.WriteString(`\r`)
+		case '\t':
+			buf.WriteString(`\t`)
+		case '\\':
+			buf.WriteString(`\\`)
+		case '"':
+			buf.WriteString(`\"`)
+		case '<', '>', '&':
+			buf.WriteString(`\u00`)
+			buf.WriteByte(hexits[r>>4])
+			buf.WriteByte(hexits[r&0xf])
+		case '\u2028', '\u2029':
+			buf.WriteString(`\u202`)
+			buf.WriteByte(hexits[r&0xf])
+		default:
+			if r < 0x20 {
+				buf.WriteString(`\u00`)
+				buf.WriteByte(hexits[r>>4])
+				buf.WriteByte(hexits[r&0xf])
+			} else {
+				buf.WriteRune(r)
+			}
+		}
+	}
+	return buf.String()
 }
 
 type Number float64
