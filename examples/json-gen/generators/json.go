@@ -284,6 +284,24 @@ func hasJSONMarshalMethod(t *types.Type) bool {
 	return false
 }
 
+// hasJSONUnmarshalMethod returns true if an appropriate UnmarshalJSON() method is
+// defined for the given type.
+func hasJSONUnmarshalMethod(t *types.Type) bool {
+	for mn, mt := range t.Methods {
+		if mn != "UnmarshalJSON" {
+			continue
+		}
+		if len(mt.Signature.Parameters) != 1 || mt.Signature.Parameters[0].Name != nameOfByteSlice {
+			return false
+		}
+		if len(mt.Signature.Results) != 1 || mt.Signature.Results[0].Name != nameOfError {
+			return false
+		}
+		return true
+	}
+	return false
+}
+
 // hasTextMarshalMethod returns true if an appropriate MarshalText() method is
 // defined for the given type.
 func hasTextMarshalMethod(t *types.Type) bool {
@@ -344,7 +362,7 @@ func (g *jsonGenerator) GenerateType(c *generator.Context, t *types.Type, w io.W
 	}
 
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
-	g.emitFunctionsFor(t, g.emitMarshalerFor, c, sw)
+	g.emitFunctionsFor(t, g.emitMarshalerFor, g.emitUnmarshalerFor, c, sw)
 	return sw.Error()
 }
 
@@ -374,7 +392,10 @@ func (g *jsonGenerator) needsGeneration(t *types.Type) bool {
 	return true
 }
 
-func (g *jsonGenerator) emitFunctionsFor(t *types.Type, body func(t *types.Type, c *generator.Context) string, c *generator.Context, sw *generator.SnippetWriter) {
+func (g *jsonGenerator) emitFunctionsFor(t *types.Type,
+	astBody func(t *types.Type, c *generator.Context) string,
+	unmarshalBody func(t *types.Type, c *generator.Context) string,
+	c *generator.Context, sw *generator.SnippetWriter) {
 	g.imports.Add("bytes")
 	//FIXME: use private names once they are registered
 	//FIXME: always take pointer?  benchmark
@@ -387,7 +408,11 @@ func (g *jsonGenerator) emitFunctionsFor(t *types.Type, body func(t *types.Type,
 			return val.Render(buf)
 		}
 		func ast_$.type|public$(obj $.type|raw$) (libjson.Value, error) {
-			`+body(t, c)+`
+			`+astBody(t, c)+`
+		}
+		func Unmarshal_$.type|public$(data []byte, obj *$.type|raw$) error {
+			//FIXME: left off here
+			`+unmarshalBody(t, c)+`
 		}
 		`, argsFromType(t))
 }
@@ -398,7 +423,7 @@ func formatName(c *generator.Context, namer string, t *types.Type) string {
 }
 
 // emitMarshalerFor emits a block of code which returns a libjson.Value
-// representing t, or an error.
+// representing an instance of t, or an error.
 func (g *jsonGenerator) emitMarshalerFor(t *types.Type, c *generator.Context) string {
 	// If the type implements Marshaler on its own, use that.
 	if hasJSONMarshalMethod(t) {
@@ -817,7 +842,7 @@ func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
 	for _, t := range g.builtinsNeeded {
 		glog.V(3).Infof("emitting code for builtin %v", t)
-		g.emitFunctionsFor(t, g.emitMarshalerForBuiltin, c, sw)
+		g.emitFunctionsFor(t, g.emitMarshalerForBuiltin, g.emitUnmarshalerForBuiltin, c, sw)
 	}
 	return sw.Error()
 }
@@ -838,4 +863,76 @@ func (g *jsonGenerator) emitMarshalerForBuiltin(t *types.Type, c *generator.Cont
 		// This is a legit bug in the tool.
 		panic("unknown builtin \"" + t.String() + "\"")
 	}
+}
+
+func (g *jsonGenerator) emitUnmarshalerForBuiltin(t *types.Type, c *generator.Context) string {
+	switch t {
+	case types.String:
+		return `
+			if len(data) >= 2 && data[0] == '"' && data[len(data)-1] == '"' {
+				*obj = string(data[1:len(data)-1])
+				return nil
+			}
+			return fmt.Errorf("type %T expects a JSON string, got %q", obj, string(data))
+			`
+	case types.Bool:
+		g.imports.Add("strconv")
+		return `
+			if b, err := strconv.ParseBool(string(data)); err != nil {
+				return fmt.Errorf("type %T expects a JSON bool, got %q", obj, string(data))
+			} else {
+				*obj = b
+				return nil
+			}
+			`
+	case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
+		fallthrough
+	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr, types.Byte:
+		fallthrough
+	case types.Float, types.Float64, types.Float32:
+		g.imports.Add("strconv")
+		return `
+			if f, err := strconv.ParseFloat(string(data), 64); err != nil {
+				return fmt.Errorf("type %T expects a JSON number, got %q", obj, string(data))
+			} else {
+				*obj = ` + formatName(c, "raw", t) + `(f)
+				return nil
+			}
+			`
+	default:
+		// This is a legit bug in the tool.
+		panic("unknown builtin \"" + t.String() + "\"")
+	}
+}
+
+// emitUnmarshalerFor  FIXME: comments
+func (g *jsonGenerator) emitUnmarshalerFor(t *types.Type, c *generator.Context) string {
+	// If the type implements Marshaler on its own, use that.
+	if hasJSONUnmarshalMethod(t) {
+		glog.V(3).Infof("type %v has an UnmarshalJSON() method", t)
+		g.imports.Add("fmt")
+		return `
+			if err := obj.UnmarshalJSON(data); err != nil {
+				return fmt.Errorf("failed %T.UnmarshalJSON: %v", obj, err)
+			} else {
+				return nil
+			}
+			`
+	}
+
+	// Peel away a layer of alias.
+	if t.Kind == types.Alias {
+		glog.V(4).Infof("type %v is alias to %v", t, t.Underlying)
+		t = t.Underlying
+	}
+	// Just call another function for simple cases.
+	if t.Kind == types.Alias || t.Kind == types.Builtin {
+		if t.Kind == types.Builtin {
+			// We will emit common unmarshalers for builtins later.
+			g.builtinsNeeded[t.String()] = t
+		}
+		return `return Unmarshal_` + formatName(c, "public", t) + `(data, (*` + formatName(c, "raw", t) + `)(obj))`
+	}
+
+	return "//FIXME\nreturn nil"
 }
