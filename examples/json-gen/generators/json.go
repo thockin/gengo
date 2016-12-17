@@ -19,7 +19,6 @@ package generators
 import (
 	"fmt"
 	"io"
-	"reflect"
 	"strings"
 
 	"k8s.io/gengo/args"
@@ -362,7 +361,7 @@ func (g *jsonGenerator) GenerateType(c *generator.Context, t *types.Type, w io.W
 	}
 
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
-	g.emitFunctionsFor(t, g.emitMarshalerFor, g.emitUnmarshalerFor, c, sw)
+	g.emitFunctionsFor(t, g.emitMarshalerFor, c, sw)
 	return sw.Error()
 }
 
@@ -394,25 +393,26 @@ func (g *jsonGenerator) needsGeneration(t *types.Type) bool {
 
 func (g *jsonGenerator) emitFunctionsFor(t *types.Type,
 	astBody func(t *types.Type, c *generator.Context) string,
-	unmarshalBody func(t *types.Type, c *generator.Context) string,
 	c *generator.Context, sw *generator.SnippetWriter) {
 	g.imports.Add("bytes")
 	//FIXME: use private names once they are registered
-	//FIXME: always take pointer?  benchmark
 	sw.Do(`
+		func ast_$.type|public$(obj *$.type|raw$) (libjson.Value, error) {
+			`+astBody(t, c)+`
+		}
 		func Marshal_$.type|public$(obj $.type|raw$, buf *bytes.Buffer) error {
-			val, err := ast_$.type|public$(obj)
+			val, err := ast_$.type|public$(&obj)
 			if err != nil {
 				return err
 			}
 			return val.Render(buf)
 		}
-		func ast_$.type|public$(obj $.type|raw$) (libjson.Value, error) {
-			`+astBody(t, c)+`
-		}
 		func Unmarshal_$.type|public$(data []byte, obj *$.type|raw$) error {
-			//FIXME: left off here
-			`+unmarshalBody(t, c)+`
+			val, err := ast_$.type|public$(obj)
+			if err != nil {
+				return err
+			}
+			return val.Parse(data)
 		}
 		`, argsFromType(t))
 }
@@ -425,28 +425,30 @@ func formatName(c *generator.Context, namer string, t *types.Type) string {
 // emitMarshalerFor emits a block of code which returns a libjson.Value
 // representing an instance of t, or an error.
 func (g *jsonGenerator) emitMarshalerFor(t *types.Type, c *generator.Context) string {
-	// If the type implements Marshaler on its own, use that.
-	if hasJSONMarshalMethod(t) {
-		glog.V(3).Infof("type %v has a MarshalJSON() method", t)
-		g.imports.Add("fmt")
-		return `
-			if b, err := obj.MarshalJSON(); err != nil {
-				return nil, fmt.Errorf("failed %T.MarshalJSON: %v", obj, err)
-			} else {
-				return libjson.Raw(string(b)), nil
-			}
-			`
-	}
-	if hasTextMarshalMethod(t) {
-		glog.V(3).Infof("type %v has a MarshalText() method", t)
-		return `
-			if b, err := obj.MarshalText(); err != nil {
-				return nil, fmt.Errorf("failed %T.MarshalText: %v", obj, err)
-			} else {
-				return libjson.String(string(b)), nil
-			}
-			`
-	}
+	/*
+		// If the type implements Marshaler on its own, use that.
+		if hasJSONMarshalMethod(t) {
+			glog.V(3).Infof("type %v has a MarshalJSON() method", t)
+			g.imports.Add("fmt")
+			return `
+				if b, err := obj.MarshalJSON(); err != nil {
+					return nil, fmt.Errorf("failed %T.MarshalJSON: %v", obj, err)
+				} else {
+					return libjson.Raw(string(b)), nil
+				}
+				`
+		}
+		if hasTextMarshalMethod(t) {
+			glog.V(3).Infof("type %v has a MarshalText() method", t)
+			return `
+				if b, err := obj.MarshalText(); err != nil {
+					return nil, fmt.Errorf("failed %T.MarshalText: %v", obj, err)
+				} else {
+					return libjson.String(string(b)), nil
+				}
+				`
+		}
+	*/
 
 	// Peel away a layer of alias.
 	if t.Kind == types.Alias {
@@ -459,7 +461,7 @@ func (g *jsonGenerator) emitMarshalerFor(t *types.Type, c *generator.Context) st
 			// We will emit common marshalers for builtins later.
 			g.builtinsNeeded[t.String()] = t
 		}
-		return `return ast_` + formatName(c, "public", t) + `(` + formatName(c, "raw", t) + `(obj))`
+		return `return ast_` + formatName(c, "public", t) + `((*` + formatName(c, "raw", t) + `)(obj))`
 	}
 
 	var f func(*types.Type, *generator.Context) string
@@ -474,30 +476,37 @@ func (g *jsonGenerator) emitMarshalerFor(t *types.Type, c *generator.Context) st
 	switch t.Kind {
 	case types.Pointer:
 		f = g.emitMarshalerForPointer
-	case types.Struct:
-		f = g.emitMarshalerForStruct
-	case types.Slice:
-		f = g.emitMarshalerForSlice
-	case types.Map:
-		f = g.emitMarshalerForMap
-	default:
-		// A reasonable argument could be made to just ignore it, but I'd
-		// rather know if this happens.  The likely case is interfaces which,
-		// obviously, we can't codegen for.
-		panic("unsupported kind: " + string(t.Kind) + " for type " + string(t.String()))
+		/*
+			case types.Struct:
+				f = g.emitMarshalerForStruct
+			case types.Slice:
+				f = g.emitMarshalerForSlice
+			case types.Map:
+				f = g.emitMarshalerForMap
+			default:
+				// A reasonable argument could be made to just ignore it, but I'd
+				// rather know if this happens.  The likely case is interfaces which,
+				// obviously, we can't codegen for.
+				panic("unsupported kind: " + string(t.Kind) + " for type " + string(t.String()))
+		*/
 	}
-	return f(t, c)
+	if f != nil {
+		return f(t, c)
+	}
+	return "//FIXME\nreturn libjson.Raw(`\"fixme\"`), nil"
 }
 
 func (g *jsonGenerator) emitMarshalerForPointer(t *types.Type, c *generator.Context) string {
 	return `
-		if obj == nil {
+		//FIXME: should be handled in Render() ?
+		if *obj == nil {
 			return libjson.Null{}, nil
 		}
-		return ast_` + formatName(c, "public", t.Elem) + `((` + formatName(c, "raw", t.Elem) + `)(*obj))
+		return ast_` + formatName(c, "public", t.Elem) + `((*` + formatName(c, "raw", t.Elem) + `)(*obj))
 		`
 }
 
+/*
 func (g *jsonGenerator) emitMarshalerForStruct(t *types.Type, c *generator.Context) string {
 	result := `
 		result := libjson.Object{}
@@ -836,13 +845,14 @@ func (g *jsonGenerator) emitMarshalerForMap(t *types.Type, c *generator.Context)
 	    return result, nil
 		`
 }
+*/
 
 func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {
 	glog.V(5).Infof("Finalizing")
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
 	for _, t := range g.builtinsNeeded {
 		glog.V(3).Infof("emitting code for builtin %v", t)
-		g.emitFunctionsFor(t, g.emitMarshalerForBuiltin, g.emitUnmarshalerForBuiltin, c, sw)
+		g.emitFunctionsFor(t, g.emitMarshalerForBuiltin, c, sw)
 	}
 	return sw.Error()
 }
@@ -850,24 +860,26 @@ func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {
 func (g *jsonGenerator) emitMarshalerForBuiltin(t *types.Type, c *generator.Context) string {
 	switch t {
 	case types.String:
-		return `return libjson.String(obj), nil`
+		return `return libjson.NewString(obj), nil`
 	case types.Bool:
-		return `return libjson.Bool(obj), nil`
+		return `return libjson.Bool(*obj), nil`
 	case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
 		fallthrough
 	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr, types.Byte:
 		fallthrough
 	case types.Float, types.Float64, types.Float32:
-		return `return libjson.Number(float64(obj)), nil`
+		return `return libjson.Number(float64(*obj)), nil`
 	default:
 		// This is a legit bug in the tool.
 		panic("unknown builtin \"" + t.String() + "\"")
 	}
 }
 
+/*
 func (g *jsonGenerator) emitUnmarshalerForBuiltin(t *types.Type, c *generator.Context) string {
 	switch t {
 	case types.String:
+		g.imports.Add("fmt")
 		return `
 			if len(data) >= 2 && data[0] == '"' && data[len(data)-1] == '"' {
 				*obj = string(data[1:len(data)-1])
@@ -877,6 +889,7 @@ func (g *jsonGenerator) emitUnmarshalerForBuiltin(t *types.Type, c *generator.Co
 			`
 	case types.Bool:
 		g.imports.Add("strconv")
+		g.imports.Add("fmt")
 		return `
 			if b, err := strconv.ParseBool(string(data)); err != nil {
 				return fmt.Errorf("type %T expects a JSON bool, got %q", obj, string(data))
@@ -891,6 +904,7 @@ func (g *jsonGenerator) emitUnmarshalerForBuiltin(t *types.Type, c *generator.Co
 		fallthrough
 	case types.Float, types.Float64, types.Float32:
 		g.imports.Add("strconv")
+		g.imports.Add("fmt")
 		return `
 			if f, err := strconv.ParseFloat(string(data), 64); err != nil {
 				return fmt.Errorf("type %T expects a JSON number, got %q", obj, string(data))
@@ -907,32 +921,33 @@ func (g *jsonGenerator) emitUnmarshalerForBuiltin(t *types.Type, c *generator.Co
 
 // emitUnmarshalerFor  FIXME: comments
 func (g *jsonGenerator) emitUnmarshalerFor(t *types.Type, c *generator.Context) string {
-	// If the type implements Marshaler on its own, use that.
-	if hasJSONUnmarshalMethod(t) {
-		glog.V(3).Infof("type %v has an UnmarshalJSON() method", t)
-		g.imports.Add("fmt")
-		return `
-			if err := obj.UnmarshalJSON(data); err != nil {
-				return fmt.Errorf("failed %T.UnmarshalJSON: %v", obj, err)
-			} else {
-				return nil
-			}
-			`
-	}
-
-	// Peel away a layer of alias.
-	if t.Kind == types.Alias {
-		glog.V(4).Infof("type %v is alias to %v", t, t.Underlying)
-		t = t.Underlying
-	}
-	// Just call another function for simple cases.
-	if t.Kind == types.Alias || t.Kind == types.Builtin {
-		if t.Kind == types.Builtin {
-			// We will emit common unmarshalers for builtins later.
-			g.builtinsNeeded[t.String()] = t
+		// If the type implements Marshaler on its own, use that.
+		if hasJSONUnmarshalMethod(t) {
+			glog.V(3).Infof("type %v has an UnmarshalJSON() method", t)
+			g.imports.Add("fmt")
+			return `
+				if err := obj.UnmarshalJSON(data); err != nil {
+					return fmt.Errorf("failed %T.UnmarshalJSON: %v", obj, err)
+				} else {
+					return nil
+				}
+				`
 		}
-		return `return Unmarshal_` + formatName(c, "public", t) + `(data, (*` + formatName(c, "raw", t) + `)(obj))`
-	}
+
+		// Peel away a layer of alias.
+		if t.Kind == types.Alias {
+			glog.V(4).Infof("type %v is alias to %v", t, t.Underlying)
+			t = t.Underlying
+		}
+		// Just call another function for simple cases.
+		if t.Kind == types.Alias || t.Kind == types.Builtin {
+			if t.Kind == types.Builtin {
+				// We will emit common unmarshalers for builtins later.
+				g.builtinsNeeded[t.String()] = t
+			}
+			return `return Unmarshal_` + formatName(c, "public", t) + `(data, (*` + formatName(c, "raw", t) + `)(obj))`
+		}
 
 	return "//FIXME\nreturn nil"
 }
+*/

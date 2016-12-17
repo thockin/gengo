@@ -2,22 +2,39 @@ package libjson
 
 import (
 	"bytes"
+	"fmt"
 	"strconv"
 )
 
 type Value interface {
 	Render(buf *bytes.Buffer) error
+	Parse(data []byte) error
 	Empty() bool
+	//FIXME: Get() interface{}
 }
 
-type String string
+type String struct {
+	ptr *string
+}
+
+func NewString(ptr *string) String {
+	return String{ptr: ptr}
+}
 
 func (value String) Render(buf *bytes.Buffer) error {
-	return writeString(buf, `"`+escape(string(value))+`"`)
+	return writeString(buf, `"`+escape(*value.ptr)+`"`)
+}
+
+func (value String) Parse(data []byte) error {
+	if len(data) < 2 || data[0] != '"' || data[len(data)-1] != '"' {
+		return fmt.Errorf("data is not a JSON string (%q)", string(data))
+	}
+	*value.ptr = string(data[1 : len(data)-1])
+	return nil
 }
 
 func (value String) Empty() bool {
-	return value == ""
+	return *value.ptr == ""
 }
 
 const hexits = "0123456789abcdef"
@@ -67,6 +84,8 @@ func (value Number) Render(buf *bytes.Buffer) error {
 	return writeString(buf, strconv.FormatFloat(float64(value), 'g', 64, 64))
 }
 
+func (Number) Parse([]byte) error { return nil }
+
 func (value Number) Empty() bool {
 	return value == 0
 }
@@ -83,6 +102,8 @@ func (value Bool) Render(buf *bytes.Buffer) error {
 	return write(buf, falseBytes)
 }
 
+func (Bool) Parse([]byte) error { return nil }
+
 func (value Bool) Empty() bool {
 	return value == false
 }
@@ -94,6 +115,8 @@ var nullBytes = []byte("null")
 func (Null) Render(buf *bytes.Buffer) error {
 	return write(buf, nullBytes)
 }
+
+func (Null) Parse([]byte) error { return nil }
 
 func (Null) Empty() bool {
 	return true
@@ -132,6 +155,8 @@ func (value Object) Render(buf *bytes.Buffer) error {
 	return nil
 }
 
+func (Object) Parse([]byte) error { return nil }
+
 func (value Object) Empty() bool {
 	return len(value) == 0
 }
@@ -158,6 +183,8 @@ func (value Array) Render(buf *bytes.Buffer) error {
 	return nil
 }
 
+func (Array) Parse([]byte) error { return nil }
+
 func (value Array) Empty() bool {
 	return len(value) == 0
 }
@@ -167,6 +194,8 @@ type Raw string
 func (value Raw) Render(buf *bytes.Buffer) error {
 	return writeString(buf, string(value))
 }
+
+func (Raw) Parse([]byte) error { return nil }
 
 func (value Raw) Empty() bool {
 	return len(value) == 0
