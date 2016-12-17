@@ -13,28 +13,73 @@ type Value interface {
 	//FIXME: Get() interface{}
 }
 
-type String struct {
-	ptr *string
+type Optional struct {
+	inner Value
+	isSet bool
+	set   func()
+	clear func()
 }
 
-func NewString(ptr *string) String {
-	return String{ptr: ptr}
+func NewOptional(inner Value, isSet bool, set func(), clear func()) Value {
+	return &Optional{
+		inner: inner,
+		isSet: isSet,
+		//FIXME: one func(bool) for set/clear?
+		set:   set,
+		clear: clear,
+		//FIXME: how to init isSet and initial p?
+	}
+}
+func (value *Optional) Render(buf *bytes.Buffer) error {
+	if !value.isSet {
+		return writeString(buf, "null")
+	}
+	return value.inner.Render(buf)
+}
+
+func (value *Optional) Parse(data []byte) error {
+	if string(data) == "null" {
+		value.clear()
+		value.isSet = false
+		return nil
+	}
+	value.set()
+	value.isSet = true
+	return value.inner.Parse(data)
+}
+
+func (value *Optional) Empty() bool {
+	return value.isSet
+}
+
+type String struct {
+	rfn func() *string
+	wfn func(s string)
+}
+
+func NewString(rfn func() *string, wfn func(s string)) String {
+	return String{
+		rfn: rfn,
+		wfn: wfn,
+	}
 }
 
 func (value String) Render(buf *bytes.Buffer) error {
-	return writeString(buf, `"`+escape(*value.ptr)+`"`)
+	//FIXME: make rfn return a value?
+	return writeString(buf, `"`+*value.rfn()+`"`)
 }
 
 func (value String) Parse(data []byte) error {
 	if len(data) < 2 || data[0] != '"' || data[len(data)-1] != '"' {
 		return fmt.Errorf("data is not a JSON string (%q)", string(data))
 	}
-	*value.ptr = string(data[1 : len(data)-1])
+	value.wfn(string(data[1 : len(data)-1]))
 	return nil
 }
 
 func (value String) Empty() bool {
-	return *value.ptr == ""
+	//FIXME: make rfn return a value?
+	return *value.rfn() == ""
 }
 
 const hexits = "0123456789abcdef"

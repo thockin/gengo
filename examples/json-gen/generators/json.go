@@ -498,12 +498,17 @@ func (g *jsonGenerator) emitMarshalerFor(t *types.Type, c *generator.Context) st
 
 func (g *jsonGenerator) emitMarshalerForPointer(t *types.Type, c *generator.Context) string {
 	return `
-		//FIXME: should be handled in Render() ?
-		if *obj == nil {
-			return libjson.Null{}, nil
+		p := *obj
+		if p == nil {
+			p = new(` + formatName(c, "raw", t.Elem) + `)
 		}
-		return ast_` + formatName(c, "public", t.Elem) + `((*` + formatName(c, "raw", t.Elem) + `)(*obj))
+		jv, err := ast_` + formatName(c, "public", t.Elem) + `((*` + formatName(c, "raw", t.Elem) + `)(p))
+		if err != nil {
+			return nil, err
+		}
+		return libjson.NewOptional(jv, *obj != nil, func() { *obj = p }, func() { *obj = nil }), nil
 		`
+	//FIXME: make libjson types private and just return Value from Optional()
 }
 
 /*
@@ -860,7 +865,7 @@ func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {
 func (g *jsonGenerator) emitMarshalerForBuiltin(t *types.Type, c *generator.Context) string {
 	switch t {
 	case types.String:
-		return `return libjson.NewString(obj), nil`
+		return `return libjson.NewString(func()*string { return obj }, func(s string) { *obj = s}), nil`
 	case types.Bool:
 		return `return libjson.Bool(*obj), nil`
 	case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
