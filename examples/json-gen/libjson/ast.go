@@ -4,11 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
+
+	"github.com/golang/glog"
 )
 
 type Value interface {
 	Render(buf *bytes.Buffer) error
 	Parse(data []byte) error
+	ParseStream(scan *ByteScanner) error
 	Empty() bool
 	//FIXME: Get() interface{}
 }
@@ -20,7 +23,7 @@ type Optional struct {
 	clear func()
 }
 
-func NewOptional(inner Value, isSet bool, set func(), clear func()) Value {
+func NewOptional(inner Value, isSet bool, set func(), clear func()) *Optional {
 	return &Optional{
 		inner: inner,
 		isSet: isSet,
@@ -30,22 +33,51 @@ func NewOptional(inner Value, isSet bool, set func(), clear func()) Value {
 		//FIXME: how to init isSet and initial p?
 	}
 }
+
+var nullBytes = []byte("null")
+
 func (value *Optional) Render(buf *bytes.Buffer) error {
 	if !value.isSet {
-		return writeString(buf, "null")
+		return write(buf, nullBytes)
 	}
 	return value.inner.Render(buf)
 }
 
 func (value *Optional) Parse(data []byte) error {
-	if string(data) == "null" {
-		value.clear()
-		value.isSet = false
-		return nil
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
+	return nil
+}
+
+func (value *Optional) ParseStream(scan *ByteScanner) error {
+	if len(scan.Data()) >= len(nullBytes) {
+		mightBe := true
+		for _, b := range nullBytes {
+			if scan.Peek() != rune(b) {
+				mightBe = false
+				break
+			}
+			scan.Advance()
+		}
+		if mightBe {
+			//FIXME: test what happens at end-of-buffer
+			if isValueDelim(scan.Peek()) {
+				value.clear()
+				value.isSet = false
+				scan.Save()
+				return nil
+			}
+		}
 	}
 	value.set()
 	value.isSet = true
-	return value.inner.Parse(data)
+	scan.Reset()
+	return value.inner.ParseStream(scan)
 }
 
 func (value *Optional) Empty() bool {
@@ -53,33 +85,67 @@ func (value *Optional) Empty() bool {
 }
 
 type String struct {
-	rfn func() *string
-	wfn func(s string)
+	get func() string
+	set func(s string)
 }
 
-func NewString(rfn func() *string, wfn func(s string)) String {
+func NewString(get func() string, set func(s string)) String {
 	return String{
-		rfn: rfn,
-		wfn: wfn,
+		get: get,
+		set: set,
 	}
 }
 
 func (value String) Render(buf *bytes.Buffer) error {
-	//FIXME: make rfn return a value?
-	return writeString(buf, `"`+*value.rfn()+`"`)
+	return writeString(buf, `"`+value.get()+`"`)
 }
 
 func (value String) Parse(data []byte) error {
-	if len(data) < 2 || data[0] != '"' || data[len(data)-1] != '"' {
-		return fmt.Errorf("data is not a JSON string (%q)", string(data))
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
 	}
-	value.wfn(string(data[1 : len(data)-1]))
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
 	return nil
 }
 
+func (value String) ParseStream(scan *ByteScanner) error {
+	if len(scan.Data()) < 2 || scan.Peek() != '"' {
+		//FIXME: return a type, print string
+		return fmt.Errorf("data is not a JSON string")
+	}
+	discardCurrent(scan)
+
+	//FIXME: unescape will require copying data to a buffer
+	inEscape := false
+	for len(scan.Data()) > 0 {
+		if inEscape {
+			switch scan.Peek() {
+			case 'u':
+				// FIXME: expect 4 hexits
+			}
+			//FIXME: escape codes
+			inEscape = false
+		} else {
+			switch scan.Peek() {
+			case '\\':
+				inEscape = true
+			case '"':
+				value.set(string(scan.Save()))
+				discardCurrent(scan)
+				return nil
+			}
+		}
+		scan.Advance()
+	}
+	//FIXME: use a type, don't consume if error
+	return fmt.Errorf("unterminated JSON string (%q)", string(scan.Save()))
+}
+
 func (value String) Empty() bool {
-	//FIXME: make rfn return a value?
-	return *value.rfn() == ""
+	return value.get() == ""
 }
 
 const hexits = "0123456789abcdef"
@@ -129,7 +195,22 @@ func (value Number) Render(buf *bytes.Buffer) error {
 	return writeString(buf, strconv.FormatFloat(float64(value), 'g', 64, 64))
 }
 
-func (Number) Parse([]byte) error { return nil }
+func (value *Number) Parse(data []byte) error {
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
+	return nil
+}
+
+func (value *Number) ParseStream(scan *ByteScanner) error {
+	//FIXME: need a type to decode into or functions
+	panic("Not implemented")
+	return nil
+}
 
 func (value Number) Empty() bool {
 	return value == 0
@@ -147,21 +228,76 @@ func (value Bool) Render(buf *bytes.Buffer) error {
 	return write(buf, falseBytes)
 }
 
-func (Bool) Parse([]byte) error { return nil }
+func (value *Bool) Parse(data []byte) error {
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
+	return nil
+}
+
+func (value *Bool) ParseStream(scan *ByteScanner) error {
+	if len(scan.Data()) >= len(trueBytes) {
+		mightBe := true
+		for _, b := range trueBytes {
+			if scan.Peek() != rune(b) {
+				mightBe = false
+				break
+			}
+			scan.Advance()
+		}
+		if mightBe {
+			//FIXME: test what happens at end-of-buffer
+			if isValueDelim(scan.Peek()) {
+				*value = true
+				scan.Save()
+				return nil
+			}
+		}
+	}
+	scan.Reset()
+	if len(scan.Data()) >= len(falseBytes) {
+		mightBe := true
+		for _, b := range falseBytes {
+			if scan.Peek() != rune(b) {
+				mightBe = false
+				break
+			}
+			scan.Advance()
+		}
+		if mightBe {
+			//FIXME: test what happens at end-of-buffer
+			if isValueDelim(scan.Peek()) {
+				*value = false
+				scan.Save()
+				return nil
+			}
+		}
+	}
+	return fmt.Errorf("data is not a JSON bool") //FIXME: print value
+}
 
 func (value Bool) Empty() bool {
 	return value == false
 }
 
+//FIXME: do we need this?
 type Null struct{}
-
-var nullBytes = []byte("null")
 
 func (Null) Render(buf *bytes.Buffer) error {
 	return write(buf, nullBytes)
 }
 
-func (Null) Parse([]byte) error { return nil }
+func (value Null) Parse(data []byte) error {
+	return nil
+}
+
+func (value Null) ParseStream(scan *ByteScanner) error {
+	return nil
+}
 
 func (Null) Empty() bool {
 	return true
@@ -200,7 +336,108 @@ func (value Object) Render(buf *bytes.Buffer) error {
 	return nil
 }
 
-func (Object) Parse([]byte) error { return nil }
+func (value Object) Parse(data []byte) error {
+	glog.Errorf("TIM: object.Parse %#v", value)
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
+	return nil
+}
+
+func (value Object) ParseStream(scan *ByteScanner) error {
+	// So we don't have to do multiple linear searches during decode.
+	fieldMap := map[string]*NamedValue{}
+	for i := range value {
+		fieldMap[value[i].Name.get()] = &value[i]
+	}
+
+	if len(scan.Data()) < 2 || scan.Peek() != '{' {
+		//FIXME: use a type, print value...
+		return fmt.Errorf("data is not a JSON object")
+	}
+	discardCurrent(scan)
+
+	for len(scan.Data()) > 0 {
+		discardWhitespace(scan)
+		if scan.Peek() == '}' {
+			discardCurrent(scan)
+			return nil
+		}
+
+		// Read the key.
+		p := new(string)
+		key := NewString(func() string { return *p }, func(s string) { *p = s })
+		if err := key.ParseStream(scan); err != nil {
+			return err //FIXME
+		}
+		glog.Errorf("TIM: key was %s", key.get())
+		field := fieldMap[key.get()]
+		if field == nil {
+			return fmt.Errorf("unknown field %s", key.get()) //FIXME: save the string
+		}
+		glog.Errorf("TIM: value is %T", field.Value)
+
+		// Read the colon.
+		discardWhitespace(scan)
+		if scan.Peek() != ':' {
+			return fmt.Errorf("data is not a JSON object")
+		}
+		discardCurrent(scan)
+		discardWhitespace(scan)
+
+		// Read the value.
+		if err := field.Value.ParseStream(scan); err != nil {
+			return err
+		}
+
+		// Prep for the next field.
+		//FIXME: test what happens at end-of-buffer
+		if isValueDelim(scan.Peek()) {
+			discardWhitespace(scan)
+			if scan.Peek() == ',' {
+				discardCurrent(scan)
+			}
+		} else {
+			return fmt.Errorf("data is not a JSON object") //FIXME: parse error
+		}
+	}
+	return fmt.Errorf("data is not a JSON object") //FIXME: parse error
+}
+
+func discardCurrent(scan *ByteScanner) {
+	scan.Advance()
+	scan.Save()
+}
+
+func discardWhitespace(scan *ByteScanner) {
+	for len(scan.Data()) > 0 && isSpace(scan.Peek()) {
+		scan.Advance()
+	}
+	scan.Save()
+}
+
+func isSpace(r rune) bool {
+	switch r {
+	case ' ', '\t', '\n', '\r':
+		return true
+	}
+	return false
+}
+
+func isValueDelim(r rune) bool {
+	if isSpace(r) {
+		return true
+	}
+	switch r {
+	case ',', '}', ']':
+		return true
+	}
+	return false
+}
 
 func (value Object) Empty() bool {
 	return len(value) == 0
@@ -228,7 +465,22 @@ func (value Array) Render(buf *bytes.Buffer) error {
 	return nil
 }
 
-func (Array) Parse([]byte) error { return nil }
+func (value Array) Parse(data []byte) error {
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
+	return nil
+}
+
+func (value Array) ParseStream(scan *ByteScanner) error {
+	//FIXME: need a type to decode into or functions
+	panic("Not implemented")
+	return nil
+}
 
 func (value Array) Empty() bool {
 	return len(value) == 0
@@ -240,7 +492,13 @@ func (value Raw) Render(buf *bytes.Buffer) error {
 	return writeString(buf, string(value))
 }
 
-func (Raw) Parse([]byte) error { return nil }
+func (value Raw) Parse(data []byte) error {
+	return nil
+}
+
+func (value Raw) ParseStream(scan *ByteScanner) error {
+	return nil
+}
 
 func (value Raw) Empty() bool {
 	return len(value) == 0
