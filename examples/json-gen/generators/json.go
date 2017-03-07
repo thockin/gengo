@@ -479,9 +479,9 @@ func (g *jsonGenerator) emitBodyFor(t *types.Type, c *generator.Context) string 
 		f = g.emitBodyForPointer
 	case types.Struct:
 		f = g.emitBodyForStruct
+	case types.Slice:
+		f = g.emitBodyForSlice
 		/*
-			case types.Slice:
-			f = g.emitBodyForSlice
 			case types.Map:
 				f = g.emitBodyForMap
 			default:
@@ -557,7 +557,7 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 					}
 					p := new(string)
 					*p = buf.String()
-					return libjson.NewString(func()string { return *p }, func(s string) { *p = s }), nil
+					return libjson.NewString(func() string { return *p }, func(s string) { *p = s }), nil
 				}
 				`
 		} else {
@@ -579,7 +579,7 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 					p := new(string)
 					*p = "` + name + `"
 					nv := libjson.NamedValue{
-						Name: libjson.NewString(func()string { return *p }, func(s string) { *p = s }),
+						Name: libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
 						Value: fv,
 					}
 					result = append(result, nv)
@@ -726,13 +726,8 @@ func parseTag(str string) jsonTag {
 	return result
 }
 
-/*
 func (g *jsonGenerator) emitBodyForSlice(t *types.Type, c *generator.Context) string {
-	result := `
-		if obj == nil {
-			return libjson.Null{}, nil
-		}
-		`
+	result := ""
 	if rootType(t.Elem) == types.Byte {
 		// Go's json package special-cases []byte
 		g.imports.Add("encoding/base64")
@@ -757,20 +752,38 @@ func (g *jsonGenerator) emitBodyForSlice(t *types.Type, c *generator.Context) st
 			b64.Close()
 			p := new(string)
 			*p = buf.String()
-			return libjson.NewString(func()string { return *p }, func(s string) { *p = s }), nil
+			return libjson.NewString(func() string { return *p }, func(s string) { *p = s }), nil
 			`
 	} else {
 		result += `
-			result := libjson.Array{}
-			for i := range *obj {
-				obj := &(*obj)[i]
-				val, err := func() (libjson.Value, error) {` + g.emitBodyFor(t.Elem, c) + `}()
-				if err != nil {
-					return nil, err
+			get := func() ([]libjson.Value, error) {
+				if *obj == nil {
+					return nil, nil
 				}
-				result = append(result, val)
+				result := []libjson.Value{}
+				for i := range *obj {
+					obj := &(*obj)[i]
+					//FIXME: do any of these ACTUALLY return an error?
+					val, err := func() (libjson.Value, error) {` + g.emitBodyFor(t.Elem, c) + `}()
+					if err != nil {
+						return nil, err
+					}
+					result = append(result, val)
+				}
+				return result, nil
 			}
-	    	return result, nil
+			add := func() libjson.Value {
+				var x ` + formatName(c, "raw", t.Elem) + `
+				*obj = append(*obj, x)
+				obj := &(*obj)[len(*obj)-1]
+				val, _ := func() (libjson.Value, error) {` + g.emitBodyFor(t.Elem, c) + `}()
+				//FIXME: handle error?
+				return val
+			}
+			reset := func() {
+				*obj = []` + formatName(c, "raw", t.Elem) + `{}
+			}
+			return libjson.NewArray(get, add, reset), nil
 		`
 	}
 	return result
@@ -784,6 +797,7 @@ func rootType(t *types.Type) *types.Type {
 	return t
 }
 
+/*
 func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) string {
 	result := ""
 

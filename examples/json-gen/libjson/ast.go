@@ -207,7 +207,8 @@ func (value *Number) Parse(data []byte) error {
 }
 
 func (value *Number) ParseStream(scan *ByteScanner) error {
-	//FIXME: need a type to decode into or functions
+	//FIXME: need get/set
+
 	panic("Not implemented")
 	return nil
 }
@@ -282,25 +283,6 @@ func (value *Bool) ParseStream(scan *ByteScanner) error {
 
 func (value Bool) Empty() bool {
 	return value == false
-}
-
-//FIXME: do we need this?
-type Null struct{}
-
-func (Null) Render(buf *bytes.Buffer) error {
-	return write(buf, nullBytes)
-}
-
-func (value Null) Parse(data []byte) error {
-	return nil
-}
-
-func (value Null) ParseStream(scan *ByteScanner) error {
-	return nil
-}
-
-func (Null) Empty() bool {
-	return true
 }
 
 type Object []NamedValue
@@ -443,13 +425,35 @@ func (value Object) Empty() bool {
 	return len(value) == 0
 }
 
-type Array []Value
+type Array struct {
+	get   func() ([]Value, error)
+	add   func() Value
+	reset func()
+}
+
+func NewArray(get func() ([]Value, error), add func() Value, reset func()) Array {
+	return Array{
+		get:   get,
+		add:   add,
+		reset: reset,
+	}
+}
 
 func (value Array) Render(buf *bytes.Buffer) error {
+	ar, err := value.get()
+	if err != nil {
+		return err
+	} else if ar == nil {
+		if err := write(buf, nullBytes); err != nil {
+			return err
+		}
+		return nil
+	}
+
 	if err := writeString(buf, "["); err != nil {
 		return err
 	}
-	for i, v := range value {
+	for i, v := range ar {
 		if i > 0 {
 			if err := writeString(buf, ","); err != nil {
 				return err
@@ -477,13 +481,45 @@ func (value Array) Parse(data []byte) error {
 }
 
 func (value Array) ParseStream(scan *ByteScanner) error {
-	//FIXME: need a type to decode into or functions
-	panic("Not implemented")
-	return nil
+	if len(scan.Data()) < 2 || scan.Peek() != '[' {
+		//FIXME: use a type, print value...
+		return fmt.Errorf("data is not a JSON array")
+	}
+	discardCurrent(scan)
+
+	value.reset()
+	for len(scan.Data()) > 0 {
+		discardWhitespace(scan)
+		if scan.Peek() == ']' {
+			discardCurrent(scan)
+			return nil
+		}
+
+		// Read the value.
+		elem := value.add()
+		glog.Errorf("TIM: elem is %T", elem)
+		if err := elem.ParseStream(scan); err != nil {
+			return err
+		}
+
+		//FIXME: copy this pattern to Object.ParseStream
+		// Prep for the next field.
+		discardWhitespace(scan)
+		//FIXME: test what happens at end-of-buffer
+		if r := scan.Peek(); r == ',' || r == ']' {
+			if scan.Peek() == ',' {
+				discardCurrent(scan)
+			}
+		} else {
+			return fmt.Errorf("data is not a JSON array") //FIXME: parse error
+		}
+	}
+	return fmt.Errorf("data is not a JSON array") //FIXME: parse error
 }
 
 func (value Array) Empty() bool {
-	return len(value) == 0
+	ar, _ := value.get()
+	return len(ar) == 0
 }
 
 type Raw string
