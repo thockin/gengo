@@ -47,11 +47,7 @@ func Unmarshal_bool_T(data []byte, obj *T) error {
 }
 
 func ast_bool(obj *bool) (libjson.Value, error) {
-
-	p := new(libjson.Bool)
-	*p = libjson.Bool(*obj)
-	return p, nil
-
+	return libjson.NewBool(func() bool { return *obj }, func(b bool) { *obj = b }), nil
 }
 func Marshal_bool(obj bool, buf *bytes.Buffer) error {
 	val, err := ast_bool(&obj)

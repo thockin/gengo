@@ -207,8 +207,6 @@ func (value *Number) Parse(data []byte) error {
 }
 
 func (value *Number) ParseStream(scan *ByteScanner) error {
-	//FIXME: need get/set
-
 	panic("Not implemented")
 	return nil
 }
@@ -217,19 +215,29 @@ func (value Number) Empty() bool {
 	return value == 0
 }
 
-type Bool bool
+type Bool struct {
+	get func() bool
+	set func(b bool)
+}
+
+func NewBool(get func() bool, set func(b bool)) Bool {
+	return Bool{
+		get: get,
+		set: set,
+	}
+}
 
 var trueBytes = []byte("true")
 var falseBytes = []byte("false")
 
 func (value Bool) Render(buf *bytes.Buffer) error {
-	if value {
+	if value.get() {
 		return write(buf, trueBytes)
 	}
 	return write(buf, falseBytes)
 }
 
-func (value *Bool) Parse(data []byte) error {
+func (value Bool) Parse(data []byte) error {
 	scan := NewByteScanner(data)
 	if err := value.ParseStream(scan); err != nil {
 		return err
@@ -240,7 +248,7 @@ func (value *Bool) Parse(data []byte) error {
 	return nil
 }
 
-func (value *Bool) ParseStream(scan *ByteScanner) error {
+func (value Bool) ParseStream(scan *ByteScanner) error {
 	if len(scan.Data()) >= len(trueBytes) {
 		mightBe := true
 		for _, b := range trueBytes {
@@ -253,7 +261,7 @@ func (value *Bool) ParseStream(scan *ByteScanner) error {
 		if mightBe {
 			//FIXME: test what happens at end-of-buffer
 			if isValueDelim(scan.Peek()) {
-				*value = true
+				value.set(true)
 				scan.Save()
 				return nil
 			}
@@ -272,7 +280,7 @@ func (value *Bool) ParseStream(scan *ByteScanner) error {
 		if mightBe {
 			//FIXME: test what happens at end-of-buffer
 			if isValueDelim(scan.Peek()) {
-				*value = false
+				value.set(false)
 				scan.Save()
 				return nil
 			}
@@ -282,7 +290,7 @@ func (value *Bool) ParseStream(scan *ByteScanner) error {
 }
 
 func (value Bool) Empty() bool {
-	return value == false
+	return value.get() == false
 }
 
 type Object []NamedValue

@@ -892,11 +892,7 @@ func (g *jsonGenerator) emitBodyForBuiltin(t *types.Type, c *generator.Context) 
 	case types.String:
 		return `return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil`
 	case types.Bool:
-		return `
-			p := new(libjson.Bool)
-			*p = libjson.Bool(*obj)
-			return p, nil
-			`
+		return `return libjson.NewBool(func() bool { return *obj }, func(b bool) { *obj = b }), nil`
 	case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
 		fallthrough
 	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr, types.Byte:
