@@ -28,7 +28,7 @@ import (
 func init() {
 }
 
-func ast_struct_ptr_string_T(obj *T) (libjson.Value, error) {
+func ast_struct_ptr_string_T(obj *struct_ptr_string.T) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -73,14 +73,18 @@ func ast_struct_ptr_string_T(obj *T) (libjson.Value, error) {
 	return result, nil
 
 }
-func Marshal_struct_ptr_string_T(obj T, buf *bytes.Buffer) error {
+func Marshal_struct_ptr_string_T(obj struct_ptr_string.T) ([]byte, error) {
 	val, err := ast_struct_ptr_string_T(&obj)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return val.Render(buf)
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
-func Unmarshal_struct_ptr_string_T(data []byte, obj *T) error {
+func Unmarshal_struct_ptr_string_T(data []byte, obj *struct_ptr_string.T) error {
 	val, err := ast_struct_ptr_string_T(obj)
 	if err != nil {
 		return err

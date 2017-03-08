@@ -28,17 +28,21 @@ import (
 func init() {
 }
 
-func ast_bool_T(obj *T) (libjson.Value, error) {
+func ast_bool_T(obj *bool.T) (libjson.Value, error) {
 	return ast_bool((*bool)(obj))
 }
-func Marshal_bool_T(obj T, buf *bytes.Buffer) error {
+func Marshal_bool_T(obj bool.T) ([]byte, error) {
 	val, err := ast_bool_T(&obj)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return val.Render(buf)
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
-func Unmarshal_bool_T(data []byte, obj *T) error {
+func Unmarshal_bool_T(data []byte, obj *bool.T) error {
 	val, err := ast_bool_T(obj)
 	if err != nil {
 		return err
@@ -49,12 +53,16 @@ func Unmarshal_bool_T(data []byte, obj *T) error {
 func ast_bool(obj *bool) (libjson.Value, error) {
 	return libjson.NewBool(func() bool { return *obj }, func(b bool) { *obj = b }), nil
 }
-func Marshal_bool(obj bool, buf *bytes.Buffer) error {
+func Marshal_bool(obj bool) ([]byte, error) {
 	val, err := ast_bool(&obj)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return val.Render(buf)
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
 func Unmarshal_bool(data []byte, obj *bool) error {
 	val, err := ast_bool(obj)

@@ -28,17 +28,21 @@ import (
 func init() {
 }
 
-func ast_string_T(obj *T) (libjson.Value, error) {
+func ast_string_T(obj *string.T) (libjson.Value, error) {
 	return ast_string((*string)(obj))
 }
-func Marshal_string_T(obj T, buf *bytes.Buffer) error {
+func Marshal_string_T(obj string.T) ([]byte, error) {
 	val, err := ast_string_T(&obj)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return val.Render(buf)
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
-func Unmarshal_string_T(data []byte, obj *T) error {
+func Unmarshal_string_T(data []byte, obj *string.T) error {
 	val, err := ast_string_T(obj)
 	if err != nil {
 		return err
@@ -49,12 +53,16 @@ func Unmarshal_string_T(data []byte, obj *T) error {
 func ast_string(obj *string) (libjson.Value, error) {
 	return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil
 }
-func Marshal_string(obj string, buf *bytes.Buffer) error {
+func Marshal_string(obj string) ([]byte, error) {
 	val, err := ast_string(&obj)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return val.Render(buf)
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
 func Unmarshal_string(data []byte, obj *string) error {
 	val, err := ast_string(obj)

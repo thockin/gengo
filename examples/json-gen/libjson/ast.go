@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
-
-	"github.com/golang/glog"
 )
 
 type Value interface {
@@ -62,8 +60,7 @@ func (value *Optional) ParseStream(scan *ByteScanner) error {
 			scan.Advance()
 		}
 		if mightBe {
-			//FIXME: test what happens at end-of-buffer
-			if isValueDelim(scan.Peek()) {
+			if len(scan.Data()) == 0 || isValueDelim(scan.Peek()) {
 				value.clear()
 				value.isSet = false
 				scan.Save()
@@ -273,8 +270,7 @@ func (value Bool) ParseStream(scan *ByteScanner) error {
 			scan.Advance()
 		}
 		if mightBe {
-			//FIXME: test what happens at end-of-buffer
-			if isValueDelim(scan.Peek()) {
+			if len(scan.Data()) == 0 || isValueDelim(scan.Peek()) {
 				value.set(true)
 				scan.Save()
 				return nil
@@ -292,8 +288,7 @@ func (value Bool) ParseStream(scan *ByteScanner) error {
 			scan.Advance()
 		}
 		if mightBe {
-			//FIXME: test what happens at end-of-buffer
-			if isValueDelim(scan.Peek()) {
+			if len(scan.Data()) == 0 || isValueDelim(scan.Peek()) {
 				value.set(false)
 				scan.Save()
 				return nil
@@ -341,7 +336,6 @@ func (value Object) Render(buf *bytes.Buffer) error {
 }
 
 func (value Object) Parse(data []byte) error {
-	glog.Errorf("TIM: object.Parse %#v", value)
 	scan := NewByteScanner(data)
 	if err := value.ParseStream(scan); err != nil {
 		return err
@@ -378,12 +372,10 @@ func (value Object) ParseStream(scan *ByteScanner) error {
 		if err := key.ParseStream(scan); err != nil {
 			return err //FIXME
 		}
-		glog.Errorf("TIM: key was %s", key.get())
 		field := fieldMap[key.get()]
 		if field == nil {
 			return fmt.Errorf("unknown field %s", key.get()) //FIXME: save the string
 		}
-		glog.Errorf("TIM: value is %T", field.Value)
 
 		// Read the colon.
 		discardWhitespace(scan)
@@ -520,7 +512,6 @@ func (value Array) ParseStream(scan *ByteScanner) error {
 
 		// Read the value.
 		elem := value.add()
-		glog.Errorf("TIM: elem is %T", elem)
 		if err := elem.ParseStream(scan); err != nil {
 			return err
 		}

@@ -401,12 +401,16 @@ func (g *jsonGenerator) emitFunctionsFor(t *types.Type,
 		func ast_$.type|public$(obj *$.type|raw$) (libjson.Value, error) {
 			`+astBody(t, c)+`
 		}
-		func Marshal_$.type|public$(obj $.type|raw$, buf *bytes.Buffer) error {
+		func Marshal_$.type|public$(obj $.type|raw$) ([]byte, error) {
 			val, err := ast_$.type|public$(&obj)
 			if err != nil {
-				return err
+				return nil, err
 			}
-			return val.Render(buf)
+			var buf bytes.Buffer
+			if err := val.Render(&buf); err != nil {
+				return nil, err
+			}
+			return buf.Bytes(), nil
 		}
 		func Unmarshal_$.type|public$(data []byte, obj *$.type|raw$) error {
 			val, err := ast_$.type|public$(obj)
@@ -516,7 +520,6 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 		result := libjson.Object{}
 		`
 
-	//FIXME: test unmarshal not working.  Left off here.
 	if len(t.Members) == 0 {
 		// at least do something with args to avoid "not used" errors
 		result += "_ = obj\n"
@@ -527,8 +530,7 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 		field := structMeta.Fields[name]
 		//FIXME: doesn't handle recursive types.
 		glog.V(4).Infof("descending into field %v.%s", t, field.FieldName)
-		//FIXME: register and provide a public func
-		//FIXME: ...or make these methods
+		//FIXME: register and provide a public func or make these methods
 		result += `
 			// ` + field.FieldName + `
 			{

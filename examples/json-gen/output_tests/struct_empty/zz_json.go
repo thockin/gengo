@@ -28,7 +28,7 @@ import (
 func init() {
 }
 
-func ast_struct_empty_T(obj *T) (libjson.Value, error) {
+func ast_struct_empty_T(obj *struct_empty.T) (libjson.Value, error) {
 
 	result := libjson.Object{}
 	_ = obj
@@ -36,14 +36,18 @@ func ast_struct_empty_T(obj *T) (libjson.Value, error) {
 	return result, nil
 
 }
-func Marshal_struct_empty_T(obj T, buf *bytes.Buffer) error {
+func Marshal_struct_empty_T(obj struct_empty.T) ([]byte, error) {
 	val, err := ast_struct_empty_T(&obj)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return val.Render(buf)
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
-func Unmarshal_struct_empty_T(data []byte, obj *T) error {
+func Unmarshal_struct_empty_T(data []byte, obj *struct_empty.T) error {
 	val, err := ast_struct_empty_T(obj)
 	if err != nil {
 		return err

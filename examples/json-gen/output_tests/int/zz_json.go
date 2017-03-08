@@ -28,17 +28,21 @@ import (
 func init() {
 }
 
-func ast_int_T(obj *T) (libjson.Value, error) {
+func ast_int_T(obj *int.T) (libjson.Value, error) {
 	return ast_int((*int)(obj))
 }
-func Marshal_int_T(obj T, buf *bytes.Buffer) error {
+func Marshal_int_T(obj int.T) ([]byte, error) {
 	val, err := ast_int_T(&obj)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return val.Render(buf)
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
-func Unmarshal_int_T(data []byte, obj *T) error {
+func Unmarshal_int_T(data []byte, obj *int.T) error {
 	val, err := ast_int_T(obj)
 	if err != nil {
 		return err
@@ -57,12 +61,16 @@ func ast_int(obj *int) (libjson.Value, error) {
 	return libjson.NewNumber(get, set), nil
 
 }
-func Marshal_int(obj int, buf *bytes.Buffer) error {
+func Marshal_int(obj int) ([]byte, error) {
 	val, err := ast_int(&obj)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return val.Render(buf)
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
 func Unmarshal_int(data []byte, obj *int) error {
 	val, err := ast_int(obj)
