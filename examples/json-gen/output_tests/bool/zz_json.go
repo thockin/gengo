@@ -28,10 +28,10 @@ import (
 func init() {
 }
 
-func ast_bool_T(obj *bool.T) (libjson.Value, error) {
+func ast_bool_T(obj *T) (libjson.Value, error) {
 	return ast_bool((*bool)(obj))
 }
-func Marshal_bool_T(obj bool.T) ([]byte, error) {
+func Marshal_bool_T(obj T) ([]byte, error) {
 	val, err := ast_bool_T(&obj)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func Marshal_bool_T(obj bool.T) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_bool_T(data []byte, obj *bool.T) error {
+func Unmarshal_bool_T(data []byte, obj *T) error {
 	val, err := ast_bool_T(obj)
 	if err != nil {
 		return err

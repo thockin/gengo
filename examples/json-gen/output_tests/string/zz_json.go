@@ -28,10 +28,10 @@ import (
 func init() {
 }
 
-func ast_string_T(obj *string.T) (libjson.Value, error) {
+func ast_string_T(obj *T) (libjson.Value, error) {
 	return ast_string((*string)(obj))
 }
-func Marshal_string_T(obj string.T) ([]byte, error) {
+func Marshal_string_T(obj T) ([]byte, error) {
 	val, err := ast_string_T(&obj)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func Marshal_string_T(obj string.T) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_string_T(data []byte, obj *string.T) error {
+func Unmarshal_string_T(data []byte, obj *T) error {
 	val, err := ast_string_T(obj)
 	if err != nil {
 		return err

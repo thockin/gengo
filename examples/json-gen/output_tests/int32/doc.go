@@ -1,4 +1,4 @@
 // +k8s:json-gen=package
 package test
 
-type T int
+type T int32
