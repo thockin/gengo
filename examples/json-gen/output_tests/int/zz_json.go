@@ -48,9 +48,13 @@ func Unmarshal_int_T(data []byte, obj *T) error {
 
 func ast_int(obj *int) (libjson.Value, error) {
 
-	p := new(libjson.Number)
-	*p = libjson.Number(float64(*obj))
-	return p, nil
+	get := func() float64 {
+		return float64(*obj)
+	}
+	set := func(f float64) {
+		*obj = int(f)
+	}
+	return libjson.NewNumber(get, set), nil
 
 }
 func Marshal_int(obj int, buf *bytes.Buffer) error {

@@ -899,9 +899,13 @@ func (g *jsonGenerator) emitBodyForBuiltin(t *types.Type, c *generator.Context) 
 		fallthrough
 	case types.Float, types.Float64, types.Float32:
 		return `
-			p := new(libjson.Number)
-			*p = libjson.Number(float64(*obj))
-			return p, nil
+			get := func() float64 {
+				return float64(*obj)
+			}
+			set := func(f float64) {
+				*obj = ` + formatName(c, "raw", t) + `(f)
+			}
+			return libjson.NewNumber(get, set), nil
 			`
 	default:
 		// This is a legit bug in the tool.

@@ -13,7 +13,6 @@ type Value interface {
 	Parse(data []byte) error
 	ParseStream(scan *ByteScanner) error
 	Empty() bool
-	//FIXME: Get() interface{}
 }
 
 type Optional struct {
@@ -27,10 +26,8 @@ func NewOptional(inner Value, isSet bool, set func(), clear func()) *Optional {
 	return &Optional{
 		inner: inner,
 		isSet: isSet,
-		//FIXME: one func(bool) for set/clear?
 		set:   set,
 		clear: clear,
-		//FIXME: how to init isSet and initial p?
 	}
 }
 
@@ -189,13 +186,23 @@ func escape(str string) string {
 	return buf.String()
 }
 
-type Number float64
-
-func (value Number) Render(buf *bytes.Buffer) error {
-	return writeString(buf, strconv.FormatFloat(float64(value), 'g', 64, 64))
+type Number struct {
+	get func() float64
+	set func(f float64)
 }
 
-func (value *Number) Parse(data []byte) error {
+func NewNumber(get func() float64, set func(f float64)) Number {
+	return Number{
+		get: get,
+		set: set,
+	}
+}
+
+func (value Number) Render(buf *bytes.Buffer) error {
+	return writeString(buf, strconv.FormatFloat(value.get(), 'g', 64, 64))
+}
+
+func (value Number) Parse(data []byte) error {
 	scan := NewByteScanner(data)
 	if err := value.ParseStream(scan); err != nil {
 		return err
@@ -206,13 +213,20 @@ func (value *Number) Parse(data []byte) error {
 	return nil
 }
 
-func (value *Number) ParseStream(scan *ByteScanner) error {
-	panic("Not implemented")
+func (value Number) ParseStream(scan *ByteScanner) error {
+	for len(scan.Data()) > 0 && !isValueDelim(scan.Peek()) {
+		scan.Advance()
+	}
+	if f, err := strconv.ParseFloat(string(scan.Save()), 64); err != nil {
+		return err
+	} else {
+		value.set(f)
+	}
 	return nil
 }
 
 func (value Number) Empty() bool {
-	return value == 0
+	return value.get() == 0
 }
 
 type Bool struct {
@@ -385,9 +399,9 @@ func (value Object) ParseStream(scan *ByteScanner) error {
 		}
 
 		// Prep for the next field.
+		discardWhitespace(scan)
 		//FIXME: test what happens at end-of-buffer
-		if isValueDelim(scan.Peek()) {
-			discardWhitespace(scan)
+		if r := scan.Peek(); r == ',' || r == '}' {
 			if scan.Peek() == ',' {
 				discardCurrent(scan)
 			}
@@ -489,6 +503,7 @@ func (value Array) Parse(data []byte) error {
 }
 
 func (value Array) ParseStream(scan *ByteScanner) error {
+	//FIXME: handle []byte
 	if len(scan.Data()) < 2 || scan.Peek() != '[' {
 		//FIXME: use a type, print value...
 		return fmt.Errorf("data is not a JSON array")
@@ -510,7 +525,6 @@ func (value Array) ParseStream(scan *ByteScanner) error {
 			return err
 		}
 
-		//FIXME: copy this pattern to Object.ParseStream
 		// Prep for the next field.
 		discardWhitespace(scan)
 		//FIXME: test what happens at end-of-buffer
@@ -541,6 +555,7 @@ func (value Raw) Parse(data []byte) error {
 }
 
 func (value Raw) ParseStream(scan *ByteScanner) error {
+	panic("not implemented")
 	return nil
 }
 
