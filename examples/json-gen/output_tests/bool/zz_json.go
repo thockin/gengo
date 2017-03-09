@@ -25,13 +25,11 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func init() {
-}
-
 func ast_bool_Ttest(obj *Ttest) (libjson.Value, error) {
 	return ast_bool((*bool)(obj))
 }
-func Marshal_bool_Ttest(obj Ttest) ([]byte, error) {
+
+func (obj Ttest) MarshalJSON() ([]byte, error) {
 	val, err := ast_bool_Ttest(&obj)
 	if err != nil {
 		return nil, err
@@ -42,7 +40,8 @@ func Marshal_bool_Ttest(obj Ttest) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_bool_Ttest(data []byte, obj *Ttest) error {
+
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	val, err := ast_bool_Ttest(obj)
 	if err != nil {
 		return err
@@ -52,22 +51,4 @@ func Unmarshal_bool_Ttest(data []byte, obj *Ttest) error {
 
 func ast_bool(obj *bool) (libjson.Value, error) {
 	return libjson.NewBool(func() bool { return *obj }, func(b bool) { *obj = b }), nil
-}
-func Marshal_bool(obj bool) ([]byte, error) {
-	val, err := ast_bool(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-func Unmarshal_bool(data []byte, obj *bool) error {
-	val, err := ast_bool(obj)
-	if err != nil {
-		return err
-	}
-	return val.Parse(data)
 }

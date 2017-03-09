@@ -25,13 +25,11 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func init() {
-}
-
 func ast_int32_Ttest(obj *Ttest) (libjson.Value, error) {
 	return ast_int32((*int32)(obj))
 }
-func Marshal_int32_Ttest(obj Ttest) ([]byte, error) {
+
+func (obj Ttest) MarshalJSON() ([]byte, error) {
 	val, err := ast_int32_Ttest(&obj)
 	if err != nil {
 		return nil, err
@@ -42,7 +40,8 @@ func Marshal_int32_Ttest(obj Ttest) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_int32_Ttest(data []byte, obj *Ttest) error {
+
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	val, err := ast_int32_Ttest(obj)
 	if err != nil {
 		return err
@@ -60,22 +59,4 @@ func ast_int32(obj *int32) (libjson.Value, error) {
 	}
 	return libjson.NewNumber(get, set), nil
 
-}
-func Marshal_int32(obj int32) ([]byte, error) {
-	val, err := ast_int32(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-func Unmarshal_int32(data []byte, obj *int32) error {
-	val, err := ast_int32(obj)
-	if err != nil {
-		return err
-	}
-	return val.Parse(data)
 }

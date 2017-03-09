@@ -264,9 +264,9 @@ func isRootedUnder(pkg string, roots []string) bool {
 var nameOfByteSlice = types.Name{Name: "[]byte"}
 var nameOfError = types.Name{Name: "error"}
 
-// hasJSONMarshalMethod returns true if an appropriate MarshalJSON() method is
+// hasMarshalMethod returns true if an appropriate MarshalJSON() method is
 // defined for the given type.
-func hasJSONMarshalMethod(t *types.Type) bool {
+func hasMarshalMethod(t *types.Type) bool {
 	for mn, mt := range t.Methods {
 		if mn != "MarshalJSON" {
 			continue
@@ -284,9 +284,9 @@ func hasJSONMarshalMethod(t *types.Type) bool {
 	return false
 }
 
-// hasJSONUnmarshalMethod returns true if an appropriate UnmarshalJSON() method is
+// hasUnmarshalMethod returns true if an appropriate UnmarshalJSON() method is
 // defined for the given type.
-func hasJSONUnmarshalMethod(t *types.Type) bool {
+func hasUnmarshalMethod(t *types.Type) bool {
 	for mn, mt := range t.Methods {
 		if mn != "UnmarshalJSON" {
 			continue
@@ -347,11 +347,7 @@ func argsFromType(t *types.Type) generator.Args {
 
 func (g *jsonGenerator) Init(c *generator.Context, w io.Writer) error {
 	g.imports.Add("k8s.io/gengo/examples/json-gen/libjson")
-	sw := generator.NewSnippetWriter(w, c, "$", "$")
-	//FIXME: register
-	sw.Do("func init() {\n", nil)
-	sw.Do("}\n", nil)
-	return sw.Error()
+	return nil
 }
 
 func (g *jsonGenerator) GenerateType(c *generator.Context, t *types.Type, w io.Writer) error {
@@ -362,7 +358,8 @@ func (g *jsonGenerator) GenerateType(c *generator.Context, t *types.Type, w io.W
 	}
 
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
-	g.emitFunctionsFor(t, g.emitBodyFor, c, sw)
+	g.emitAST(t, g.emitBodyFor, c, sw)
+	g.emitMethods(t, sw)
 	return sw.Error()
 }
 
@@ -392,16 +389,26 @@ func (g *jsonGenerator) needsGeneration(t *types.Type) bool {
 	return true
 }
 
-func (g *jsonGenerator) emitFunctionsFor(t *types.Type,
+func (g *jsonGenerator) emitAST(t *types.Type,
 	astBody func(t *types.Type, c *generator.Context) string,
 	c *generator.Context, sw *generator.SnippetWriter) {
-	g.imports.Add("bytes")
-	//FIXME: use private names once they are registered
 	sw.Do(`
 		func ast_$.type|public$(obj *$.type|raw$) (libjson.Value, error) {
 			`+astBody(t, c)+`
 		}
-		func Marshal_$.type|public$(obj $.type|raw$) ([]byte, error) {
+		`, argsFromType(t))
+}
+
+func (g *jsonGenerator) emitMethods(t *types.Type, sw *generator.SnippetWriter) {
+	if rootType(t).Kind == types.Pointer {
+		//FIXME: should be fatal?
+		glog.Errorf("not emitting methods for pointer type %v", t)
+		return
+	}
+	if !hasMarshalMethod(t) {
+		g.imports.Add("bytes")
+		sw.Do(`
+		func (obj $.type|raw$) MarshalJSON() ([]byte, error) {
 			val, err := ast_$.type|public$(&obj)
 			if err != nil {
 				return nil, err
@@ -412,7 +419,12 @@ func (g *jsonGenerator) emitFunctionsFor(t *types.Type,
 			}
 			return buf.Bytes(), nil
 		}
-		func Unmarshal_$.type|public$(data []byte, obj *$.type|raw$) error {
+		`, argsFromType(t))
+	}
+	if !hasUnmarshalMethod(t) {
+		g.imports.Add("bytes")
+		sw.Do(`
+		func (obj *$.type|raw$) UnmarshalJSON(data []byte) error {
 			val, err := ast_$.type|public$(obj)
 			if err != nil {
 				return err
@@ -420,6 +432,7 @@ func (g *jsonGenerator) emitFunctionsFor(t *types.Type,
 			return val.Parse(data)
 		}
 		`, argsFromType(t))
+	}
 }
 
 // Just a shortcut helper function.
@@ -432,7 +445,7 @@ func formatName(c *generator.Context, namer string, t *types.Type) string {
 func (g *jsonGenerator) emitBodyFor(t *types.Type, c *generator.Context) string {
 	/*
 		// If the type implements Marshaler on its own, use that.
-		if hasJSONMarshalMethod(t) {
+		if hasMarshalMethod(t) {
 			glog.V(3).Infof("type %v has a MarshalJSON() method", t)
 			g.imports.Add("fmt")
 			return `
@@ -534,7 +547,6 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 		field := structMeta.Fields[name]
 		//FIXME: doesn't handle recursive types.
 		glog.V(4).Infof("descending into field %v.%s", t, field.FieldName)
-		//FIXME: register and provide a public func or make these methods
 		result += `
 			// ` + field.FieldName + `
 			{
@@ -809,7 +821,7 @@ func rootType(t *types.Type) *types.Type {
 	return t
 }
 
-/*
+/* FIXME: not done yet
 func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) string {
 	//FIXME: need root Type here and elsewhere?
 	if t.Elem.Kind == types.Builtin {
@@ -900,7 +912,7 @@ func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
 	for _, t := range g.builtinsNeeded {
 		glog.V(3).Infof("emitting code for builtin %v", t)
-		g.emitFunctionsFor(t, g.emitBodyForBuiltin, c, sw)
+		g.emitAST(t, g.emitBodyForBuiltin, c, sw)
 	}
 	return sw.Error()
 }

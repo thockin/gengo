@@ -25,13 +25,11 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func init() {
-}
-
 func ast_string_Ttest(obj *Ttest) (libjson.Value, error) {
 	return ast_string((*string)(obj))
 }
-func Marshal_string_Ttest(obj Ttest) ([]byte, error) {
+
+func (obj Ttest) MarshalJSON() ([]byte, error) {
 	val, err := ast_string_Ttest(&obj)
 	if err != nil {
 		return nil, err
@@ -42,7 +40,8 @@ func Marshal_string_Ttest(obj Ttest) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_string_Ttest(data []byte, obj *Ttest) error {
+
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	val, err := ast_string_Ttest(obj)
 	if err != nil {
 		return err
@@ -52,22 +51,4 @@ func Unmarshal_string_Ttest(data []byte, obj *Ttest) error {
 
 func ast_string(obj *string) (libjson.Value, error) {
 	return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil
-}
-func Marshal_string(obj string) ([]byte, error) {
-	val, err := ast_string(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-func Unmarshal_string(data []byte, obj *string) error {
-	val, err := ast_string(obj)
-	if err != nil {
-		return err
-	}
-	return val.Parse(data)
 }

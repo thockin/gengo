@@ -25,9 +25,6 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func init() {
-}
-
 func ast_struct_ptr_string_T(obj *T) (libjson.Value, error) {
 
 	result := libjson.Object{}
@@ -73,7 +70,8 @@ func ast_struct_ptr_string_T(obj *T) (libjson.Value, error) {
 	return result, nil
 
 }
-func Marshal_struct_ptr_string_T(obj T) ([]byte, error) {
+
+func (obj T) MarshalJSON() ([]byte, error) {
 	val, err := ast_struct_ptr_string_T(&obj)
 	if err != nil {
 		return nil, err
@@ -84,7 +82,8 @@ func Marshal_struct_ptr_string_T(obj T) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_struct_ptr_string_T(data []byte, obj *T) error {
+
+func (obj *T) UnmarshalJSON(data []byte) error {
 	val, err := ast_struct_ptr_string_T(obj)
 	if err != nil {
 		return err
@@ -94,22 +93,4 @@ func Unmarshal_struct_ptr_string_T(data []byte, obj *T) error {
 
 func ast_string(obj *string) (libjson.Value, error) {
 	return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil
-}
-func Marshal_string(obj string) ([]byte, error) {
-	val, err := ast_string(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-func Unmarshal_string(data []byte, obj *string) error {
-	val, err := ast_string(obj)
-	if err != nil {
-		return err
-	}
-	return val.Parse(data)
 }

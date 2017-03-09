@@ -10,7 +10,7 @@ import (
 
 func Test_Roundtrip(t *testing.T) {
 	fz := fuzz.New()
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 1000; i++ {
 		var beforeStd Tstd
 		fz.Fuzz(&beforeStd)
 		beforeTest := Ttest(beforeStd)
@@ -19,12 +19,12 @@ func Test_Roundtrip(t *testing.T) {
 		if err != nil {
 			t.Errorf("failed to marshal: %v", err)
 		}
-		jbTest, err := Marshal_string_Ttest(beforeTest)
+		jbTest, err := json.Marshal(beforeTest)
 		if err != nil {
 			t.Errorf("failed to marshal: %v", err)
 		}
 		if string(jbStd) != string(jbTest) {
-			t.Errorf("std marshal gave %q, test got %q", string(jbStd), string(jbTest))
+			t.Errorf("marshal expected %q, got %q", string(jbStd), string(jbTest))
 		}
 
 		var afterStd Ttest
@@ -33,7 +33,7 @@ func Test_Roundtrip(t *testing.T) {
 			t.Errorf("failed to unmarshal: %v", err)
 		}
 		var afterTest Ttest
-		err = Unmarshal_string_Ttest(jbTest, &afterTest)
+		err = json.Unmarshal(jbTest, &afterTest)
 		if err != nil {
 			t.Errorf("failed to unmarshal: %v", err)
 		}
