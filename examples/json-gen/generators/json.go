@@ -502,6 +502,10 @@ func (g *jsonGenerator) emitBodyFor(t *types.Type, c *generator.Context) string 
 }
 
 func (g *jsonGenerator) emitBodyForPointer(t *types.Type, c *generator.Context) string {
+	if t.Elem.Kind == types.Builtin {
+		// We will emit common marshalers for builtins later.
+		g.builtinsNeeded[t.Elem.String()] = t.Elem
+	}
 	return `
 		p := *obj
 		if p == nil {
@@ -729,6 +733,12 @@ func parseTag(str string) jsonTag {
 }
 
 func (g *jsonGenerator) emitBodyForSlice(t *types.Type, c *generator.Context) string {
+	//FIXME: need rootType here and elsewhere?
+	if t.Elem.Kind == types.Builtin {
+		// We will emit common marshalers for builtins later.
+		g.builtinsNeeded[t.Elem.String()] = t.Elem
+	}
+
 	result := ""
 	if rootType(t.Elem) == types.Byte {
 		// Go's json package special-cases []byte
@@ -801,6 +811,12 @@ func rootType(t *types.Type) *types.Type {
 
 /*
 func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) string {
+	//FIXME: need root Type here and elsewhere?
+	if t.Elem.Kind == types.Builtin {
+		// We will emit common marshalers for builtins later.
+		g.builtinsNeeded[t.Elem.String()] = t.Elem
+	}
+
 	result := ""
 
 	// Map keys must be derived from string, encoding.TextMarshaler, or integral types.

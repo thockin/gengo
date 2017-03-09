@@ -59,3 +59,33 @@ func Unmarshal_ptr_int_T(data []byte, obj *T) error {
 	}
 	return val.Parse(data)
 }
+
+func ast_int(obj *int) (libjson.Value, error) {
+
+	get := func() float64 {
+		return float64(*obj)
+	}
+	set := func(f float64) {
+		*obj = int(f)
+	}
+	return libjson.NewNumber(get, set), nil
+
+}
+func Marshal_int(obj int) ([]byte, error) {
+	val, err := ast_int(&obj)
+	if err != nil {
+		return nil, err
+	}
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+func Unmarshal_int(data []byte, obj *int) error {
+	val, err := ast_int(obj)
+	if err != nil {
+		return err
+	}
+	return val.Parse(data)
+}

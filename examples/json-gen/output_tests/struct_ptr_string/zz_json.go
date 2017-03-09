@@ -91,3 +91,25 @@ func Unmarshal_struct_ptr_string_T(data []byte, obj *T) error {
 	}
 	return val.Parse(data)
 }
+
+func ast_string(obj *string) (libjson.Value, error) {
+	return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil
+}
+func Marshal_string(obj string) ([]byte, error) {
+	val, err := ast_string(&obj)
+	if err != nil {
+		return nil, err
+	}
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+func Unmarshal_string(data []byte, obj *string) error {
+	val, err := ast_string(obj)
+	if err != nil {
+		return err
+	}
+	return val.Parse(data)
+}

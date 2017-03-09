@@ -22,6 +22,7 @@ package test
 
 import (
 	bytes "bytes"
+
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
@@ -54,6 +55,28 @@ func Marshal_ptr_bool_T(obj T) ([]byte, error) {
 }
 func Unmarshal_ptr_bool_T(data []byte, obj *T) error {
 	val, err := ast_ptr_bool_T(obj)
+	if err != nil {
+		return err
+	}
+	return val.Parse(data)
+}
+
+func ast_bool(obj *bool) (libjson.Value, error) {
+	return libjson.NewBool(func() bool { return *obj }, func(b bool) { *obj = b }), nil
+}
+func Marshal_bool(obj bool) ([]byte, error) {
+	val, err := ast_bool(&obj)
+	if err != nil {
+		return nil, err
+	}
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+func Unmarshal_bool(data []byte, obj *bool) error {
+	val, err := ast_bool(obj)
 	if err != nil {
 		return err
 	}

@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"strconv"
+	"unicode"
+	"unicode/utf16"
+	"unicode/utf8"
 )
 
 type Value interface {
@@ -91,7 +94,8 @@ func NewString(get func() string, set func(s string)) String {
 }
 
 func (value String) Render(buf *bytes.Buffer) error {
-	return writeString(buf, `"`+value.get()+`"`)
+	//FIXME: inline escape() here?
+	return writeString(buf, `"`+escape(value.get())+`"`)
 }
 
 func (value String) Parse(data []byte) error {
@@ -105,6 +109,11 @@ func (value String) Parse(data []byte) error {
 	return nil
 }
 
+//FIXME:
+// When unmarshaling quoted strings, invalid UTF-8 or
+// invalid UTF-16 surrogate pairs are not treated as an error.
+// Instead, they are replaced by the Unicode replacement
+// character U+FFFD.
 func (value String) ParseStream(scan *ByteScanner) error {
 	if len(scan.Data()) < 2 || scan.Peek() != '"' {
 		//FIXME: return a type, print string
@@ -112,28 +121,28 @@ func (value String) ParseStream(scan *ByteScanner) error {
 	}
 	discardCurrent(scan)
 
-	//FIXME: unescape will require copying data to a buffer
-	inEscape := false
+	var buf bytes.Buffer
 	for len(scan.Data()) > 0 {
-		if inEscape {
-			switch scan.Peek() {
-			case 'u':
-				// FIXME: expect 4 hexits
+		if scan.Peek() == '"' {
+			if _, err := buf.Write(scan.Save()); err != nil {
+				return err //FIXME:
 			}
-			//FIXME: escape codes
-			inEscape = false
-		} else {
-			switch scan.Peek() {
-			case '\\':
-				inEscape = true
-			case '"':
-				value.set(string(scan.Save()))
-				discardCurrent(scan)
-				return nil
-			}
+			value.set(buf.String())
+			discardCurrent(scan)
+			return nil
 		}
-		scan.Advance()
+		if scan.Peek() != '\\' {
+			scan.Advance()
+			continue
+		}
+		if _, err := buf.Write(scan.Save()); err != nil {
+			return err //FIXME:
+		}
+		if err := unescape(scan, &buf); err != nil {
+			return err //FIXME
+		}
 	}
+
 	//FIXME: use a type, don't consume if error
 	return fmt.Errorf("unterminated JSON string (%q)", string(scan.Save()))
 }
@@ -152,17 +161,24 @@ func escape(str string) string {
 	buf := bytes.Buffer{}
 	runes := []rune(str)
 	for _, r := range runes {
+		//FIXME: errors
 		switch r {
+		case '"':
+			buf.WriteString(`\"`)
+		case '\\':
+			buf.WriteString(`\\`)
+		case '/':
+			buf.WriteString(`\/`)
+		case '\b':
+			buf.WriteString(`\b`)
+		case '\f':
+			buf.WriteString(`\f`)
 		case '\n':
 			buf.WriteString(`\n`)
 		case '\r':
 			buf.WriteString(`\r`)
 		case '\t':
 			buf.WriteString(`\t`)
-		case '\\':
-			buf.WriteString(`\\`)
-		case '"':
-			buf.WriteString(`\"`)
 		case '<', '>', '&':
 			buf.WriteString(`\u00`)
 			buf.WriteByte(hexits[r>>4])
@@ -181,6 +197,93 @@ func escape(str string) string {
 		}
 	}
 	return buf.String()
+}
+
+func unescape(scan *ByteScanner, buf *bytes.Buffer) error {
+	discardCurrent(scan) // get rid of the '\'
+
+	var err error
+	switch scan.Peek() {
+	case utf8.RuneError:
+		return fmt.Errorf("ran out of data") //FIXME:
+	case '"':
+		_, err = buf.WriteRune('"')
+		discardCurrent(scan)
+	case '\\':
+		_, err = buf.WriteRune('\\')
+		discardCurrent(scan)
+	case '/':
+		_, err = buf.WriteRune('/')
+		discardCurrent(scan)
+	case 'b':
+		_, err = buf.WriteRune('\b')
+		discardCurrent(scan)
+	case 'f':
+		_, err = buf.WriteRune('\f')
+		discardCurrent(scan)
+	case 'n':
+		_, err = buf.WriteRune('\n')
+		discardCurrent(scan)
+	case 'r':
+		_, err = buf.WriteRune('\r')
+		discardCurrent(scan)
+	case 't':
+		_, err = buf.WriteRune('\t')
+		discardCurrent(scan)
+	case 'u':
+		err = unescapeHex(scan, buf)
+	default:
+		err = fmt.Errorf("unknown escape: %v", scan.Peek())
+	}
+	return err //FIXME:
+}
+
+func unescapeHex(scan *ByteScanner, buf *bytes.Buffer) error {
+	discardCurrent(scan) // get rund of the 'u'
+
+	if len(scan.Data()) < 4 {
+		return fmt.Errorf("ran out of data") //FIXME:
+	}
+	u16, err := strconv.ParseUint(string(scan.Data()[:4]), 16, 16)
+	if err != nil {
+		return err //FIXME:
+	}
+	r1 := rune(u16)
+	for i := 0; i < 4; i++ { // get rid of the hex code
+		discardCurrent(scan)
+	}
+
+	// this technique is borrowed from Go's json lib
+	if !utf16.IsSurrogate(r1) {
+		// single escape
+		_, err = buf.WriteRune(r1)
+		return err
+	}
+
+	// expect a second escape
+	if len(scan.Data()) < 4 {
+		return fmt.Errorf("ran out of data") //FIXME:
+	}
+	u16, err = strconv.ParseUint(string(scan.Data()[:4]), 16, 16)
+	if err != nil {
+		return err //FIXME:
+	}
+	r2 := rune(u16)
+	for i := 0; i < 4; i++ { // get rid of the hex code
+		discardCurrent(scan)
+	}
+
+	// see if it was a valid utf8 pair
+	if r := utf16.DecodeRune(r1, r2); r != unicode.ReplacementChar {
+		// it was valid
+		var rbuf [8]byte
+		n := utf8.EncodeRune(rbuf[:], r)
+		_, err := buf.Write(rbuf[:n])
+		return err
+	}
+	// invalid pair
+	_, err = buf.WriteRune(unicode.ReplacementChar)
+	return err
 }
 
 type Number struct {
@@ -214,6 +317,7 @@ func (value Number) ParseStream(scan *ByteScanner) error {
 	for len(scan.Data()) > 0 && !isValueDelim(scan.Peek()) {
 		scan.Advance()
 	}
+	//FIXME: is this good enough or do I have to hand-code the float parser?
 	if f, err := strconv.ParseFloat(string(scan.Save()), 64); err != nil {
 		return err
 	} else {
