@@ -28,21 +28,21 @@ import (
 func init() {
 }
 
-func ast_ptr_int_T(obj *T) (libjson.Value, error) {
+func ast_ptr_int32_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	p := *obj
 	if p == nil {
-		p = new(int)
+		p = new(int32)
 	}
-	jv, err := ast_int((*int)(p))
+	jv, err := ast_int32((*int32)(p))
 	if err != nil {
 		return nil, err
 	}
 	return libjson.NewOptional(jv, *obj != nil, func() { *obj = p }, func() { *obj = nil }), nil
 
 }
-func Marshal_ptr_int_T(obj T) ([]byte, error) {
-	val, err := ast_ptr_int_T(&obj)
+func Marshal_ptr_int32_Ttest(obj Ttest) ([]byte, error) {
+	val, err := ast_ptr_int32_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -52,27 +52,27 @@ func Marshal_ptr_int_T(obj T) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_ptr_int_T(data []byte, obj *T) error {
-	val, err := ast_ptr_int_T(obj)
+func Unmarshal_ptr_int32_Ttest(data []byte, obj *Ttest) error {
+	val, err := ast_ptr_int32_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return val.Parse(data)
 }
 
-func ast_int(obj *int) (libjson.Value, error) {
+func ast_int32(obj *int32) (libjson.Value, error) {
 
 	get := func() float64 {
 		return float64(*obj)
 	}
 	set := func(f float64) {
-		*obj = int(f)
+		*obj = int32(f)
 	}
 	return libjson.NewNumber(get, set), nil
 
 }
-func Marshal_int(obj int) ([]byte, error) {
-	val, err := ast_int(&obj)
+func Marshal_int32(obj int32) ([]byte, error) {
+	val, err := ast_int32(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -82,8 +82,8 @@ func Marshal_int(obj int) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_int(data []byte, obj *int) error {
-	val, err := ast_int(obj)
+func Unmarshal_int32(data []byte, obj *int32) error {
+	val, err := ast_int32(obj)
 	if err != nil {
 		return err
 	}

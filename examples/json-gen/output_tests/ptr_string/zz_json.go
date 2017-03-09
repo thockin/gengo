@@ -28,7 +28,7 @@ import (
 func init() {
 }
 
-func ast_ptr_string_T(obj *T) (libjson.Value, error) {
+func ast_ptr_string_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	p := *obj
 	if p == nil {
@@ -41,8 +41,8 @@ func ast_ptr_string_T(obj *T) (libjson.Value, error) {
 	return libjson.NewOptional(jv, *obj != nil, func() { *obj = p }, func() { *obj = nil }), nil
 
 }
-func Marshal_ptr_string_T(obj T) ([]byte, error) {
-	val, err := ast_ptr_string_T(&obj)
+func Marshal_ptr_string_Ttest(obj Ttest) ([]byte, error) {
+	val, err := ast_ptr_string_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -52,8 +52,8 @@ func Marshal_ptr_string_T(obj T) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_ptr_string_T(data []byte, obj *T) error {
-	val, err := ast_ptr_string_T(obj)
+func Unmarshal_ptr_string_Ttest(data []byte, obj *Ttest) error {
+	val, err := ast_ptr_string_Ttest(obj)
 	if err != nil {
 		return err
 	}

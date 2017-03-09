@@ -2,6 +2,6 @@
 package test
 
 //+k8s:json-gen=false
-type Tstd *bool
+type Tstd *int32
 
 type Ttest Tstd

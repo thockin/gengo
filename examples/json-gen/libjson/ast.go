@@ -167,8 +167,9 @@ func escape(str string) string {
 			buf.WriteString(`\"`)
 		case '\\':
 			buf.WriteString(`\\`)
-		case '/':
-			buf.WriteString(`\/`)
+		// The JSON spec says to escape this, but Go's stdlib does not
+		//case '/':
+		//buf.WriteString(`\/`)
 		case '\b':
 			buf.WriteString(`\b`)
 		case '\f':
@@ -212,9 +213,10 @@ func unescape(scan *ByteScanner, buf *bytes.Buffer) error {
 	case '\\':
 		_, err = buf.WriteRune('\\')
 		discardCurrent(scan)
-	case '/':
-		_, err = buf.WriteRune('/')
-		discardCurrent(scan)
+	// The JSON spec says to escape this, but Go's stdlib does not
+	//case '/':
+	//_, err = buf.WriteRune('/')
+	//discardCurrent(scan)
 	case 'b':
 		_, err = buf.WriteRune('\b')
 		discardCurrent(scan)

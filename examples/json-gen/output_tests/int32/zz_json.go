@@ -28,11 +28,11 @@ import (
 func init() {
 }
 
-func ast_int32_T(obj *T) (libjson.Value, error) {
+func ast_int32_Ttest(obj *Ttest) (libjson.Value, error) {
 	return ast_int32((*int32)(obj))
 }
-func Marshal_int32_T(obj T) ([]byte, error) {
-	val, err := ast_int32_T(&obj)
+func Marshal_int32_Ttest(obj Ttest) ([]byte, error) {
+	val, err := ast_int32_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -42,8 +42,8 @@ func Marshal_int32_T(obj T) ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-func Unmarshal_int32_T(data []byte, obj *T) error {
-	val, err := ast_int32_T(obj)
+func Unmarshal_int32_Ttest(data []byte, obj *Ttest) error {
+	val, err := ast_int32_Ttest(obj)
 	if err != nil {
 		return err
 	}

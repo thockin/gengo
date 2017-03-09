@@ -150,7 +150,7 @@ func Packages(context *generator.Context, arguments *args.GeneratorArgs) generat
 		}
 
 		// Find the tags, if present.
-		ptag := extractTag(pkg.Comments)
+		ptag := extractTag(pkg.DocComments)
 		ptagValue := ""
 		if ptag != nil {
 			ptagValue = ptag.value

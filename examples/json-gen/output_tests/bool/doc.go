@@ -1,4 +1,7 @@
 // +k8s:json-gen=package
 package test
 
-type T bool
+//+k8s:json-gen=false
+type Tstd bool
+
+type Ttest Tstd

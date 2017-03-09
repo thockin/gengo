@@ -19,7 +19,7 @@ func Test_Roundtrip(t *testing.T) {
 		if err != nil {
 			t.Errorf("failed to marshal: %v", err)
 		}
-		jbTest, err := Marshal_ptr_string_Ttest(beforeTest)
+		jbTest, err := Marshal_ptr_int32_Ttest(beforeTest)
 		if err != nil {
 			t.Errorf("failed to marshal: %v", err)
 		}
@@ -33,7 +33,7 @@ func Test_Roundtrip(t *testing.T) {
 			t.Errorf("failed to unmarshal: %v", err)
 		}
 		var afterTest Ttest
-		err = Unmarshal_ptr_string_Ttest(jbTest, &afterTest)
+		err = Unmarshal_ptr_int32_Ttest(jbTest, &afterTest)
 		if err != nil {
 			t.Errorf("failed to unmarshal: %v", err)
 		}
