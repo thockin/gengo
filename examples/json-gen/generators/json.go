@@ -207,6 +207,7 @@ type jsonGenerator struct {
 	boundingDirs   []string
 	emitAllTypes   bool
 	imports        namer.ImportTracker
+	typesToEmit    map[string]*types.Type
 	builtinsNeeded map[string]*types.Type
 }
 
@@ -219,6 +220,7 @@ func newGenerator(sanitizedName string, targetPackage string, boundingDirs []str
 		boundingDirs:   boundingDirs,
 		emitAllTypes:   emitAllTypes,
 		imports:        generator.NewImportTracker(),
+		typesToEmit:    map[string]*types.Type{},
 		builtinsNeeded: map[string]*types.Type{},
 	}
 }
@@ -386,6 +388,7 @@ func (g *jsonGenerator) needsGeneration(t *types.Type) bool {
 		glog.V(5).Infof("not generating for type %v because type did not opt in", t)
 		return false
 	}
+	g.typesToEmit[t.String()] = t
 	return true
 }
 
@@ -548,7 +551,7 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 		//FIXME: doesn't handle recursive types.
 		glog.V(4).Infof("descending into field %v.%s", t, field.FieldName)
 		result += `
-			// ` + field.FieldName + `
+			// ` + field.FieldName + ` ` + field.Type.String() + `
 			{
 			    obj := &obj.` + field.FieldName + `
 				_ = obj //FIXME: remove when other Kinds are done
@@ -584,8 +587,20 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 				`
 		}
 
-		result += `
+		if g.targetPackage == field.Type.Name.Package && g.typesToEmit[field.Type.String()] != nil {
+			// same package, take a shortcut
+			result += `
+				val, err := ast_` + formatName(c, "public", field.Type) + `(obj)
+				`
+		} else {
+			//FIXME: distinguish between inlining and calling MarshalJSON
+			result += `
 				val, err := func() (libjson.Value, error) {` + g.emitBodyFor(field.Type, c) + `}()
+				`
+		}
+
+		//FIXME: the empty test fails for decode?
+		result += `
 				if err != nil {
 					return nil, err
 				}

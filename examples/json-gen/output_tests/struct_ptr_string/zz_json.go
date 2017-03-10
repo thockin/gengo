@@ -25,11 +25,11 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_struct_ptr_string_T(obj *T) (libjson.Value, error) {
+func ast_struct_ptr_string_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
-	// F
+	// F *string
 	{
 		obj := &obj.F
 		_ = obj //FIXME: remove when other Kinds are done
@@ -49,6 +49,7 @@ func ast_struct_ptr_string_T(obj *T) (libjson.Value, error) {
 			}
 			return libjson.NewOptional(jv, *obj != nil, func() { *obj = p }, func() { *obj = nil }), nil
 		}()
+
 		if err != nil {
 			return nil, err
 		}
@@ -71,8 +72,8 @@ func ast_struct_ptr_string_T(obj *T) (libjson.Value, error) {
 
 }
 
-func (obj T) MarshalJSON() ([]byte, error) {
-	val, err := ast_struct_ptr_string_T(&obj)
+func (obj Ttest) MarshalJSON() ([]byte, error) {
+	val, err := ast_struct_ptr_string_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -83,8 +84,8 @@ func (obj T) MarshalJSON() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (obj *T) UnmarshalJSON(data []byte) error {
-	val, err := ast_struct_ptr_string_T(obj)
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
+	val, err := ast_struct_ptr_string_Ttest(obj)
 	if err != nil {
 		return err
 	}

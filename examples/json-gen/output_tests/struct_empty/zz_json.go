@@ -25,7 +25,7 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_struct_empty_T(obj *T) (libjson.Value, error) {
+func ast_struct_empty_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	result := libjson.Object{}
 	_ = obj
@@ -34,8 +34,8 @@ func ast_struct_empty_T(obj *T) (libjson.Value, error) {
 
 }
 
-func (obj T) MarshalJSON() ([]byte, error) {
-	val, err := ast_struct_empty_T(&obj)
+func (obj Ttest) MarshalJSON() ([]byte, error) {
+	val, err := ast_struct_empty_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -46,8 +46,8 @@ func (obj T) MarshalJSON() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (obj *T) UnmarshalJSON(data []byte) error {
-	val, err := ast_struct_empty_T(obj)
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
+	val, err := ast_struct_empty_Ttest(obj)
 	if err != nil {
 		return err
 	}

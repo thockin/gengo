@@ -25,7 +25,7 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
+func ast_struct_struct_Inner(obj *Inner) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -62,8 +62,65 @@ func ast_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
 
 }
 
+func (obj Inner) MarshalJSON() ([]byte, error) {
+	val, err := ast_struct_struct_Inner(&obj)
+	if err != nil {
+		return nil, err
+	}
+	var buf bytes.Buffer
+	if err := val.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+func (obj *Inner) UnmarshalJSON(data []byte) error {
+	val, err := ast_struct_struct_Inner(obj)
+	if err != nil {
+		return err
+	}
+	return val.Parse(data)
+}
+
+func ast_struct_struct_Ttest(obj *Ttest) (libjson.Value, error) {
+
+	result := libjson.Object{}
+
+	// F k8s.io/gengo/examples/json-gen/./output_tests/struct_struct.Inner
+	{
+		obj := &obj.F
+		_ = obj //FIXME: remove when other Kinds are done
+
+		empty := func(libjson.Value) bool { return false }
+
+		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
+
+		val, err := ast_struct_struct_Inner(obj)
+
+		if err != nil {
+			return nil, err
+		}
+		if !empty(val) {
+			fv, err := finalize(val)
+			if err != nil {
+				return nil, err
+			}
+			p := new(string)
+			*p = "F"
+			nv := libjson.NamedValue{
+				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+				Value: fv,
+			}
+			result = append(result, nv)
+		}
+	}
+
+	return result, nil
+
+}
+
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_struct_string_Ttest(&obj)
+	val, err := ast_struct_struct_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +132,7 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_struct_string_Ttest(obj)
+	val, err := ast_struct_struct_Ttest(obj)
 	if err != nil {
 		return err
 	}
