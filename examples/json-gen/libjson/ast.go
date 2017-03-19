@@ -16,32 +16,30 @@ type Value interface {
 	Empty() bool
 }
 
-type Optional struct {
-	inner Value
-	isSet bool
-	set   func()
-	clear func()
+type Nullable struct {
+	inner   Value
+	isNull  bool
+	setNull func(bool)
 }
 
-func NewOptional(inner Value, isSet bool, set func(), clear func()) *Optional {
-	return &Optional{
-		inner: inner,
-		isSet: isSet,
-		set:   set,
-		clear: clear,
+func NewNullable(inner Value, isNull bool, setNull func(bool)) *Nullable {
+	return &Nullable{
+		inner:   inner,
+		isNull:  isNull,
+		setNull: setNull,
 	}
 }
 
 var nullBytes = []byte("null")
 
-func (value *Optional) Render(buf *bytes.Buffer) error {
-	if !value.isSet {
+func (value *Nullable) Render(buf *bytes.Buffer) error {
+	if value.isNull {
 		return write(buf, nullBytes)
 	}
 	return value.inner.Render(buf)
 }
 
-func (value *Optional) Parse(data []byte) error {
+func (value *Nullable) Parse(data []byte) error {
 	scan := NewByteScanner(data)
 	if err := value.ParseStream(scan); err != nil {
 		return err
@@ -52,7 +50,7 @@ func (value *Optional) Parse(data []byte) error {
 	return nil
 }
 
-func (value *Optional) ParseStream(scan *ByteScanner) error {
+func (value *Nullable) ParseStream(scan *ByteScanner) error {
 	if len(scan.Data()) >= len(nullBytes) {
 		mightBe := true
 		for _, b := range nullBytes {
@@ -64,21 +62,21 @@ func (value *Optional) ParseStream(scan *ByteScanner) error {
 		}
 		if mightBe {
 			if len(scan.Data()) == 0 || isValueDelim(scan.Peek()) {
-				value.clear()
-				value.isSet = false
+				value.setNull(true)
+				value.isNull = true
 				scan.Save()
 				return nil
 			}
 		}
 	}
-	value.set()
-	value.isSet = true
+	value.setNull(false)
+	value.isNull = false
 	scan.Reset()
 	return value.inner.ParseStream(scan)
 }
 
-func (value *Optional) Empty() bool {
-	return value.isSet
+func (value *Nullable) Empty() bool {
+	return value.isNull
 }
 
 type String struct {
@@ -94,7 +92,6 @@ func NewString(get func() string, set func(s string)) String {
 }
 
 func (value String) Render(buf *bytes.Buffer) error {
-	//FIXME: inline escape() here?
 	return writeString(buf, `"`+escape(value.get())+`"`)
 }
 
@@ -289,19 +286,35 @@ func unescapeHex(scan *ByteScanner, buf *bytes.Buffer) error {
 }
 
 type Number struct {
-	get func() float64
-	set func(f float64)
+	isFloat bool
+	bits    int
+	get     func() float64
+	set     func(f float64)
 }
 
-func NewNumber(get func() float64, set func(f float64)) Number {
+func newNumber(isFloat bool, bits int, get func() float64, set func(f float64)) Number {
 	return Number{
-		get: get,
-		set: set,
+		isFloat: isFloat,
+		bits:    bits,
+		get:     get,
+		set:     set,
 	}
 }
 
+func NewInt(get func() float64, set func(f float64)) Number {
+	return newNumber(false, 64, get, set)
+}
+
+func NewFloat(bits int, get func() float64, set func(f float64)) Number {
+	return newNumber(true, bits, get, set)
+}
+
 func (value Number) Render(buf *bytes.Buffer) error {
-	return writeString(buf, strconv.FormatFloat(value.get(), 'g', 64, 64))
+	prec := 64
+	if value.isFloat {
+		prec = -1
+	}
+	return writeString(buf, strconv.FormatFloat(value.get(), 'g', prec, value.bits))
 }
 
 func (value Number) Parse(data []byte) error {
@@ -320,7 +333,7 @@ func (value Number) ParseStream(scan *ByteScanner) error {
 		scan.Advance()
 	}
 	//FIXME: is this good enough or do I have to hand-code the float parser?
-	if f, err := strconv.ParseFloat(string(scan.Save()), 64); err != nil {
+	if f, err := strconv.ParseFloat(string(scan.Save()), value.bits); err != nil {
 		return err
 	} else {
 		value.set(f)
@@ -546,20 +559,26 @@ func (value Object) Empty() bool {
 }
 
 type Array struct {
-	get   func() ([]Value, error)
-	add   func() Value
-	reset func()
+	*Nullable // Arrays can be null, so we wrap `array` in Nullable.
 }
 
-func NewArray(get func() ([]Value, error), add func() Value, reset func()) Array {
+// This is an array that can't be null.
+type array struct {
+	get func() ([]Value, error)
+	add func() Value
+}
+
+func NewArray(isNull bool, get func() ([]Value, error), add func() Value, setNull func(bool)) Array {
+	arr := array{
+		get: get,
+		add: add,
+	}
 	return Array{
-		get:   get,
-		add:   add,
-		reset: reset,
+		Nullable: NewNullable(arr, isNull, setNull),
 	}
 }
 
-func (value Array) Render(buf *bytes.Buffer) error {
+func (value array) Render(buf *bytes.Buffer) error {
 	ar, err := value.get()
 	if err != nil {
 		return err
@@ -589,7 +608,7 @@ func (value Array) Render(buf *bytes.Buffer) error {
 	return nil
 }
 
-func (value Array) Parse(data []byte) error {
+func (value array) Parse(data []byte) error {
 	scan := NewByteScanner(data)
 	if err := value.ParseStream(scan); err != nil {
 		return err
@@ -600,15 +619,15 @@ func (value Array) Parse(data []byte) error {
 	return nil
 }
 
-func (value Array) ParseStream(scan *ByteScanner) error {
+func (value array) ParseStream(scan *ByteScanner) error {
 	//FIXME: handle []byte
 	if len(scan.Data()) < 2 || scan.Peek() != '[' {
 		//FIXME: use a type, print value...
-		return fmt.Errorf("data is not a JSON array")
+		return fmt.Errorf("data is not a JSON array: %v", string(scan.Data()))
 	}
 	discardCurrent(scan)
 
-	value.reset()
+	// This assumes that the underlying slice is empty, due to being wrapped in Nullable.
 	for len(scan.Data()) > 0 {
 		discardWhitespace(scan)
 		if scan.Peek() == ']' {
@@ -636,7 +655,7 @@ func (value Array) ParseStream(scan *ByteScanner) error {
 	return fmt.Errorf("data is not a JSON array") //FIXME: parse error
 }
 
-func (value Array) Empty() bool {
+func (value array) Empty() bool {
 	ar, _ := value.get()
 	return len(ar) == 0
 }

@@ -25,12 +25,45 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_int32_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_int32((*int32)(obj))
+func ast_slice_int8_Ttest(obj *Ttest) (libjson.Value, error) {
+
+	get := func() ([]libjson.Value, error) {
+		if *obj == nil {
+			return nil, nil
+		}
+		result := []libjson.Value{}
+		for i := range *obj {
+			obj := &(*obj)[i]
+			//FIXME: do any of these ACTUALLY return an error?
+			val, err := func() (libjson.Value, error) { return ast_int8((*int8)(obj)) }()
+			if err != nil {
+				return nil, err
+			}
+			result = append(result, val)
+		}
+		return result, nil
+	}
+	add := func() libjson.Value {
+		var x int8
+		*obj = append(*obj, x)
+		obj := &(*obj)[len(*obj)-1]
+		val, _ := func() (libjson.Value, error) { return ast_int8((*int8)(obj)) }()
+		//FIXME: handle error?
+		return val
+	}
+	setNull := func(b bool) {
+		if b {
+			*obj = nil
+		} else {
+			*obj = []int8{}
+		}
+	}
+	return libjson.NewArray(*obj == nil, get, add, setNull), nil
+
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_int32_Ttest(&obj)
+	val, err := ast_slice_int8_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -42,20 +75,20 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_int32_Ttest(obj)
+	val, err := ast_slice_int8_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return val.Parse(data)
 }
 
-func ast_int32(obj *int32) (libjson.Value, error) {
+func ast_int8(obj *int8) (libjson.Value, error) {
 
 	get := func() float64 {
 		return float64(*obj)
 	}
 	set := func(f float64) {
-		*obj = int32(f)
+		*obj = int8(f)
 	}
 	return libjson.NewInt(get, set), nil
 

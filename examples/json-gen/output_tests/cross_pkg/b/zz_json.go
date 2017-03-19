@@ -25,11 +25,11 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_struct_ptr_string_Ttest(obj *Ttest) (libjson.Value, error) {
+func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
-	// F *string
+	// F k8s.io/gengo/examples/json-gen/output_tests/cross_pkg/a.Struct
 	{
 		obj := &obj.F
 		_ = obj //FIXME: remove when other Kinds are done
@@ -39,22 +39,40 @@ func ast_struct_ptr_string_Ttest(obj *Ttest) (libjson.Value, error) {
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		val, err := func() (libjson.Value, error) {
-			p := *obj
-			if p == nil {
-				p = new(string)
-			}
-			jv, err := ast_string((*string)(p))
-			if err != nil {
-				return nil, err
-			}
-			setNull := func(b bool) {
-				if b {
-					*obj = nil
-				} else {
-					*obj = p
+			result := libjson.Object{}
+
+			// F string
+			{
+				obj := &obj.F
+				_ = obj //FIXME: remove when other Kinds are done
+
+				empty := func(libjson.Value) bool { return false }
+
+				finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
+
+				val, err := func() (libjson.Value, error) { return ast_string((*string)(obj)) }()
+
+				if err != nil {
+					return nil, err
 				}
+				if !empty(val) {
+					fv, err := finalize(val)
+					if err != nil {
+						return nil, err
+					}
+					p := new(string)
+					*p = "F"
+					nv := libjson.NamedValue{
+						Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+						Value: fv,
+					}
+					result = append(result, nv)
+				} else {
+					panic("TIM: F was empty")
+				} //FIXME:
 			}
-			return libjson.NewNullable(jv, *obj == nil, setNull), nil
+
+			return result, nil
 		}()
 
 		if err != nil {
@@ -82,7 +100,7 @@ func ast_struct_ptr_string_Ttest(obj *Ttest) (libjson.Value, error) {
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_struct_ptr_string_Ttest(&obj)
+	val, err := ast_b_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +112,7 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_struct_ptr_string_Ttest(obj)
+	val, err := ast_b_Ttest(obj)
 	if err != nil {
 		return err
 	}

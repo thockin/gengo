@@ -25,12 +25,12 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_int32_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_int32((*int32)(obj))
+func ast_float32_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_float32((*float32)(obj))
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_int32_Ttest(&obj)
+	val, err := ast_float32_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -42,21 +42,21 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_int32_Ttest(obj)
+	val, err := ast_float32_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return val.Parse(data)
 }
 
-func ast_int32(obj *int32) (libjson.Value, error) {
+func ast_float32(obj *float32) (libjson.Value, error) {
 
 	get := func() float64 {
 		return float64(*obj)
 	}
 	set := func(f float64) {
-		*obj = int32(f)
+		*obj = float32(f)
 	}
-	return libjson.NewInt(get, set), nil
+	return libjson.NewFloat(32, get, set), nil
 
 }

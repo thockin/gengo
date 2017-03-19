@@ -55,7 +55,9 @@ func ast_struct_struct_Inner(obj *Inner) (libjson.Value, error) {
 				Value: fv,
 			}
 			result = append(result, nv)
-		}
+		} else {
+			panic("TIM: F was empty")
+		} //FIXME:
 	}
 
 	return result, nil
@@ -112,7 +114,9 @@ func ast_struct_struct_Ttest(obj *Ttest) (libjson.Value, error) {
 				Value: fv,
 			}
 			result = append(result, nv)
-		}
+		} else {
+			panic("TIM: F was empty")
+		} //FIXME:
 	}
 
 	return result, nil

@@ -55,7 +55,9 @@ func ast_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
 				Value: fv,
 			}
 			result = append(result, nv)
-		}
+		} else {
+			panic("TIM: F was empty")
+		} //FIXME:
 	}
 
 	return result, nil

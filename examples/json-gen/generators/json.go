@@ -522,6 +522,11 @@ func (g *jsonGenerator) emitBodyForPointer(t *types.Type, c *generator.Context) 
 		// We will emit common marshalers for builtins later.
 		g.builtinsNeeded[t.Elem.String()] = t.Elem
 	}
+	//FIXME: check that saving p in the func isn't reusing the same p
+	//FIXME_LEFT_OFF_HERE
+	//FIXME: "public name" says Struct_pkg_Type_Field
+	//FIXME: not detecting Struct... as a builtin, nor as a defined type.
+	//FIXME_LEFT_OFF_HERE
 	return `
 		p := *obj
 		if p == nil {
@@ -531,7 +536,14 @@ func (g *jsonGenerator) emitBodyForPointer(t *types.Type, c *generator.Context) 
 		if err != nil {
 			return nil, err
 		}
-		return libjson.NewOptional(jv, *obj != nil, func() { *obj = p }, func() { *obj = nil }), nil
+		setNull := func(b bool) {
+			if b {
+				*obj = nil
+			} else {
+				*obj = p
+			}
+		}
+		return libjson.NewNullable(jv, *obj == nil, setNull), nil
 		`
 }
 
@@ -593,7 +605,11 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 				val, err := ast_` + formatName(c, "public", field.Type) + `(obj)
 				`
 		} else {
-			//FIXME: distinguish between inlining and calling MarshalJSON
+			//FIXME: this will inline everything in a different package.
+			//  a) call json.Unmarshal() instead of AST
+			//  b) just inline it
+			//  c) call Unmarshal iff inside BoundingDirs, assuming it will be codegen; else inline
+			//  d) call Unmarshal iff in g.typesToEmit, known to be codegen; else inline
 			result += `
 				val, err := func() (libjson.Value, error) {` + g.emitBodyFor(field.Type, c) + `}()
 				`
@@ -616,7 +632,7 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 						Value: fv,
 					}
 					result = append(result, nv)
-				}
+				} else { panic("TIM: ` + name + ` was empty") } //FIXME:
 			}
 			`
 	}
@@ -819,10 +835,14 @@ func (g *jsonGenerator) emitBodyForSlice(t *types.Type, c *generator.Context) st
 				//FIXME: handle error?
 				return val
 			}
-			reset := func() {
-				*obj = []` + formatName(c, "raw", t.Elem) + `{}
+			setNull := func(b bool) {
+				if b {
+					*obj = nil
+				} else {
+					*obj = []` + formatName(c, "raw", t.Elem) + `{}
+				}
 			}
-			return libjson.NewArray(get, add, reset), nil
+			return libjson.NewArray(*obj == nil, get, add, setNull), nil
 		`
 	}
 	return result
@@ -941,8 +961,6 @@ func (g *jsonGenerator) emitBodyForBuiltin(t *types.Type, c *generator.Context) 
 	case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
 		fallthrough
 	case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr, types.Byte:
-		fallthrough
-	case types.Float, types.Float64, types.Float32:
 		return `
 			get := func() float64 {
 				return float64(*obj)
@@ -950,7 +968,27 @@ func (g *jsonGenerator) emitBodyForBuiltin(t *types.Type, c *generator.Context) 
 			set := func(f float64) {
 				*obj = ` + formatName(c, "raw", t) + `(f)
 			}
-			return libjson.NewNumber(get, set), nil
+			return libjson.NewInt(get, set), nil
+			`
+	case types.Float64:
+		return `
+			get := func() float64 {
+				return float64(*obj)
+			}
+			set := func(f float64) {
+				*obj = ` + formatName(c, "raw", t) + `(f)
+			}
+			return libjson.NewFloat(64, get, set), nil
+			`
+	case types.Float32:
+		return `
+			get := func() float64 {
+				return float64(*obj)
+			}
+			set := func(f float64) {
+				*obj = ` + formatName(c, "raw", t) + `(f)
+			}
+			return libjson.NewFloat(32, get, set), nil
 			`
 	default:
 		// This is a legit bug in the tool.
