@@ -26,6 +26,30 @@ import (
 )
 
 func ast_slice_struct_empty_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Slice_Struct((*[]struct{})(obj))
+}
+
+func (obj Ttest) MarshalJSON() ([]byte, error) {
+	jv, err := ast_slice_struct_empty_Ttest(&obj)
+	if err != nil {
+		return nil, err
+	}
+	var buf bytes.Buffer
+	if err := jv.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
+	jv, err := ast_slice_struct_empty_Ttest(obj)
+	if err != nil {
+		return err
+	}
+	return jv.Parse(data)
+}
+
+func ast_Slice_Struct(obj *[]struct{}) (libjson.Value, error) {
 
 	get := func() ([]libjson.Value, error) {
 		if *obj == nil {
@@ -35,16 +59,11 @@ func ast_slice_struct_empty_Ttest(obj *Ttest) (libjson.Value, error) {
 		for i := range *obj {
 			obj := &(*obj)[i]
 			//FIXME: do any of these ACTUALLY return an error?
-			val, err := func() (libjson.Value, error) {
-				result := libjson.Object{}
-				_ = obj
-
-				return result, nil
-			}()
+			jv, err := ast_Struct((*struct{})(obj))
 			if err != nil {
 				return nil, err
 			}
-			result = append(result, val)
+			result = append(result, jv)
 		}
 		return result, nil
 	}
@@ -52,14 +71,9 @@ func ast_slice_struct_empty_Ttest(obj *Ttest) (libjson.Value, error) {
 		var x struct{}
 		*obj = append(*obj, x)
 		obj := &(*obj)[len(*obj)-1]
-		val, _ := func() (libjson.Value, error) {
-			result := libjson.Object{}
-			_ = obj
-
-			return result, nil
-		}()
+		jv, _ := ast_Struct((*struct{})(obj))
 		//FIXME: handle error?
-		return val
+		return jv
 	}
 	setNull := func(b bool) {
 		if b {
@@ -72,22 +86,11 @@ func ast_slice_struct_empty_Ttest(obj *Ttest) (libjson.Value, error) {
 
 }
 
-func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_slice_struct_empty_Ttest(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
+func ast_Struct(obj *struct{}) (libjson.Value, error) {
 
-func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_slice_struct_empty_Ttest(obj)
-	if err != nil {
-		return err
-	}
-	return val.Parse(data)
+	result := libjson.Object{}
+	_ = obj
+
+	return result, nil
+
 }

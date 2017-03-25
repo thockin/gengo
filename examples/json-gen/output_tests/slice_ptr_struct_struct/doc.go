@@ -6,8 +6,7 @@ type Inner struct {
 }
 
 //+k8s:json-gen=false
-type Tstd X
-type X struct { //FIXME: remove intermediate T here
+type Tstd []*struct {
 	F Inner
 }
 

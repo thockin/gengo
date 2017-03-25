@@ -38,30 +38,12 @@ func ast_struct_ptr_string_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		val, err := func() (libjson.Value, error) {
-			p := *obj
-			if p == nil {
-				p = new(string)
-			}
-			jv, err := ast_string((*string)(p))
-			if err != nil {
-				return nil, err
-			}
-			setNull := func(b bool) {
-				if b {
-					*obj = nil
-				} else {
-					*obj = p
-				}
-			}
-			return libjson.NewNullable(jv, *obj == nil, setNull), nil
-		}()
-
+		jv, err := ast_Pointer_string((**string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(val) {
-			fv, err := finalize(val)
+		if !empty(jv) {
+			fv, err := finalize(jv)
 			if err != nil {
 				return nil, err
 			}
@@ -82,23 +64,47 @@ func ast_struct_ptr_string_Ttest(obj *Ttest) (libjson.Value, error) {
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_struct_ptr_string_Ttest(&obj)
+	jv, err := ast_struct_ptr_string_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
 	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
+	if err := jv.Render(&buf); err != nil {
 		return nil, err
 	}
 	return buf.Bytes(), nil
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_struct_ptr_string_Ttest(obj)
+	jv, err := ast_struct_ptr_string_Ttest(obj)
 	if err != nil {
 		return err
 	}
-	return val.Parse(data)
+	return jv.Parse(data)
+}
+
+func ast_Pointer_string(obj **string) (libjson.Value, error) {
+
+	{
+		p := obj
+		obj := *obj
+		if obj == nil {
+			obj = new(string)
+		}
+		jv, err := ast_string((*string)(obj))
+		if err != nil {
+			return nil, err
+		}
+		setNull := func(b bool) {
+			if b {
+				*p = nil
+			} else {
+				*p = obj
+			}
+		}
+		return libjson.NewNullable(jv, *p == nil, setNull), nil
+	}
+
 }
 
 func ast_string(obj *string) (libjson.Value, error) {

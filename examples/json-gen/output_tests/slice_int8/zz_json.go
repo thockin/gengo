@@ -26,6 +26,30 @@ import (
 )
 
 func ast_slice_int8_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Slice_int8((*[]int8)(obj))
+}
+
+func (obj Ttest) MarshalJSON() ([]byte, error) {
+	jv, err := ast_slice_int8_Ttest(&obj)
+	if err != nil {
+		return nil, err
+	}
+	var buf bytes.Buffer
+	if err := jv.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
+	jv, err := ast_slice_int8_Ttest(obj)
+	if err != nil {
+		return err
+	}
+	return jv.Parse(data)
+}
+
+func ast_Slice_int8(obj *[]int8) (libjson.Value, error) {
 
 	get := func() ([]libjson.Value, error) {
 		if *obj == nil {
@@ -35,11 +59,11 @@ func ast_slice_int8_Ttest(obj *Ttest) (libjson.Value, error) {
 		for i := range *obj {
 			obj := &(*obj)[i]
 			//FIXME: do any of these ACTUALLY return an error?
-			val, err := func() (libjson.Value, error) { return ast_int8((*int8)(obj)) }()
+			jv, err := ast_int8((*int8)(obj))
 			if err != nil {
 				return nil, err
 			}
-			result = append(result, val)
+			result = append(result, jv)
 		}
 		return result, nil
 	}
@@ -47,9 +71,9 @@ func ast_slice_int8_Ttest(obj *Ttest) (libjson.Value, error) {
 		var x int8
 		*obj = append(*obj, x)
 		obj := &(*obj)[len(*obj)-1]
-		val, _ := func() (libjson.Value, error) { return ast_int8((*int8)(obj)) }()
+		jv, _ := ast_int8((*int8)(obj))
 		//FIXME: handle error?
-		return val
+		return jv
 	}
 	setNull := func(b bool) {
 		if b {
@@ -60,26 +84,6 @@ func ast_slice_int8_Ttest(obj *Ttest) (libjson.Value, error) {
 	}
 	return libjson.NewArray(*obj == nil, get, add, setNull), nil
 
-}
-
-func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_slice_int8_Ttest(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
-func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_slice_int8_Ttest(obj)
-	if err != nil {
-		return err
-	}
-	return val.Parse(data)
 }
 
 func ast_int8(obj *int8) (libjson.Value, error) {

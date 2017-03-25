@@ -23,6 +23,7 @@ package test
 import (
 	bytes "bytes"
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
+	a "k8s.io/gengo/examples/json-gen/output_tests/cross_pkg/a"
 )
 
 func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
@@ -38,48 +39,12 @@ func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		val, err := func() (libjson.Value, error) {
-			result := libjson.Object{}
-
-			// F string
-			{
-				obj := &obj.F
-				_ = obj //FIXME: remove when other Kinds are done
-
-				empty := func(libjson.Value) bool { return false }
-
-				finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
-
-				val, err := func() (libjson.Value, error) { return ast_string((*string)(obj)) }()
-
-				if err != nil {
-					return nil, err
-				}
-				if !empty(val) {
-					fv, err := finalize(val)
-					if err != nil {
-						return nil, err
-					}
-					p := new(string)
-					*p = "F"
-					nv := libjson.NamedValue{
-						Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-						Value: fv,
-					}
-					result = append(result, nv)
-				} else {
-					panic("TIM: F was empty")
-				} //FIXME:
-			}
-
-			return result, nil
-		}()
-
+		jv, err := ast_a_Struct((*a.Struct)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(val) {
-			fv, err := finalize(val)
+		if !empty(jv) {
+			fv, err := finalize(jv)
 			if err != nil {
 				return nil, err
 			}
@@ -100,23 +65,61 @@ func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_b_Ttest(&obj)
+	jv, err := ast_b_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
 	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
+	if err := jv.Render(&buf); err != nil {
 		return nil, err
 	}
 	return buf.Bytes(), nil
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_b_Ttest(obj)
+	jv, err := ast_b_Ttest(obj)
 	if err != nil {
 		return err
 	}
-	return val.Parse(data)
+	return jv.Parse(data)
+}
+
+func ast_a_Struct(obj *a.Struct) (libjson.Value, error) {
+
+	result := libjson.Object{}
+
+	// F string
+	{
+		obj := &obj.F
+		_ = obj //FIXME: remove when other Kinds are done
+
+		empty := func(libjson.Value) bool { return false }
+
+		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
+
+		jv, err := ast_string((*string)(obj))
+		if err != nil {
+			return nil, err
+		}
+		if !empty(jv) {
+			fv, err := finalize(jv)
+			if err != nil {
+				return nil, err
+			}
+			p := new(string)
+			*p = "F"
+			nv := libjson.NamedValue{
+				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+				Value: fv,
+			}
+			result = append(result, nv)
+		} else {
+			panic("TIM: F was empty")
+		} //FIXME:
+	}
+
+	return result, nil
+
 }
 
 func ast_string(obj *string) (libjson.Value, error) {

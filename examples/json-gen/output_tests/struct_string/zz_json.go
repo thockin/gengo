@@ -38,13 +38,12 @@ func ast_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		val, err := func() (libjson.Value, error) { return ast_string((*string)(obj)) }()
-
+		jv, err := ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(val) {
-			fv, err := finalize(val)
+		if !empty(jv) {
+			fv, err := finalize(jv)
 			if err != nil {
 				return nil, err
 			}
@@ -65,23 +64,23 @@ func ast_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_struct_string_Ttest(&obj)
+	jv, err := ast_struct_string_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
 	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
+	if err := jv.Render(&buf); err != nil {
 		return nil, err
 	}
 	return buf.Bytes(), nil
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_struct_string_Ttest(obj)
+	jv, err := ast_struct_string_Ttest(obj)
 	if err != nil {
 		return err
 	}
-	return val.Parse(data)
+	return jv.Parse(data)
 }
 
 func ast_string(obj *string) (libjson.Value, error) {

@@ -25,7 +25,7 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_struct_struct_Inner(obj *Inner) (libjson.Value, error) {
+func ast_slice_ptr_struct_struct_Inner(obj *Inner) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -64,7 +64,7 @@ func ast_struct_struct_Inner(obj *Inner) (libjson.Value, error) {
 }
 
 func (obj Inner) MarshalJSON() ([]byte, error) {
-	jv, err := ast_struct_struct_Inner(&obj)
+	jv, err := ast_slice_ptr_struct_struct_Inner(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -76,53 +76,19 @@ func (obj Inner) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Inner) UnmarshalJSON(data []byte) error {
-	jv, err := ast_struct_struct_Inner(obj)
+	jv, err := ast_slice_ptr_struct_struct_Inner(obj)
 	if err != nil {
 		return err
 	}
 	return jv.Parse(data)
 }
 
-func ast_struct_struct_Ttest(obj *Ttest) (libjson.Value, error) {
-
-	result := libjson.Object{}
-
-	// F k8s.io/gengo/examples/json-gen/./output_tests/struct_struct.Inner
-	{
-		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
-
-		empty := func(libjson.Value) bool { return false }
-
-		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
-
-		jv, err := ast_struct_struct_Inner((*Inner)(obj))
-		if err != nil {
-			return nil, err
-		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "F"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: F was empty")
-		} //FIXME:
-	}
-
-	return result, nil
-
+func ast_slice_ptr_struct_struct_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Slice_Pointer_Struct_slice_ptr_struct_struct_Inner((*[]*struct{ F Inner })(obj))
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	jv, err := ast_struct_struct_Ttest(&obj)
+	jv, err := ast_slice_ptr_struct_struct_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -134,18 +100,83 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	jv, err := ast_struct_struct_Ttest(obj)
+	jv, err := ast_slice_ptr_struct_struct_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return jv.Parse(data)
 }
 
-func ast_struct_struct_X(obj *X) (libjson.Value, error) {
+func ast_string(obj *string) (libjson.Value, error) {
+	return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil
+}
+
+func ast_Slice_Pointer_Struct_slice_ptr_struct_struct_Inner(obj *[]*struct{ F Inner }) (libjson.Value, error) {
+
+	get := func() ([]libjson.Value, error) {
+		if *obj == nil {
+			return nil, nil
+		}
+		result := []libjson.Value{}
+		for i := range *obj {
+			obj := &(*obj)[i]
+			//FIXME: do any of these ACTUALLY return an error?
+			jv, err := ast_Pointer_Struct_slice_ptr_struct_struct_Inner((**struct{ F Inner })(obj))
+			if err != nil {
+				return nil, err
+			}
+			result = append(result, jv)
+		}
+		return result, nil
+	}
+	add := func() libjson.Value {
+		var x *struct{ F Inner }
+		*obj = append(*obj, x)
+		obj := &(*obj)[len(*obj)-1]
+		jv, _ := ast_Pointer_Struct_slice_ptr_struct_struct_Inner((**struct{ F Inner })(obj))
+		//FIXME: handle error?
+		return jv
+	}
+	setNull := func(b bool) {
+		if b {
+			*obj = nil
+		} else {
+			*obj = []*struct{ F Inner }{}
+		}
+	}
+	return libjson.NewArray(*obj == nil, get, add, setNull), nil
+
+}
+
+func ast_Pointer_Struct_slice_ptr_struct_struct_Inner(obj **struct{ F Inner }) (libjson.Value, error) {
+
+	{
+		p := obj
+		obj := *obj
+		if obj == nil {
+			obj = new(struct{ F Inner })
+		}
+		jv, err := ast_Struct_slice_ptr_struct_struct_Inner((*struct{ F Inner })(obj))
+		if err != nil {
+			return nil, err
+		}
+		setNull := func(b bool) {
+			if b {
+				*p = nil
+			} else {
+				*p = obj
+			}
+		}
+		return libjson.NewNullable(jv, *p == nil, setNull), nil
+	}
+
+}
+
+func ast_Struct_slice_ptr_struct_struct_Inner(obj *struct{ F Inner }) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
-	// F k8s.io/gengo/examples/json-gen/./output_tests/struct_struct.Inner
+	// F k8s.io/gengo/examples/json-gen/./output_tests/slice_ptr_struct_struct.Inner
 	{
 		obj := &obj.F
 		_ = obj //FIXME: remove when other Kinds are done
@@ -154,7 +185,7 @@ func ast_struct_struct_X(obj *X) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_struct_struct_Inner((*Inner)(obj))
+		jv, err := ast_slice_ptr_struct_struct_Inner((*Inner)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -177,28 +208,4 @@ func ast_struct_struct_X(obj *X) (libjson.Value, error) {
 
 	return result, nil
 
-}
-
-func (obj X) MarshalJSON() ([]byte, error) {
-	jv, err := ast_struct_struct_X(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := jv.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
-func (obj *X) UnmarshalJSON(data []byte) error {
-	jv, err := ast_struct_struct_X(obj)
-	if err != nil {
-		return err
-	}
-	return jv.Parse(data)
-}
-
-func ast_string(obj *string) (libjson.Value, error) {
-	return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil
 }

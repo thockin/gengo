@@ -26,6 +26,30 @@ import (
 )
 
 func ast_slice_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Slice_Struct_string((*[]struct{ F string })(obj))
+}
+
+func (obj Ttest) MarshalJSON() ([]byte, error) {
+	jv, err := ast_slice_struct_string_Ttest(&obj)
+	if err != nil {
+		return nil, err
+	}
+	var buf bytes.Buffer
+	if err := jv.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
+	jv, err := ast_slice_struct_string_Ttest(obj)
+	if err != nil {
+		return err
+	}
+	return jv.Parse(data)
+}
+
+func ast_Slice_Struct_string(obj *[]struct{ F string }) (libjson.Value, error) {
 
 	get := func() ([]libjson.Value, error) {
 		if *obj == nil {
@@ -35,46 +59,11 @@ func ast_slice_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
 		for i := range *obj {
 			obj := &(*obj)[i]
 			//FIXME: do any of these ACTUALLY return an error?
-			val, err := func() (libjson.Value, error) {
-				result := libjson.Object{}
-
-				// F string
-				{
-					obj := &obj.F
-					_ = obj //FIXME: remove when other Kinds are done
-
-					empty := func(libjson.Value) bool { return false }
-
-					finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
-
-					val, err := func() (libjson.Value, error) { return ast_string((*string)(obj)) }()
-
-					if err != nil {
-						return nil, err
-					}
-					if !empty(val) {
-						fv, err := finalize(val)
-						if err != nil {
-							return nil, err
-						}
-						p := new(string)
-						*p = "F"
-						nv := libjson.NamedValue{
-							Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-							Value: fv,
-						}
-						result = append(result, nv)
-					} else {
-						panic("TIM: F was empty")
-					} //FIXME:
-				}
-
-				return result, nil
-			}()
+			jv, err := ast_Struct_string((*struct{ F string })(obj))
 			if err != nil {
 				return nil, err
 			}
-			result = append(result, val)
+			result = append(result, jv)
 		}
 		return result, nil
 	}
@@ -82,44 +71,9 @@ func ast_slice_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
 		var x struct{ F string }
 		*obj = append(*obj, x)
 		obj := &(*obj)[len(*obj)-1]
-		val, _ := func() (libjson.Value, error) {
-			result := libjson.Object{}
-
-			// F string
-			{
-				obj := &obj.F
-				_ = obj //FIXME: remove when other Kinds are done
-
-				empty := func(libjson.Value) bool { return false }
-
-				finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
-
-				val, err := func() (libjson.Value, error) { return ast_string((*string)(obj)) }()
-
-				if err != nil {
-					return nil, err
-				}
-				if !empty(val) {
-					fv, err := finalize(val)
-					if err != nil {
-						return nil, err
-					}
-					p := new(string)
-					*p = "F"
-					nv := libjson.NamedValue{
-						Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-						Value: fv,
-					}
-					result = append(result, nv)
-				} else {
-					panic("TIM: F was empty")
-				} //FIXME:
-			}
-
-			return result, nil
-		}()
+		jv, _ := ast_Struct_string((*struct{ F string })(obj))
 		//FIXME: handle error?
-		return val
+		return jv
 	}
 	setNull := func(b bool) {
 		if b {
@@ -132,24 +86,42 @@ func ast_slice_struct_string_Ttest(obj *Ttest) (libjson.Value, error) {
 
 }
 
-func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_slice_struct_string_Ttest(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
+func ast_Struct_string(obj *struct{ F string }) (libjson.Value, error) {
 
-func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_slice_struct_string_Ttest(obj)
-	if err != nil {
-		return err
+	result := libjson.Object{}
+
+	// F string
+	{
+		obj := &obj.F
+		_ = obj //FIXME: remove when other Kinds are done
+
+		empty := func(libjson.Value) bool { return false }
+
+		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
+
+		jv, err := ast_string((*string)(obj))
+		if err != nil {
+			return nil, err
+		}
+		if !empty(jv) {
+			fv, err := finalize(jv)
+			if err != nil {
+				return nil, err
+			}
+			p := new(string)
+			*p = "F"
+			nv := libjson.NamedValue{
+				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+				Value: fv,
+			}
+			result = append(result, nv)
+		} else {
+			panic("TIM: F was empty")
+		} //FIXME:
 	}
-	return val.Parse(data)
+
+	return result, nil
+
 }
 
 func ast_string(obj *string) (libjson.Value, error) {

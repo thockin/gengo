@@ -38,46 +38,12 @@ func ast_struct_slice_string_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		val, err := func() (libjson.Value, error) {
-			get := func() ([]libjson.Value, error) {
-				if *obj == nil {
-					return nil, nil
-				}
-				result := []libjson.Value{}
-				for i := range *obj {
-					obj := &(*obj)[i]
-					//FIXME: do any of these ACTUALLY return an error?
-					val, err := func() (libjson.Value, error) { return ast_string((*string)(obj)) }()
-					if err != nil {
-						return nil, err
-					}
-					result = append(result, val)
-				}
-				return result, nil
-			}
-			add := func() libjson.Value {
-				var x string
-				*obj = append(*obj, x)
-				obj := &(*obj)[len(*obj)-1]
-				val, _ := func() (libjson.Value, error) { return ast_string((*string)(obj)) }()
-				//FIXME: handle error?
-				return val
-			}
-			setNull := func(b bool) {
-				if b {
-					*obj = nil
-				} else {
-					*obj = []string{}
-				}
-			}
-			return libjson.NewArray(*obj == nil, get, add, setNull), nil
-		}()
-
+		jv, err := ast_Slice_string((*[]string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(val) {
-			fv, err := finalize(val)
+		if !empty(jv) {
+			fv, err := finalize(jv)
 			if err != nil {
 				return nil, err
 			}
@@ -98,23 +64,60 @@ func ast_struct_slice_string_Ttest(obj *Ttest) (libjson.Value, error) {
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_struct_slice_string_Ttest(&obj)
+	jv, err := ast_struct_slice_string_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
 	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
+	if err := jv.Render(&buf); err != nil {
 		return nil, err
 	}
 	return buf.Bytes(), nil
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_struct_slice_string_Ttest(obj)
+	jv, err := ast_struct_slice_string_Ttest(obj)
 	if err != nil {
 		return err
 	}
-	return val.Parse(data)
+	return jv.Parse(data)
+}
+
+func ast_Slice_string(obj *[]string) (libjson.Value, error) {
+
+	get := func() ([]libjson.Value, error) {
+		if *obj == nil {
+			return nil, nil
+		}
+		result := []libjson.Value{}
+		for i := range *obj {
+			obj := &(*obj)[i]
+			//FIXME: do any of these ACTUALLY return an error?
+			jv, err := ast_string((*string)(obj))
+			if err != nil {
+				return nil, err
+			}
+			result = append(result, jv)
+		}
+		return result, nil
+	}
+	add := func() libjson.Value {
+		var x string
+		*obj = append(*obj, x)
+		obj := &(*obj)[len(*obj)-1]
+		jv, _ := ast_string((*string)(obj))
+		//FIXME: handle error?
+		return jv
+	}
+	setNull := func(b bool) {
+		if b {
+			*obj = nil
+		} else {
+			*obj = []string{}
+		}
+	}
+	return libjson.NewArray(*obj == nil, get, add, setNull), nil
+
 }
 
 func ast_string(obj *string) (libjson.Value, error) {

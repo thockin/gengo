@@ -35,21 +35,21 @@ func ast_struct_empty_Ttest(obj *Ttest) (libjson.Value, error) {
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	val, err := ast_struct_empty_Ttest(&obj)
+	jv, err := ast_struct_empty_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
 	var buf bytes.Buffer
-	if err := val.Render(&buf); err != nil {
+	if err := jv.Render(&buf); err != nil {
 		return nil, err
 	}
 	return buf.Bytes(), nil
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	val, err := ast_struct_empty_Ttest(obj)
+	jv, err := ast_struct_empty_Ttest(obj)
 	if err != nil {
 		return err
 	}
-	return val.Parse(data)
+	return jv.Parse(data)
 }
