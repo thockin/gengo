@@ -93,17 +93,11 @@ func ast_Pointer_Struct_float32_float32_float32(obj **struct {
 	F3 float32
 }) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(struct {
-				F1 float32
-				F2 float32
-				F3 float32
-			})
-		}
-		jv, err := ast_Struct_float32_float32_float32((*struct {
+		jv, err = ast_Struct_float32_float32_float32((*struct {
 			F1 float32
 			F2 float32
 			F3 float32
@@ -111,15 +105,25 @@ func ast_Pointer_Struct_float32_float32_float32(obj **struct {
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(struct {
+			F1 float32
+			F2 float32
+			F3 float32
+		})
+		obj := *obj
+		return ast_Struct_float32_float32_float32((*struct {
+			F1 float32
+			F2 float32
+			F3 float32
+		})(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 

@@ -1,6 +1,7 @@
 package test
 
 import (
+	"bytes"
 	"encoding/json"
 	"testing"
 
@@ -9,7 +10,7 @@ import (
 )
 
 func Test_Roundtrip(t *testing.T) {
-	fz := fuzz.New()
+	fz := fuzz.New().MaxDepth(10).NilChance(0.3)
 	for i := 0; i < 1000; i++ {
 		var beforeStd Tstd
 		fz.Fuzz(&beforeStd)
@@ -17,35 +18,53 @@ func Test_Roundtrip(t *testing.T) {
 
 		jbStd, err := json.Marshal(beforeStd)
 		if err != nil {
-			t.Errorf("failed to marshal: %v", err)
+			t.Errorf("failed to marshal Tstd: %v", err)
 		}
 		jbTest, err := json.Marshal(beforeTest)
 		if err != nil {
-			t.Errorf("failed to marshal: %v", err)
+			t.Errorf("failed to marshal Ttest: %v", err)
 		}
 		if string(jbStd) != string(jbTest) {
-			t.Errorf("marshal expected %q, got %q", string(jbStd), string(jbTest))
+			t.Errorf("marshal expected:\n    %s\ngot:\n    %s\nobj:\n    %s",
+				indent(jbStd, "    "), indent(jbTest, "    "), dump(beforeTest))
 		}
 
 		var afterStd Ttest
 		err = json.Unmarshal(jbTest, &afterStd)
 		if err != nil {
-			t.Errorf("failed to unmarshal: %v", err)
+			t.Errorf("failed to unmarshal to Tstd: %v", err)
 		}
 		var afterTest Ttest
 		err = json.Unmarshal(jbTest, &afterTest)
 		if err != nil {
-			t.Errorf("failed to unmarshal: %v", err)
+			t.Errorf("failed to unmarshal to Ttest: %v", err)
 		}
-		if dump(afterStd) != dump(afterTest) {
-			t.Errorf("expected %v, got %v via %q", dump(afterStd), dump(afterTest), string(jbTest))
+		if fingerprint(afterStd) != fingerprint(afterTest) {
+			t.Errorf("unmarshal expected:\n    %s\ngot:\n    %s\nvia:\n    %s",
+				dump(afterStd), dump(afterTest), indent(jbTest, "    "))
 		}
-		if dump(beforeTest) != dump(afterTest) {
-			t.Errorf("expected %v, got %v via %q", dump(beforeTest), dump(afterTest), string(jbTest))
+		if fingerprint(beforeTest) != fingerprint(afterTest) {
+			t.Errorf("unmarshal expected:\n    %s\ngot:\n    %s\nvia:\n    %s",
+				dump(beforeTest), dump(afterTest), indent(jbTest, "    "))
 		}
 	}
 }
 
-func dump(obj interface{}) string {
+const indentStr = ">  "
+
+func fingerprint(obj interface{}) string {
 	return spew.Sprintf("%#v", obj)
+}
+
+func dump(obj interface{}) string {
+	cfg := spew.ConfigState{
+		Indent: indentStr,
+	}
+	return cfg.Sdump(obj)
+}
+
+func indent(src []byte, prefix string) string {
+	var buf bytes.Buffer
+	json.Indent(&buf, src, prefix, indentStr)
+	return buf.String()
 }

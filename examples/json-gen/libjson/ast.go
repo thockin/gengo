@@ -18,14 +18,12 @@ type Value interface {
 
 type Nullable struct {
 	inner   Value
-	isNull  bool
-	setNull func(bool)
+	setNull func(bool) (Value, error)
 }
 
-func NewNullable(inner Value, isNull bool, setNull func(bool)) *Nullable {
+func NewNullable(inner Value, setNull func(bool) (Value, error)) *Nullable {
 	return &Nullable{
 		inner:   inner,
-		isNull:  isNull,
 		setNull: setNull,
 	}
 }
@@ -33,7 +31,7 @@ func NewNullable(inner Value, isNull bool, setNull func(bool)) *Nullable {
 var nullBytes = []byte("null")
 
 func (value *Nullable) Render(buf *bytes.Buffer) error {
-	if value.isNull {
+	if value.inner == nil {
 		return write(buf, nullBytes)
 	}
 	return value.inner.Render(buf)
@@ -62,21 +60,30 @@ func (value *Nullable) ParseStream(scan *ByteScanner) error {
 		}
 		if mightBe {
 			if len(scan.Data()) == 0 || isValueDelim(scan.Peek()) {
-				value.setNull(true)
-				value.isNull = true
+				if _, err := value.setNull(true); err != nil {
+					return err //FIXME:
+				} else {
+					value.inner = nil
+				}
 				scan.Save()
 				return nil
 			}
 		}
 	}
-	value.setNull(false)
-	value.isNull = false
+	if jv, err := value.setNull(false); err != nil {
+		return err //FIXME:
+	} else {
+		if jv == nil {
+			return fmt.Errorf("Nullable type got nil value")
+		}
+		value.inner = jv
+	}
 	scan.Reset()
 	return value.inner.ParseStream(scan)
 }
 
 func (value *Nullable) Empty() bool {
-	return value.isNull
+	return value.inner == nil
 }
 
 type String struct {
@@ -559,26 +566,18 @@ func (value Object) Empty() bool {
 }
 
 type Array struct {
-	*Nullable // Arrays can be null, so we wrap `array` in Nullable.
-}
-
-// This is an array that can't be null.
-type array struct {
 	get func() ([]Value, error)
 	add func() Value
 }
 
-func NewArray(isNull bool, get func() ([]Value, error), add func() Value, setNull func(bool)) Array {
-	arr := array{
+func NewArray(get func() ([]Value, error), add func() Value) Array {
+	return Array{
 		get: get,
 		add: add,
 	}
-	return Array{
-		Nullable: NewNullable(arr, isNull, setNull),
-	}
 }
 
-func (value array) Render(buf *bytes.Buffer) error {
+func (value Array) Render(buf *bytes.Buffer) error {
 	ar, err := value.get()
 	if err != nil {
 		return err
@@ -608,7 +607,7 @@ func (value array) Render(buf *bytes.Buffer) error {
 	return nil
 }
 
-func (value array) Parse(data []byte) error {
+func (value Array) Parse(data []byte) error {
 	scan := NewByteScanner(data)
 	if err := value.ParseStream(scan); err != nil {
 		return err
@@ -619,7 +618,7 @@ func (value array) Parse(data []byte) error {
 	return nil
 }
 
-func (value array) ParseStream(scan *ByteScanner) error {
+func (value Array) ParseStream(scan *ByteScanner) error {
 	//FIXME: handle []byte
 	if len(scan.Data()) < 2 || scan.Peek() != '[' {
 		//FIXME: use a type, print value...
@@ -627,7 +626,7 @@ func (value array) ParseStream(scan *ByteScanner) error {
 	}
 	discardCurrent(scan)
 
-	// This assumes that the underlying slice is empty, due to being wrapped in Nullable.
+	// This assumes that the underlying slice is empty.
 	for len(scan.Data()) > 0 {
 		discardWhitespace(scan)
 		if scan.Peek() == ']' {
@@ -655,7 +654,7 @@ func (value array) ParseStream(scan *ByteScanner) error {
 	return fmt.Errorf("data is not a JSON array") //FIXME: parse error
 }
 
-func (value array) Empty() bool {
+func (value Array) Empty() bool {
 	ar, _ := value.get()
 	return len(ar) == 0
 }

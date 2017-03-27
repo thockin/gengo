@@ -516,27 +516,27 @@ func (g *jsonGenerator) emitCallFor(t *types.Type, c *generator.Context) string 
 }
 
 func (g *jsonGenerator) emitBodyForPointer(t *types.Type, c *generator.Context) string {
-	//FIXME: check that obj in the func isn't reusing the same ptr
+	//FIXME: check that curried pointers are not reusing the same ptr
 	return `
-		{
-			p := obj
+		var jv libjson.Value
+		var err error
+		if *obj != nil {
 			obj := *obj
-			if obj == nil {
-				obj = new(` + formatName(c, "raw", t.Elem) + `)
-			}
-			jv, err := ` + g.emitCallFor(t.Elem, c) + `
+			jv, err = ` + g.emitCallFor(t.Elem, c) + `
 			if err != nil {
 				return nil, err
 			}
-			setNull := func(b bool) {
-				if b {
-					*p = nil
-				} else {
-					*p = obj
-				}
-			}
-			return libjson.NewNullable(jv, *p == nil, setNull), nil
 		}
+		setNull := func(b bool) (libjson.Value, error) {
+			if b {
+				*obj = nil
+				return nil, nil
+			}
+			*obj = new(` + formatName(c, "raw", t.Elem) + `)
+			obj := *obj
+			return ` + g.emitCallFor(t.Elem, c) + `
+		}
+		return libjson.NewNullable(jv, setNull), nil
 		`
 }
 
@@ -553,7 +553,6 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 	structMeta := collectFields(t, 0, "")
 	for _, name := range structMeta.FieldNames {
 		field := structMeta.Fields[name]
-		//FIXME: doesn't handle recursive types.
 		glog.V(4).Infof("descending into field %v.%s", t, field.FieldName)
 		result += `
 			// ` + field.FieldName + ` ` + field.Type.String() + `
@@ -807,14 +806,19 @@ func (g *jsonGenerator) emitBodyForSlice(t *types.Type, c *generator.Context) st
 				//FIXME: handle error?
 				return jv
 			}
-			setNull := func(b bool) {
+			var jv libjson.Value
+			if *obj != nil {
+				return libjson.NewArray(get, add), nil
+			}
+			setNull := func(b bool) (libjson.Value, error) {
 				if b {
 					*obj = nil
-				} else {
-					*obj = []` + formatName(c, "raw", t.Elem) + `{}
+					return nil, nil
 				}
+				*obj = []` + formatName(c, "raw", t.Elem) + `{}
+				return libjson.NewArray(get, add), nil
 			}
-			return libjson.NewArray(*obj == nil, get, add, setNull), nil
+			return libjson.NewNullable(jv, setNull), nil
 		`
 	}
 	return result

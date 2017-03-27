@@ -25,7 +25,7 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
+func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -89,7 +89,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias
+	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -98,7 +98,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_ByteAlias((*ByteAlias)(obj))
+		jv, err := ast_everything_ByteAlias((*ByteAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -119,7 +119,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias
+	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -128,7 +128,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_ByteAlias((**ByteAlias)(obj))
+		jv, err := ast_Pointer_everything_ByteAlias((**ByteAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -209,7 +209,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias
+	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -218,7 +218,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_BoolAlias((*BoolAlias)(obj))
+		jv, err := ast_everything_BoolAlias((*BoolAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -239,7 +239,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias
+	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -248,7 +248,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_BoolAlias((**BoolAlias)(obj))
+		jv, err := ast_Pointer_everything_BoolAlias((**BoolAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -449,7 +449,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias
+	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -458,7 +458,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_Int32Alias((*Int32Alias)(obj))
+		jv, err := ast_everything_Int32Alias((*Int32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -479,7 +479,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias
+	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -488,7 +488,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_Int32Alias((**Int32Alias)(obj))
+		jv, err := ast_Pointer_everything_Int32Alias((**Int32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -749,7 +749,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias
+	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -758,7 +758,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_Float32Alias((*Float32Alias)(obj))
+		jv, err := ast_everything_Float32Alias((*Float32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -779,7 +779,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias
+	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -788,7 +788,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_Float32Alias((**Float32Alias)(obj))
+		jv, err := ast_Pointer_everything_Float32Alias((**Float32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -929,7 +929,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias
+	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -938,7 +938,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_StringAlias((*StringAlias)(obj))
+		jv, err := ast_everything_StringAlias((*StringAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -959,7 +959,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias
+	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -968,7 +968,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_StringAlias((**StringAlias)(obj))
+		jv, err := ast_Pointer_everything_StringAlias((**StringAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -989,7 +989,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Inner
+	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner
 	{
 		obj := &obj.StructPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -998,7 +998,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_Inner((**Inner)(obj))
+		jv, err := ast_Pointer_everything_Inner((**Inner)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -1058,7 +1058,7 @@ func ast__everything_Ttest(obj *Ttest) (libjson.Value, error) {
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	jv, err := ast__everything_Ttest(&obj)
+	jv, err := ast_everything_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -1070,7 +1070,7 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	jv, err := ast__everything_Ttest(obj)
+	jv, err := ast_everything_Ttest(obj)
 	if err != nil {
 		return err
 	}
@@ -1091,53 +1091,53 @@ func ast_byte(obj *byte) (libjson.Value, error) {
 
 func ast_Pointer_byte(obj **byte) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(byte)
-		}
-		jv, err := ast_byte((*byte)(obj))
+		jv, err = ast_byte((*byte)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(byte)
+		obj := *obj
+		return ast_byte((*byte)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
-func ast__everything_ByteAlias(obj *ByteAlias) (libjson.Value, error) {
+func ast_everything_ByteAlias(obj *ByteAlias) (libjson.Value, error) {
 	return ast_byte((*byte)(obj))
 }
 
-func ast_Pointer__everything_ByteAlias(obj **ByteAlias) (libjson.Value, error) {
+func ast_Pointer_everything_ByteAlias(obj **ByteAlias) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(ByteAlias)
-		}
-		jv, err := ast__everything_ByteAlias((*ByteAlias)(obj))
+		jv, err = ast_everything_ByteAlias((*ByteAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(ByteAlias)
+		obj := *obj
+		return ast_everything_ByteAlias((*ByteAlias)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1147,53 +1147,53 @@ func ast_bool(obj *bool) (libjson.Value, error) {
 
 func ast_Pointer_bool(obj **bool) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(bool)
-		}
-		jv, err := ast_bool((*bool)(obj))
+		jv, err = ast_bool((*bool)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(bool)
+		obj := *obj
+		return ast_bool((*bool)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
-func ast__everything_BoolAlias(obj *BoolAlias) (libjson.Value, error) {
+func ast_everything_BoolAlias(obj *BoolAlias) (libjson.Value, error) {
 	return ast_bool((*bool)(obj))
 }
 
-func ast_Pointer__everything_BoolAlias(obj **BoolAlias) (libjson.Value, error) {
+func ast_Pointer_everything_BoolAlias(obj **BoolAlias) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(BoolAlias)
-		}
-		jv, err := ast__everything_BoolAlias((*BoolAlias)(obj))
+		jv, err = ast_everything_BoolAlias((*BoolAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(BoolAlias)
+		obj := *obj
+		return ast_everything_BoolAlias((*BoolAlias)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1211,25 +1211,25 @@ func ast_int8(obj *int8) (libjson.Value, error) {
 
 func ast_Pointer_int8(obj **int8) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(int8)
-		}
-		jv, err := ast_int8((*int8)(obj))
+		jv, err = ast_int8((*int8)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(int8)
+		obj := *obj
+		return ast_int8((*int8)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1247,25 +1247,25 @@ func ast_int16(obj *int16) (libjson.Value, error) {
 
 func ast_Pointer_int16(obj **int16) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(int16)
-		}
-		jv, err := ast_int16((*int16)(obj))
+		jv, err = ast_int16((*int16)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(int16)
+		obj := *obj
+		return ast_int16((*int16)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1283,53 +1283,53 @@ func ast_int32(obj *int32) (libjson.Value, error) {
 
 func ast_Pointer_int32(obj **int32) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(int32)
-		}
-		jv, err := ast_int32((*int32)(obj))
+		jv, err = ast_int32((*int32)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(int32)
+		obj := *obj
+		return ast_int32((*int32)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
-func ast__everything_Int32Alias(obj *Int32Alias) (libjson.Value, error) {
+func ast_everything_Int32Alias(obj *Int32Alias) (libjson.Value, error) {
 	return ast_int32((*int32)(obj))
 }
 
-func ast_Pointer__everything_Int32Alias(obj **Int32Alias) (libjson.Value, error) {
+func ast_Pointer_everything_Int32Alias(obj **Int32Alias) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(Int32Alias)
-		}
-		jv, err := ast__everything_Int32Alias((*Int32Alias)(obj))
+		jv, err = ast_everything_Int32Alias((*Int32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(Int32Alias)
+		obj := *obj
+		return ast_everything_Int32Alias((*Int32Alias)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1347,25 +1347,25 @@ func ast_uint8(obj *uint8) (libjson.Value, error) {
 
 func ast_Pointer_uint8(obj **uint8) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(uint8)
-		}
-		jv, err := ast_uint8((*uint8)(obj))
+		jv, err = ast_uint8((*uint8)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(uint8)
+		obj := *obj
+		return ast_uint8((*uint8)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1383,25 +1383,25 @@ func ast_uint16(obj *uint16) (libjson.Value, error) {
 
 func ast_Pointer_uint16(obj **uint16) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(uint16)
-		}
-		jv, err := ast_uint16((*uint16)(obj))
+		jv, err = ast_uint16((*uint16)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(uint16)
+		obj := *obj
+		return ast_uint16((*uint16)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1419,25 +1419,25 @@ func ast_uint32(obj *uint32) (libjson.Value, error) {
 
 func ast_Pointer_uint32(obj **uint32) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(uint32)
-		}
-		jv, err := ast_uint32((*uint32)(obj))
+		jv, err = ast_uint32((*uint32)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(uint32)
+		obj := *obj
+		return ast_uint32((*uint32)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1455,53 +1455,53 @@ func ast_float32(obj *float32) (libjson.Value, error) {
 
 func ast_Pointer_float32(obj **float32) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(float32)
-		}
-		jv, err := ast_float32((*float32)(obj))
+		jv, err = ast_float32((*float32)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(float32)
+		obj := *obj
+		return ast_float32((*float32)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
-func ast__everything_Float32Alias(obj *Float32Alias) (libjson.Value, error) {
+func ast_everything_Float32Alias(obj *Float32Alias) (libjson.Value, error) {
 	return ast_float32((*float32)(obj))
 }
 
-func ast_Pointer__everything_Float32Alias(obj **Float32Alias) (libjson.Value, error) {
+func ast_Pointer_everything_Float32Alias(obj **Float32Alias) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(Float32Alias)
-		}
-		jv, err := ast__everything_Float32Alias((*Float32Alias)(obj))
+		jv, err = ast_everything_Float32Alias((*Float32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(Float32Alias)
+		obj := *obj
+		return ast_everything_Float32Alias((*Float32Alias)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1519,25 +1519,25 @@ func ast_float64(obj *float64) (libjson.Value, error) {
 
 func ast_Pointer_float64(obj **float64) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(float64)
-		}
-		jv, err := ast_float64((*float64)(obj))
+		jv, err = ast_float64((*float64)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(float64)
+		obj := *obj
+		return ast_float64((*float64)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1547,77 +1547,77 @@ func ast_string(obj *string) (libjson.Value, error) {
 
 func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(string)
-		}
-		jv, err := ast_string((*string)(obj))
+		jv, err = ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(string)
+		obj := *obj
+		return ast_string((*string)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
-func ast__everything_StringAlias(obj *StringAlias) (libjson.Value, error) {
+func ast_everything_StringAlias(obj *StringAlias) (libjson.Value, error) {
 	return ast_string((*string)(obj))
 }
 
-func ast_Pointer__everything_StringAlias(obj **StringAlias) (libjson.Value, error) {
+func ast_Pointer_everything_StringAlias(obj **StringAlias) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(StringAlias)
-		}
-		jv, err := ast__everything_StringAlias((*StringAlias)(obj))
+		jv, err = ast_everything_StringAlias((*StringAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(StringAlias)
+		obj := *obj
+		return ast_everything_StringAlias((*StringAlias)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
-func ast_Pointer__everything_Inner(obj **Inner) (libjson.Value, error) {
+func ast_Pointer_everything_Inner(obj **Inner) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(Inner)
-		}
-		jv, err := ast__everything_Inner((*Inner)(obj))
+		jv, err = ast_everything_Inner((*Inner)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(Inner)
+		obj := *obj
+		return ast_everything_Inner((*Inner)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
@@ -1665,7 +1665,7 @@ func ast_Struct_Struct_Struct_Struct_string(obj *struct {
 
 }
 
-func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
+func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -1729,7 +1729,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias
+	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -1738,7 +1738,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_ByteAlias((*ByteAlias)(obj))
+		jv, err := ast_everything_ByteAlias((*ByteAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -1759,7 +1759,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias
+	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -1768,7 +1768,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_ByteAlias((**ByteAlias)(obj))
+		jv, err := ast_Pointer_everything_ByteAlias((**ByteAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -1849,7 +1849,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias
+	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -1858,7 +1858,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_BoolAlias((*BoolAlias)(obj))
+		jv, err := ast_everything_BoolAlias((*BoolAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -1879,7 +1879,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias
+	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -1888,7 +1888,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_BoolAlias((**BoolAlias)(obj))
+		jv, err := ast_Pointer_everything_BoolAlias((**BoolAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -2089,7 +2089,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias
+	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2098,7 +2098,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_Int32Alias((*Int32Alias)(obj))
+		jv, err := ast_everything_Int32Alias((*Int32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -2119,7 +2119,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias
+	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2128,7 +2128,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_Int32Alias((**Int32Alias)(obj))
+		jv, err := ast_Pointer_everything_Int32Alias((**Int32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -2389,7 +2389,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias
+	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2398,7 +2398,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_Float32Alias((*Float32Alias)(obj))
+		jv, err := ast_everything_Float32Alias((*Float32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -2419,7 +2419,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias
+	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2428,7 +2428,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_Float32Alias((**Float32Alias)(obj))
+		jv, err := ast_Pointer_everything_Float32Alias((**Float32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -2569,7 +2569,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias
+	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2578,7 +2578,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_StringAlias((*StringAlias)(obj))
+		jv, err := ast_everything_StringAlias((*StringAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -2599,7 +2599,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias
+	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2608,7 +2608,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_StringAlias((**StringAlias)(obj))
+		jv, err := ast_Pointer_everything_StringAlias((**StringAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -2629,7 +2629,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// Struct struct{Byte byte; BytePtr *byte; ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias; ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias; Bool bool; BoolPtr *bool; BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias; BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias; Int8 int8; Int8Ptr *int8; Int16 int16; Int16Ptr *int16; Int32 int32; Int32Ptr *int32; Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias; Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias; Uint8 uint8; Uint8Ptr *uint8; Uint16 uint16; Uint16Ptr *uint16; Uint32 uint32; Uint32Ptr *uint32; Float32 float32; Float32Ptr *float32; Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias; Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias; Float64 float64; Float64Ptr *float64; String string; StringPtr *string; StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias; StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias; Struct struct{}; StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Inner}
+	// Struct struct{Byte byte; BytePtr *byte; ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; Bool bool; BoolPtr *bool; BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; Int8 int8; Int8Ptr *int8; Int16 int16; Int16Ptr *int16; Int32 int32; Int32Ptr *int32; Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Uint8 uint8; Uint8Ptr *uint8; Uint16 uint16; Uint16Ptr *uint16; Uint32 uint32; Uint32Ptr *uint32; Float32 float32; Float32Ptr *float32; Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float64 float64; Float64Ptr *float64; String string; StringPtr *string; StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; Struct struct{}; StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner}
 	{
 		obj := &obj.Struct
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2638,7 +2638,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_ByteAlias_bool_Pointer_bool__everything_BoolAlias_Pointer__everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32__everything_Int32Alias_Pointer__everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32__everything_Float32Alias_Pointer__everything_Float32Alias_float64_Pointer_float64_string_Pointer_string__everything_StringAlias_Pointer__everything_StringAlias_Struct_Pointer__everything_Inner((*struct {
+		jv, err := ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner((*struct {
 			Byte            byte
 			BytePtr         *byte
 			ByteAlias       ByteAlias
@@ -2694,7 +2694,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// StructPtr *struct{Byte byte; BytePtr *byte; ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias; ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias; Bool bool; BoolPtr *bool; BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias; BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias; Int8 int8; Int8Ptr *int8; Int16 int16; Int16Ptr *int16; Int32 int32; Int32Ptr *int32; Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias; Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias; Uint8 uint8; Uint8Ptr *uint8; Uint16 uint16; Uint16Ptr *uint16; Uint32 uint32; Uint32Ptr *uint32; Float32 float32; Float32Ptr *float32; Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias; Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias; Float64 float64; Float64Ptr *float64; String string; StringPtr *string; StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias; StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias; Struct struct{}; StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Inner}
+	// StructPtr *struct{Byte byte; BytePtr *byte; ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; Bool bool; BoolPtr *bool; BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; Int8 int8; Int8Ptr *int8; Int16 int16; Int16Ptr *int16; Int32 int32; Int32Ptr *int32; Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Uint8 uint8; Uint8Ptr *uint8; Uint16 uint16; Uint16Ptr *uint16; Uint32 uint32; Uint32Ptr *uint32; Float32 float32; Float32Ptr *float32; Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float64 float64; Float64Ptr *float64; String string; StringPtr *string; StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; Struct struct{}; StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner}
 	{
 		obj := &obj.StructPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2703,7 +2703,7 @@ func ast__everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_ByteAlias_bool_Pointer_bool__everything_BoolAlias_Pointer__everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32__everything_Int32Alias_Pointer__everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32__everything_Float32Alias_Pointer__everything_Float32Alias_float64_Pointer_float64_string_Pointer_string__everything_StringAlias_Pointer__everything_StringAlias_Struct_Pointer__everything_Inner((**struct {
+		jv, err := ast_Pointer_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner((**struct {
 			Byte            byte
 			BytePtr         *byte
 			ByteAlias       ByteAlias
@@ -2803,7 +2803,7 @@ func ast_Struct_Struct_Struct_string(obj *struct {
 
 }
 
-func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_ByteAlias_bool_Pointer_bool__everything_BoolAlias_Pointer__everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32__everything_Int32Alias_Pointer__everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32__everything_Float32Alias_Pointer__everything_Float32Alias_float64_Pointer_float64_string_Pointer_string__everything_StringAlias_Pointer__everything_StringAlias_Struct_Pointer__everything_Inner(obj *struct {
+func ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner(obj *struct {
 	Byte            byte
 	BytePtr         *byte
 	ByteAlias       ByteAlias
@@ -2902,7 +2902,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias
+	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2911,7 +2911,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_ByteAlias((*ByteAlias)(obj))
+		jv, err := ast_everything_ByteAlias((*ByteAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -2932,7 +2932,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.ByteAlias
+	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -2941,7 +2941,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_ByteAlias((**ByteAlias)(obj))
+		jv, err := ast_Pointer_everything_ByteAlias((**ByteAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3022,7 +3022,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias
+	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3031,7 +3031,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_BoolAlias((*BoolAlias)(obj))
+		jv, err := ast_everything_BoolAlias((*BoolAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3052,7 +3052,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.BoolAlias
+	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3061,7 +3061,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_BoolAlias((**BoolAlias)(obj))
+		jv, err := ast_Pointer_everything_BoolAlias((**BoolAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3262,7 +3262,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias
+	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3271,7 +3271,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_Int32Alias((*Int32Alias)(obj))
+		jv, err := ast_everything_Int32Alias((*Int32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3292,7 +3292,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Int32Alias
+	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3301,7 +3301,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_Int32Alias((**Int32Alias)(obj))
+		jv, err := ast_Pointer_everything_Int32Alias((**Int32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3562,7 +3562,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias
+	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3571,7 +3571,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_Float32Alias((*Float32Alias)(obj))
+		jv, err := ast_everything_Float32Alias((*Float32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3592,7 +3592,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Float32Alias
+	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3601,7 +3601,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_Float32Alias((**Float32Alias)(obj))
+		jv, err := ast_Pointer_everything_Float32Alias((**Float32Alias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3742,7 +3742,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias
+	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3751,7 +3751,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast__everything_StringAlias((*StringAlias)(obj))
+		jv, err := ast_everything_StringAlias((*StringAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3772,7 +3772,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.StringAlias
+	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3781,7 +3781,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_StringAlias((**StringAlias)(obj))
+		jv, err := ast_Pointer_everything_StringAlias((**StringAlias)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3832,7 +3832,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 		} //FIXME:
 	}
 
-	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/_everything.Inner
+	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner
 	{
 		obj := &obj.StructPtr
 		_ = obj //FIXME: remove when other Kinds are done
@@ -3841,7 +3841,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer__everything_Inner((**Inner)(obj))
+		jv, err := ast_Pointer_everything_Inner((**Inner)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3866,7 +3866,7 @@ func ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_Byte
 
 }
 
-func ast_Pointer_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_ByteAlias_bool_Pointer_bool__everything_BoolAlias_Pointer__everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32__everything_Int32Alias_Pointer__everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32__everything_Float32Alias_Pointer__everything_Float32Alias_float64_Pointer_float64_string_Pointer_string__everything_StringAlias_Pointer__everything_StringAlias_Struct_Pointer__everything_Inner(obj **struct {
+func ast_Pointer_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner(obj **struct {
 	Byte            byte
 	BytePtr         *byte
 	ByteAlias       ByteAlias
@@ -3903,48 +3903,11 @@ func ast_Pointer_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everyth
 	StructPtr       *Inner
 }) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(struct {
-				Byte            byte
-				BytePtr         *byte
-				ByteAlias       ByteAlias
-				ByteAliasPtr    *ByteAlias
-				Bool            bool
-				BoolPtr         *bool
-				BoolAlias       BoolAlias
-				BoolAliasPtr    *BoolAlias
-				Int8            int8
-				Int8Ptr         *int8
-				Int16           int16
-				Int16Ptr        *int16
-				Int32           int32
-				Int32Ptr        *int32
-				Int32Alias      Int32Alias
-				Int32AliasPtr   *Int32Alias
-				Uint8           uint8
-				Uint8Ptr        *uint8
-				Uint16          uint16
-				Uint16Ptr       *uint16
-				Uint32          uint32
-				Uint32Ptr       *uint32
-				Float32         float32
-				Float32Ptr      *float32
-				Float32Alias    Float32Alias
-				Float32AliasPtr *Float32Alias
-				Float64         float64
-				Float64Ptr      *float64
-				String          string
-				StringPtr       *string
-				StringAlias     StringAlias
-				StringAliasPtr  *StringAlias
-				Struct          struct{}
-				StructPtr       *Inner
-			})
-		}
-		jv, err := ast_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everything_ByteAlias_bool_Pointer_bool__everything_BoolAlias_Pointer__everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32__everything_Int32Alias_Pointer__everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32__everything_Float32Alias_Pointer__everything_Float32Alias_float64_Pointer_float64_string_Pointer_string__everything_StringAlias_Pointer__everything_StringAlias_Struct_Pointer__everything_Inner((*struct {
+		jv, err = ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner((*struct {
 			Byte            byte
 			BytePtr         *byte
 			ByteAlias       ByteAlias
@@ -3983,15 +3946,87 @@ func ast_Pointer_Struct_byte_Pointer_byte__everything_ByteAlias_Pointer__everyth
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(struct {
+			Byte            byte
+			BytePtr         *byte
+			ByteAlias       ByteAlias
+			ByteAliasPtr    *ByteAlias
+			Bool            bool
+			BoolPtr         *bool
+			BoolAlias       BoolAlias
+			BoolAliasPtr    *BoolAlias
+			Int8            int8
+			Int8Ptr         *int8
+			Int16           int16
+			Int16Ptr        *int16
+			Int32           int32
+			Int32Ptr        *int32
+			Int32Alias      Int32Alias
+			Int32AliasPtr   *Int32Alias
+			Uint8           uint8
+			Uint8Ptr        *uint8
+			Uint16          uint16
+			Uint16Ptr       *uint16
+			Uint32          uint32
+			Uint32Ptr       *uint32
+			Float32         float32
+			Float32Ptr      *float32
+			Float32Alias    Float32Alias
+			Float32AliasPtr *Float32Alias
+			Float64         float64
+			Float64Ptr      *float64
+			String          string
+			StringPtr       *string
+			StringAlias     StringAlias
+			StringAliasPtr  *StringAlias
+			Struct          struct{}
+			StructPtr       *Inner
+		})
+		obj := *obj
+		return ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner((*struct {
+			Byte            byte
+			BytePtr         *byte
+			ByteAlias       ByteAlias
+			ByteAliasPtr    *ByteAlias
+			Bool            bool
+			BoolPtr         *bool
+			BoolAlias       BoolAlias
+			BoolAliasPtr    *BoolAlias
+			Int8            int8
+			Int8Ptr         *int8
+			Int16           int16
+			Int16Ptr        *int16
+			Int32           int32
+			Int32Ptr        *int32
+			Int32Alias      Int32Alias
+			Int32AliasPtr   *Int32Alias
+			Uint8           uint8
+			Uint8Ptr        *uint8
+			Uint16          uint16
+			Uint16Ptr       *uint16
+			Uint32          uint32
+			Uint32Ptr       *uint32
+			Float32         float32
+			Float32Ptr      *float32
+			Float32Alias    Float32Alias
+			Float32AliasPtr *Float32Alias
+			Float64         float64
+			Float64Ptr      *float64
+			String          string
+			StringPtr       *string
+			StringAlias     StringAlias
+			StringAliasPtr  *StringAlias
+			Struct          struct{}
+			StructPtr       *Inner
+		})(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 

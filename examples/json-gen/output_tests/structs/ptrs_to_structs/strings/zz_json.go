@@ -93,17 +93,11 @@ func ast_Pointer_Struct_string_string_string(obj **struct {
 	F3 string
 }) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(struct {
-				F1 string
-				F2 string
-				F3 string
-			})
-		}
-		jv, err := ast_Struct_string_string_string((*struct {
+		jv, err = ast_Struct_string_string_string((*struct {
 			F1 string
 			F2 string
 			F3 string
@@ -111,15 +105,25 @@ func ast_Pointer_Struct_string_string_string(obj **struct {
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(struct {
+			F1 string
+			F2 string
+			F3 string
+		})
+		obj := *obj
+		return ast_Struct_string_string_string((*struct {
+			F1 string
+			F2 string
+			F3 string
+		})(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 

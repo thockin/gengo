@@ -85,25 +85,25 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 
 func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(string)
-		}
-		jv, err := ast_string((*string)(obj))
+		jv, err = ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(string)
+		obj := *obj
+		return ast_string((*string)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 

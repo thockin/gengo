@@ -475,265 +475,265 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 
 func ast_Pointer_byte(obj **byte) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(byte)
-		}
-		jv, err := ast_byte((*byte)(obj))
+		jv, err = ast_byte((*byte)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(byte)
+		obj := *obj
+		return ast_byte((*byte)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_bool(obj **bool) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(bool)
-		}
-		jv, err := ast_bool((*bool)(obj))
+		jv, err = ast_bool((*bool)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(bool)
+		obj := *obj
+		return ast_bool((*bool)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_int8(obj **int8) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(int8)
-		}
-		jv, err := ast_int8((*int8)(obj))
+		jv, err = ast_int8((*int8)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(int8)
+		obj := *obj
+		return ast_int8((*int8)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_int16(obj **int16) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(int16)
-		}
-		jv, err := ast_int16((*int16)(obj))
+		jv, err = ast_int16((*int16)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(int16)
+		obj := *obj
+		return ast_int16((*int16)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_int32(obj **int32) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(int32)
-		}
-		jv, err := ast_int32((*int32)(obj))
+		jv, err = ast_int32((*int32)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(int32)
+		obj := *obj
+		return ast_int32((*int32)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_uint8(obj **uint8) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(uint8)
-		}
-		jv, err := ast_uint8((*uint8)(obj))
+		jv, err = ast_uint8((*uint8)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(uint8)
+		obj := *obj
+		return ast_uint8((*uint8)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_uint16(obj **uint16) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(uint16)
-		}
-		jv, err := ast_uint16((*uint16)(obj))
+		jv, err = ast_uint16((*uint16)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(uint16)
+		obj := *obj
+		return ast_uint16((*uint16)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_uint32(obj **uint32) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(uint32)
-		}
-		jv, err := ast_uint32((*uint32)(obj))
+		jv, err = ast_uint32((*uint32)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(uint32)
+		obj := *obj
+		return ast_uint32((*uint32)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_float32(obj **float32) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(float32)
-		}
-		jv, err := ast_float32((*float32)(obj))
+		jv, err = ast_float32((*float32)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(float32)
+		obj := *obj
+		return ast_float32((*float32)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_float64(obj **float64) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(float64)
-		}
-		jv, err := ast_float64((*float64)(obj))
+		jv, err = ast_float64((*float64)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(float64)
+		obj := *obj
+		return ast_float64((*float64)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
 func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
-	{
-		p := obj
+	var jv libjson.Value
+	var err error
+	if *obj != nil {
 		obj := *obj
-		if obj == nil {
-			obj = new(string)
-		}
-		jv, err := ast_string((*string)(obj))
+		jv, err = ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		setNull := func(b bool) {
-			if b {
-				*p = nil
-			} else {
-				*p = obj
-			}
-		}
-		return libjson.NewNullable(jv, *p == nil, setNull), nil
 	}
+	setNull := func(b bool) (libjson.Value, error) {
+		if b {
+			*obj = nil
+			return nil, nil
+		}
+		*obj = new(string)
+		obj := *obj
+		return ast_string((*string)(obj))
+	}
+	return libjson.NewNullable(jv, setNull), nil
 
 }
 
