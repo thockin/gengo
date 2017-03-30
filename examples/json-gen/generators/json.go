@@ -515,7 +515,6 @@ func (g *jsonGenerator) emitCallFor(t *types.Type, c *generator.Context) string 
 }
 
 func (g *jsonGenerator) emitBodyForPointer(t *types.Type, c *generator.Context) string {
-	//FIXME: check that curried pointers are not reusing the same ptr
 	return `
 		var jv libjson.Value
 		var err error
