@@ -243,7 +243,7 @@ func (ns *NameStrategy) Name(t *types.Type) string {
 	case types.Struct:
 		names := []string{"Struct"}
 		for _, m := range t.Members {
-			names = append(names, ns.removePrefixAndSuffix(ns.Name(m.Type)))
+			names = append(names, m.Name, ns.removePrefixAndSuffix(ns.Name(m.Type)))
 		}
 		name = ns.Join(ns.Prefix, names, ns.Suffix)
 	case types.Chan:
