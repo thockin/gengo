@@ -17,6 +17,12 @@ type Float32Alias float32
 type StringAlias string
 
 //+k8s:json-gen=false
+type SliceStringAlias []string
+
+//+k8s:json-gen=false
+type SlicePtrStringAlias []*string
+
+//+k8s:json-gen=false
 type Inner struct {
 	Byte            byte
 	BytePtr         *byte
@@ -51,77 +57,92 @@ type Inner struct {
 	StringAlias     StringAlias
 	StringAliasPtr  *StringAlias
 	Struct          struct {
-		Byte            byte
-		BytePtr         *byte
-		ByteAlias       ByteAlias
-		ByteAliasPtr    *ByteAlias
-		Bool            bool
-		BoolPtr         *bool
-		BoolAlias       BoolAlias
-		BoolAliasPtr    *BoolAlias
-		Int8            int8
-		Int8Ptr         *int8
-		Int16           int16
-		Int16Ptr        *int16
-		Int32           int32
-		Int32Ptr        *int32
-		Int32Alias      Int32Alias
-		Int32AliasPtr   *Int32Alias
-		Uint8           uint8
-		Uint8Ptr        *uint8
-		Uint16          uint16
-		Uint16Ptr       *uint16
-		Uint32          uint32
-		Uint32Ptr       *uint32
-		Float32         float32
-		Float32Ptr      *float32
-		Float32Alias    Float32Alias
-		Float32AliasPtr *Float32Alias
-		Float64         float64
-		Float64Ptr      *float64
-		String          string
-		StringPtr       *string
-		StringAlias     StringAlias
-		StringAliasPtr  *StringAlias
-		Struct          struct{}
-		StructPtr       *Inner
+		Byte                byte
+		BytePtr             *byte
+		ByteAlias           ByteAlias
+		ByteAliasPtr        *ByteAlias
+		Bool                bool
+		BoolPtr             *bool
+		BoolAlias           BoolAlias
+		BoolAliasPtr        *BoolAlias
+		Int8                int8
+		Int8Ptr             *int8
+		Int16               int16
+		Int16Ptr            *int16
+		Int32               int32
+		Int32Ptr            *int32
+		Int32Alias          Int32Alias
+		Int32AliasPtr       *Int32Alias
+		Uint8               uint8
+		Uint8Ptr            *uint8
+		Uint16              uint16
+		Uint16Ptr           *uint16
+		Uint32              uint32
+		Uint32Ptr           *uint32
+		Float32             float32
+		Float32Ptr          *float32
+		Float32Alias        Float32Alias
+		Float32AliasPtr     *Float32Alias
+		Float64             float64
+		Float64Ptr          *float64
+		String              string
+		StringPtr           *string
+		StringAlias         StringAlias
+		StringAliasPtr      *StringAlias
+		Struct              struct{}
+		StructPtr           *Inner
+		SliceString         []string
+		SliceStringAlias    SliceStringAlias
+		SlicePtrString      []*string
+		SliceStringPtrAlias SlicePtrStringAlias
+		SliceStringPtr      *[]string
 	}
 	StructPtr *struct {
-		Byte            byte
-		BytePtr         *byte
-		ByteAlias       ByteAlias
-		ByteAliasPtr    *ByteAlias
-		Bool            bool
-		BoolPtr         *bool
-		BoolAlias       BoolAlias
-		BoolAliasPtr    *BoolAlias
-		Int8            int8
-		Int8Ptr         *int8
-		Int16           int16
-		Int16Ptr        *int16
-		Int32           int32
-		Int32Ptr        *int32
-		Int32Alias      Int32Alias
-		Int32AliasPtr   *Int32Alias
-		Uint8           uint8
-		Uint8Ptr        *uint8
-		Uint16          uint16
-		Uint16Ptr       *uint16
-		Uint32          uint32
-		Uint32Ptr       *uint32
-		Float32         float32
-		Float32Ptr      *float32
-		Float32Alias    Float32Alias
-		Float32AliasPtr *Float32Alias
-		Float64         float64
-		Float64Ptr      *float64
-		String          string
-		StringPtr       *string
-		StringAlias     StringAlias
-		StringAliasPtr  *StringAlias
-		Struct          struct{}
-		StructPtr       *Inner
+		Byte                byte
+		BytePtr             *byte
+		ByteAlias           ByteAlias
+		ByteAliasPtr        *ByteAlias
+		Bool                bool
+		BoolPtr             *bool
+		BoolAlias           BoolAlias
+		BoolAliasPtr        *BoolAlias
+		Int8                int8
+		Int8Ptr             *int8
+		Int16               int16
+		Int16Ptr            *int16
+		Int32               int32
+		Int32Ptr            *int32
+		Int32Alias          Int32Alias
+		Int32AliasPtr       *Int32Alias
+		Uint8               uint8
+		Uint8Ptr            *uint8
+		Uint16              uint16
+		Uint16Ptr           *uint16
+		Uint32              uint32
+		Uint32Ptr           *uint32
+		Float32             float32
+		Float32Ptr          *float32
+		Float32Alias        Float32Alias
+		Float32AliasPtr     *Float32Alias
+		Float64             float64
+		Float64Ptr          *float64
+		String              string
+		StringPtr           *string
+		StringAlias         StringAlias
+		StringAliasPtr      *StringAlias
+		Struct              struct{}
+		StructPtr           *Inner
+		SliceString         []string
+		SliceStringAlias    SliceStringAlias
+		SlicePtrString      []*string
+		SliceStringPtrAlias SlicePtrStringAlias
+		SliceStringPtr      *[]string
 	}
+	SliceString         []string
+	SliceStringAlias    SliceStringAlias
+	SlicePtrString      []*string
+	SliceStringPtrAlias SlicePtrStringAlias
+	SliceStringPtr      *[]string
 }
 
 //+k8s:json-gen=false
@@ -168,6 +189,11 @@ type Tstd struct {
 			}
 		}
 	}
+	SliceString         []string
+	SliceStringAlias    SliceStringAlias
+	SlicePtrString      []*string
+	SliceStringPtrAlias SlicePtrStringAlias
+	SliceStringPtr      *[]string
 }
 
 type Ttest Tstd
