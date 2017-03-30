@@ -38,7 +38,7 @@ func ast_int32s_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Slice_Struct_int32_int32_int32((*[]struct {
+		jv, err := ast_Slice_Struct_F1_int32_F2_int32_F3_int32((*[]struct {
 			F1 int32
 			F2 int32
 			F3 int32
@@ -87,7 +87,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	return jv.Parse(data)
 }
 
-func ast_Slice_Struct_int32_int32_int32(obj *[]struct {
+func ast_Slice_Struct_F1_int32_F2_int32_F3_int32(obj *[]struct {
 	F1 int32
 	F2 int32
 	F3 int32
@@ -101,7 +101,7 @@ func ast_Slice_Struct_int32_int32_int32(obj *[]struct {
 		for i := range *obj {
 			obj := &(*obj)[i]
 			//FIXME: do any of these ACTUALLY return an error?
-			jv, err := ast_Struct_int32_int32_int32((*struct {
+			jv, err := ast_Struct_F1_int32_F2_int32_F3_int32((*struct {
 				F1 int32
 				F2 int32
 				F3 int32
@@ -121,7 +121,7 @@ func ast_Slice_Struct_int32_int32_int32(obj *[]struct {
 		}
 		*obj = append(*obj, x)
 		obj := &(*obj)[len(*obj)-1]
-		jv, _ := ast_Struct_int32_int32_int32((*struct {
+		jv, _ := ast_Struct_F1_int32_F2_int32_F3_int32((*struct {
 			F1 int32
 			F2 int32
 			F3 int32
@@ -149,7 +149,7 @@ func ast_Slice_Struct_int32_int32_int32(obj *[]struct {
 
 }
 
-func ast_Struct_int32_int32_int32(obj *struct {
+func ast_Struct_F1_int32_F2_int32_F3_int32(obj *struct {
 	F1 int32
 	F2 int32
 	F3 int32

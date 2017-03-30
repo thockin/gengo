@@ -26,7 +26,7 @@ import (
 )
 
 func ast_struct_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Slice_Struct_struct_Elem_struct_Elem((*[]struct {
+	return ast_Slice_Struct_F1_struct_Elem_F2_struct_Elem((*[]struct {
 		F1 Elem
 		F2 Elem
 	})(obj))
@@ -52,7 +52,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	return jv.Parse(data)
 }
 
-func ast_Slice_Struct_struct_Elem_struct_Elem(obj *[]struct {
+func ast_Slice_Struct_F1_struct_Elem_F2_struct_Elem(obj *[]struct {
 	F1 Elem
 	F2 Elem
 }) (libjson.Value, error) {
@@ -65,7 +65,7 @@ func ast_Slice_Struct_struct_Elem_struct_Elem(obj *[]struct {
 		for i := range *obj {
 			obj := &(*obj)[i]
 			//FIXME: do any of these ACTUALLY return an error?
-			jv, err := ast_Struct_struct_Elem_struct_Elem((*struct {
+			jv, err := ast_Struct_F1_struct_Elem_F2_struct_Elem((*struct {
 				F1 Elem
 				F2 Elem
 			})(obj))
@@ -83,7 +83,7 @@ func ast_Slice_Struct_struct_Elem_struct_Elem(obj *[]struct {
 		}
 		*obj = append(*obj, x)
 		obj := &(*obj)[len(*obj)-1]
-		jv, _ := ast_Struct_struct_Elem_struct_Elem((*struct {
+		jv, _ := ast_Struct_F1_struct_Elem_F2_struct_Elem((*struct {
 			F1 Elem
 			F2 Elem
 		})(obj))
@@ -109,7 +109,7 @@ func ast_Slice_Struct_struct_Elem_struct_Elem(obj *[]struct {
 
 }
 
-func ast_Struct_struct_Elem_struct_Elem(obj *struct {
+func ast_Struct_F1_struct_Elem_F2_struct_Elem(obj *struct {
 	F1 Elem
 	F2 Elem
 }) (libjson.Value, error) {
@@ -373,7 +373,7 @@ func ast_struct_Elem(obj *Elem) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_string((*struct{ F string })(obj))
+		jv, err := ast_Struct_F_string((*struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -403,7 +403,7 @@ func ast_struct_Elem(obj *Elem) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer_Struct_string((**struct{ F string })(obj))
+		jv, err := ast_Pointer_Struct_F_string((**struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -528,7 +528,7 @@ func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
 }
 
-func ast_Struct_string(obj *struct{ F string }) (libjson.Value, error) {
+func ast_Struct_F_string(obj *struct{ F string }) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -566,13 +566,13 @@ func ast_Struct_string(obj *struct{ F string }) (libjson.Value, error) {
 
 }
 
-func ast_Pointer_Struct_string(obj **struct{ F string }) (libjson.Value, error) {
+func ast_Pointer_Struct_F_string(obj **struct{ F string }) (libjson.Value, error) {
 
 	var jv libjson.Value
 	var err error
 	if *obj != nil {
 		obj := *obj
-		jv, err = ast_Struct_string((*struct{ F string })(obj))
+		jv, err = ast_Struct_F_string((*struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -584,7 +584,7 @@ func ast_Pointer_Struct_string(obj **struct{ F string }) (libjson.Value, error) 
 		}
 		*obj = new(struct{ F string })
 		obj := *obj
-		return ast_Struct_string((*struct{ F string })(obj))
+		return ast_Struct_F_string((*struct{ F string })(obj))
 	}
 	return libjson.NewNullable(jv, setNull), nil
 

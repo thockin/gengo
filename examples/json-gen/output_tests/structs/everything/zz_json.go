@@ -1028,7 +1028,7 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_Struct_Struct_Struct_string((*struct {
+		jv, err := ast_Struct_Struct_Struct_Struct_Struct_Struct_Struct_String_string((*struct {
 			Struct struct {
 				Struct struct{ Struct struct{ String string } }
 			}
@@ -1771,7 +1771,7 @@ func ast_Pointer_everything_Inner(obj **Inner) (libjson.Value, error) {
 
 }
 
-func ast_Struct_Struct_Struct_Struct_string(obj *struct {
+func ast_Struct_Struct_Struct_Struct_Struct_Struct_Struct_String_string(obj *struct {
 	Struct struct {
 		Struct struct{ Struct struct{ String string } }
 	}
@@ -1788,7 +1788,7 @@ func ast_Struct_Struct_Struct_Struct_string(obj *struct {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_Struct_Struct_string((*struct {
+		jv, err := ast_Struct_Struct_Struct_Struct_Struct_String_string((*struct {
 			Struct struct{ Struct struct{ String string } }
 		})(obj))
 		if err != nil {
@@ -2904,7 +2904,7 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner_Slice_string_everything_SliceStringAlias_Slice_Pointer_string_everything_SlicePtrStringAlias_Pointer_Slice_string((*struct {
+		jv, err := ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_ByteAliasPtr_Pointer_everything_ByteAlias_Bool_bool_BoolPtr_Pointer_bool_BoolAlias_everything_BoolAlias_BoolAliasPtr_Pointer_everything_BoolAlias_Int8_int8_Int8Ptr_Pointer_int8_Int16_int16_Int16Ptr_Pointer_int16_Int32_int32_Int32Ptr_Pointer_int32_Int32Alias_everything_Int32Alias_Int32AliasPtr_Pointer_everything_Int32Alias_Uint8_uint8_Uint8Ptr_Pointer_uint8_Uint16_uint16_Uint16Ptr_Pointer_uint16_Uint32_uint32_Uint32Ptr_Pointer_uint32_Float32_float32_Float32Ptr_Pointer_float32_Float32Alias_everything_Float32Alias_Float32AliasPtr_Pointer_everything_Float32Alias_Float64_float64_Float64Ptr_Pointer_float64_String_string_StringPtr_Pointer_string_StringAlias_everything_StringAlias_StringAliasPtr_Pointer_everything_StringAlias_Struct_Struct_StructPtr_Pointer_everything_Inner_SliceString_Slice_string_SliceStringAlias_everything_SliceStringAlias_SlicePtrString_Slice_Pointer_string_SliceStringPtrAlias_everything_SlicePtrStringAlias_SliceStringPtr_Pointer_Slice_string((*struct {
 			Byte                byte
 			BytePtr             *byte
 			ByteAlias           ByteAlias
@@ -2974,7 +2974,7 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner_Slice_string_everything_SliceStringAlias_Slice_Pointer_string_everything_SlicePtrStringAlias_Pointer_Slice_string((**struct {
+		jv, err := ast_Pointer_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_ByteAliasPtr_Pointer_everything_ByteAlias_Bool_bool_BoolPtr_Pointer_bool_BoolAlias_everything_BoolAlias_BoolAliasPtr_Pointer_everything_BoolAlias_Int8_int8_Int8Ptr_Pointer_int8_Int16_int16_Int16Ptr_Pointer_int16_Int32_int32_Int32Ptr_Pointer_int32_Int32Alias_everything_Int32Alias_Int32AliasPtr_Pointer_everything_Int32Alias_Uint8_uint8_Uint8Ptr_Pointer_uint8_Uint16_uint16_Uint16Ptr_Pointer_uint16_Uint32_uint32_Uint32Ptr_Pointer_uint32_Float32_float32_Float32Ptr_Pointer_float32_Float32Alias_everything_Float32Alias_Float32AliasPtr_Pointer_everything_Float32Alias_Float64_float64_Float64Ptr_Pointer_float64_String_string_StringPtr_Pointer_string_StringAlias_everything_StringAlias_StringAliasPtr_Pointer_everything_StringAlias_Struct_Struct_StructPtr_Pointer_everything_Inner_SliceString_Slice_string_SliceStringAlias_everything_SliceStringAlias_SlicePtrString_Slice_Pointer_string_SliceStringPtrAlias_everything_SlicePtrStringAlias_SliceStringPtr_Pointer_Slice_string((**struct {
 			Byte                byte
 			BytePtr             *byte
 			ByteAlias           ByteAlias
@@ -3189,7 +3189,7 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 
 }
 
-func ast_Struct_Struct_Struct_string(obj *struct {
+func ast_Struct_Struct_Struct_Struct_Struct_String_string(obj *struct {
 	Struct struct{ Struct struct{ String string } }
 }) (libjson.Value, error) {
 
@@ -3204,7 +3204,7 @@ func ast_Struct_Struct_Struct_string(obj *struct {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_Struct_string((*struct{ Struct struct{ String string } })(obj))
+		jv, err := ast_Struct_Struct_Struct_String_string((*struct{ Struct struct{ String string } })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -3229,7 +3229,7 @@ func ast_Struct_Struct_Struct_string(obj *struct {
 
 }
 
-func ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner_Slice_string_everything_SliceStringAlias_Slice_Pointer_string_everything_SlicePtrStringAlias_Pointer_Slice_string(obj *struct {
+func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_ByteAliasPtr_Pointer_everything_ByteAlias_Bool_bool_BoolPtr_Pointer_bool_BoolAlias_everything_BoolAlias_BoolAliasPtr_Pointer_everything_BoolAlias_Int8_int8_Int8Ptr_Pointer_int8_Int16_int16_Int16Ptr_Pointer_int16_Int32_int32_Int32Ptr_Pointer_int32_Int32Alias_everything_Int32Alias_Int32AliasPtr_Pointer_everything_Int32Alias_Uint8_uint8_Uint8Ptr_Pointer_uint8_Uint16_uint16_Uint16Ptr_Pointer_uint16_Uint32_uint32_Uint32Ptr_Pointer_uint32_Float32_float32_Float32Ptr_Pointer_float32_Float32Alias_everything_Float32Alias_Float32AliasPtr_Pointer_everything_Float32Alias_Float64_float64_Float64Ptr_Pointer_float64_String_string_StringPtr_Pointer_string_StringAlias_everything_StringAlias_StringAliasPtr_Pointer_everything_StringAlias_Struct_Struct_StructPtr_Pointer_everything_Inner_SliceString_Slice_string_SliceStringAlias_everything_SliceStringAlias_SlicePtrString_Slice_Pointer_string_SliceStringPtrAlias_everything_SlicePtrStringAlias_SliceStringPtr_Pointer_Slice_string(obj *struct {
 	Byte                byte
 	BytePtr             *byte
 	ByteAlias           ByteAlias
@@ -4447,7 +4447,7 @@ func ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAl
 
 }
 
-func ast_Pointer_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner_Slice_string_everything_SliceStringAlias_Slice_Pointer_string_everything_SlicePtrStringAlias_Pointer_Slice_string(obj **struct {
+func ast_Pointer_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_ByteAliasPtr_Pointer_everything_ByteAlias_Bool_bool_BoolPtr_Pointer_bool_BoolAlias_everything_BoolAlias_BoolAliasPtr_Pointer_everything_BoolAlias_Int8_int8_Int8Ptr_Pointer_int8_Int16_int16_Int16Ptr_Pointer_int16_Int32_int32_Int32Ptr_Pointer_int32_Int32Alias_everything_Int32Alias_Int32AliasPtr_Pointer_everything_Int32Alias_Uint8_uint8_Uint8Ptr_Pointer_uint8_Uint16_uint16_Uint16Ptr_Pointer_uint16_Uint32_uint32_Uint32Ptr_Pointer_uint32_Float32_float32_Float32Ptr_Pointer_float32_Float32Alias_everything_Float32Alias_Float32AliasPtr_Pointer_everything_Float32Alias_Float64_float64_Float64Ptr_Pointer_float64_String_string_StringPtr_Pointer_string_StringAlias_everything_StringAlias_StringAliasPtr_Pointer_everything_StringAlias_Struct_Struct_StructPtr_Pointer_everything_Inner_SliceString_Slice_string_SliceStringAlias_everything_SliceStringAlias_SlicePtrString_Slice_Pointer_string_SliceStringPtrAlias_everything_SlicePtrStringAlias_SliceStringPtr_Pointer_Slice_string(obj **struct {
 	Byte                byte
 	BytePtr             *byte
 	ByteAlias           ByteAlias
@@ -4493,7 +4493,7 @@ func ast_Pointer_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everythin
 	var err error
 	if *obj != nil {
 		obj := *obj
-		jv, err = ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner_Slice_string_everything_SliceStringAlias_Slice_Pointer_string_everything_SlicePtrStringAlias_Pointer_Slice_string((*struct {
+		jv, err = ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_ByteAliasPtr_Pointer_everything_ByteAlias_Bool_bool_BoolPtr_Pointer_bool_BoolAlias_everything_BoolAlias_BoolAliasPtr_Pointer_everything_BoolAlias_Int8_int8_Int8Ptr_Pointer_int8_Int16_int16_Int16Ptr_Pointer_int16_Int32_int32_Int32Ptr_Pointer_int32_Int32Alias_everything_Int32Alias_Int32AliasPtr_Pointer_everything_Int32Alias_Uint8_uint8_Uint8Ptr_Pointer_uint8_Uint16_uint16_Uint16Ptr_Pointer_uint16_Uint32_uint32_Uint32Ptr_Pointer_uint32_Float32_float32_Float32Ptr_Pointer_float32_Float32Alias_everything_Float32Alias_Float32AliasPtr_Pointer_everything_Float32Alias_Float64_float64_Float64Ptr_Pointer_float64_String_string_StringPtr_Pointer_string_StringAlias_everything_StringAlias_StringAliasPtr_Pointer_everything_StringAlias_Struct_Struct_StructPtr_Pointer_everything_Inner_SliceString_Slice_string_SliceStringAlias_everything_SliceStringAlias_SlicePtrString_Slice_Pointer_string_SliceStringPtrAlias_everything_SlicePtrStringAlias_SliceStringPtr_Pointer_Slice_string((*struct {
 			Byte                byte
 			BytePtr             *byte
 			ByteAlias           ByteAlias
@@ -4585,7 +4585,7 @@ func ast_Pointer_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everythin
 			SliceStringPtr      *[]string
 		})
 		obj := *obj
-		return ast_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everything_ByteAlias_bool_Pointer_bool_everything_BoolAlias_Pointer_everything_BoolAlias_int8_Pointer_int8_int16_Pointer_int16_int32_Pointer_int32_everything_Int32Alias_Pointer_everything_Int32Alias_uint8_Pointer_uint8_uint16_Pointer_uint16_uint32_Pointer_uint32_float32_Pointer_float32_everything_Float32Alias_Pointer_everything_Float32Alias_float64_Pointer_float64_string_Pointer_string_everything_StringAlias_Pointer_everything_StringAlias_Struct_Pointer_everything_Inner_Slice_string_everything_SliceStringAlias_Slice_Pointer_string_everything_SlicePtrStringAlias_Pointer_Slice_string((*struct {
+		return ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_ByteAliasPtr_Pointer_everything_ByteAlias_Bool_bool_BoolPtr_Pointer_bool_BoolAlias_everything_BoolAlias_BoolAliasPtr_Pointer_everything_BoolAlias_Int8_int8_Int8Ptr_Pointer_int8_Int16_int16_Int16Ptr_Pointer_int16_Int32_int32_Int32Ptr_Pointer_int32_Int32Alias_everything_Int32Alias_Int32AliasPtr_Pointer_everything_Int32Alias_Uint8_uint8_Uint8Ptr_Pointer_uint8_Uint16_uint16_Uint16Ptr_Pointer_uint16_Uint32_uint32_Uint32Ptr_Pointer_uint32_Float32_float32_Float32Ptr_Pointer_float32_Float32Alias_everything_Float32Alias_Float32AliasPtr_Pointer_everything_Float32Alias_Float64_float64_Float64Ptr_Pointer_float64_String_string_StringPtr_Pointer_string_StringAlias_everything_StringAlias_StringAliasPtr_Pointer_everything_StringAlias_Struct_Struct_StructPtr_Pointer_everything_Inner_SliceString_Slice_string_SliceStringAlias_everything_SliceStringAlias_SlicePtrString_Slice_Pointer_string_SliceStringPtrAlias_everything_SlicePtrStringAlias_SliceStringPtr_Pointer_Slice_string((*struct {
 			Byte                byte
 			BytePtr             *byte
 			ByteAlias           ByteAlias
@@ -4631,7 +4631,7 @@ func ast_Pointer_Struct_byte_Pointer_byte_everything_ByteAlias_Pointer_everythin
 
 }
 
-func ast_Struct_Struct_string(obj *struct{ Struct struct{ String string } }) (libjson.Value, error) {
+func ast_Struct_Struct_Struct_String_string(obj *struct{ Struct struct{ String string } }) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -4644,7 +4644,7 @@ func ast_Struct_Struct_string(obj *struct{ Struct struct{ String string } }) (li
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_string((*struct{ String string })(obj))
+		jv, err := ast_Struct_String_string((*struct{ String string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -4678,7 +4678,7 @@ func ast_Struct(obj *struct{}) (libjson.Value, error) {
 
 }
 
-func ast_Struct_string(obj *struct{ String string }) (libjson.Value, error) {
+func ast_Struct_String_string(obj *struct{ String string }) (libjson.Value, error) {
 
 	result := libjson.Object{}
 

@@ -511,7 +511,6 @@ func (g *jsonGenerator) emitBodyFor(t *types.Type, c *generator.Context) string 
 
 func (g *jsonGenerator) emitCallFor(t *types.Type, c *generator.Context) string {
 	g.astNeeded = append(g.astNeeded, t)
-	//FIXME: name for anon structs is horrible - hash?
 	return `ast_` + formatName(c, "public", t) + `((*` + formatName(c, "raw", t) + `)(obj))`
 }
 

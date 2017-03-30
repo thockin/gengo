@@ -376,7 +376,7 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_string((*struct{ F string })(obj))
+		jv, err := ast_Struct_F_string((*struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -406,7 +406,7 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer_Struct_string((**struct{ F string })(obj))
+		jv, err := ast_Pointer_Struct_F_string((**struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -531,7 +531,7 @@ func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
 }
 
-func ast_Struct_string(obj *struct{ F string }) (libjson.Value, error) {
+func ast_Struct_F_string(obj *struct{ F string }) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -569,13 +569,13 @@ func ast_Struct_string(obj *struct{ F string }) (libjson.Value, error) {
 
 }
 
-func ast_Pointer_Struct_string(obj **struct{ F string }) (libjson.Value, error) {
+func ast_Pointer_Struct_F_string(obj **struct{ F string }) (libjson.Value, error) {
 
 	var jv libjson.Value
 	var err error
 	if *obj != nil {
 		obj := *obj
-		jv, err = ast_Struct_string((*struct{ F string })(obj))
+		jv, err = ast_Struct_F_string((*struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -587,7 +587,7 @@ func ast_Pointer_Struct_string(obj **struct{ F string }) (libjson.Value, error) 
 		}
 		*obj = new(struct{ F string })
 		obj := *obj
-		return ast_Struct_string((*struct{ F string })(obj))
+		return ast_Struct_F_string((*struct{ F string })(obj))
 	}
 	return libjson.NewNullable(jv, setNull), nil
 

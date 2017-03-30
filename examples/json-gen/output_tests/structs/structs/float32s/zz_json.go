@@ -38,7 +38,7 @@ func ast_float32s_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_float32_float32_float32((*struct {
+		jv, err := ast_Struct_F1_float32_F2_float32_F3_float32((*struct {
 			F1 float32
 			F2 float32
 			F3 float32
@@ -87,7 +87,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	return jv.Parse(data)
 }
 
-func ast_Struct_float32_float32_float32(obj *struct {
+func ast_Struct_F1_float32_F2_float32_F3_float32(obj *struct {
 	F1 float32
 	F2 float32
 	F3 float32

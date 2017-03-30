@@ -26,7 +26,7 @@ import (
 )
 
 func ast_mixed_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Slice_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_string_Struct_string_Pointer_Struct_string((*[]*struct {
+	return ast_Slice_Pointer_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string((*[]*struct {
 		F1 int32
 		F2 *int32
 		F3 float32
@@ -58,7 +58,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	return jv.Parse(data)
 }
 
-func ast_Slice_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_string_Struct_string_Pointer_Struct_string(obj *[]*struct {
+func ast_Slice_Pointer_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string(obj *[]*struct {
 	F1 int32
 	F2 *int32
 	F3 float32
@@ -77,7 +77,7 @@ func ast_Slice_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string
 		for i := range *obj {
 			obj := &(*obj)[i]
 			//FIXME: do any of these ACTUALLY return an error?
-			jv, err := ast_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_string_Struct_string_Pointer_Struct_string((**struct {
+			jv, err := ast_Pointer_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string((**struct {
 				F1 int32
 				F2 *int32
 				F3 float32
@@ -107,7 +107,7 @@ func ast_Slice_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string
 		}
 		*obj = append(*obj, x)
 		obj := &(*obj)[len(*obj)-1]
-		jv, _ := ast_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_string_Struct_string_Pointer_Struct_string((**struct {
+		jv, _ := ast_Pointer_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string((**struct {
 			F1 int32
 			F2 *int32
 			F3 float32
@@ -145,7 +145,7 @@ func ast_Slice_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string
 
 }
 
-func ast_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_string_Struct_string_Pointer_Struct_string(obj **struct {
+func ast_Pointer_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string(obj **struct {
 	F1 int32
 	F2 *int32
 	F3 float32
@@ -160,7 +160,7 @@ func ast_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Point
 	var err error
 	if *obj != nil {
 		obj := *obj
-		jv, err = ast_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_string_Struct_string_Pointer_Struct_string((*struct {
+		jv, err = ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string((*struct {
 			F1 int32
 			F2 *int32
 			F3 float32
@@ -190,7 +190,7 @@ func ast_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Point
 			F8 *struct{ F string }
 		})
 		obj := *obj
-		return ast_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_string_Struct_string_Pointer_Struct_string((*struct {
+		return ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string((*struct {
 			F1 int32
 			F2 *int32
 			F3 float32
@@ -205,7 +205,7 @@ func ast_Pointer_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Point
 
 }
 
-func ast_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_string_Struct_string_Pointer_Struct_string(obj *struct {
+func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string(obj *struct {
 	F1 int32
 	F2 *int32
 	F3 float32
@@ -407,7 +407,7 @@ func ast_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_strin
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_string((*struct{ F string })(obj))
+		jv, err := ast_Struct_F_string((*struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -437,7 +437,7 @@ func ast_Struct_int32_Pointer_int32_float32_Pointer_float32_string_Pointer_strin
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer_Struct_string((**struct{ F string })(obj))
+		jv, err := ast_Pointer_Struct_F_string((**struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -562,7 +562,7 @@ func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
 }
 
-func ast_Struct_string(obj *struct{ F string }) (libjson.Value, error) {
+func ast_Struct_F_string(obj *struct{ F string }) (libjson.Value, error) {
 
 	result := libjson.Object{}
 
@@ -600,13 +600,13 @@ func ast_Struct_string(obj *struct{ F string }) (libjson.Value, error) {
 
 }
 
-func ast_Pointer_Struct_string(obj **struct{ F string }) (libjson.Value, error) {
+func ast_Pointer_Struct_F_string(obj **struct{ F string }) (libjson.Value, error) {
 
 	var jv libjson.Value
 	var err error
 	if *obj != nil {
 		obj := *obj
-		jv, err = ast_Struct_string((*struct{ F string })(obj))
+		jv, err = ast_Struct_F_string((*struct{ F string })(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -618,7 +618,7 @@ func ast_Pointer_Struct_string(obj **struct{ F string }) (libjson.Value, error) 
 		}
 		*obj = new(struct{ F string })
 		obj := *obj
-		return ast_Struct_string((*struct{ F string })(obj))
+		return ast_Struct_F_string((*struct{ F string })(obj))
 	}
 	return libjson.NewNullable(jv, setNull), nil
 

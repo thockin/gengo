@@ -38,7 +38,7 @@ func ast_strings_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Struct_string_string_string((*struct {
+		jv, err := ast_Struct_F1_string_F2_string_F3_string((*struct {
 			F1 string
 			F2 string
 			F3 string
@@ -87,7 +87,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	return jv.Parse(data)
 }
 
-func ast_Struct_string_string_string(obj *struct {
+func ast_Struct_F1_string_F2_string_F3_string(obj *struct {
 	F1 string
 	F2 string
 	F3 string
