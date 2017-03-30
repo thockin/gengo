@@ -111,7 +111,7 @@ func ast_Slice_Pointer_float32(obj *[]*float32) (libjson.Value, error) {
 	}
 	var jv libjson.Value
 	if *obj != nil {
-		return libjson.NewArray(get, add), nil
+		jv = libjson.NewArray(get, add)
 	}
 	setNull := func(b bool) (libjson.Value, error) {
 		if b {

@@ -131,7 +131,7 @@ func ast_Slice_Struct_F1_float32_F2_float32_F3_float32(obj *[]struct {
 	}
 	var jv libjson.Value
 	if *obj != nil {
-		return libjson.NewArray(get, add), nil
+		jv = libjson.NewArray(get, add)
 	}
 	setNull := func(b bool) (libjson.Value, error) {
 		if b {

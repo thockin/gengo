@@ -25,12 +25,12 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_empty_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Slice_Struct((*[]struct{})(obj))
+func ast_uint8_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Slice_uint8((*[]uint8)(obj))
 }
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	jv, err := ast_empty_Ttest(&obj)
+	jv, err := ast_uint8_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -42,60 +42,41 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	jv, err := ast_empty_Ttest(obj)
+	jv, err := ast_uint8_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return jv.Parse(data)
 }
 
-func ast_Slice_Struct(obj *[]struct{}) (libjson.Value, error) {
+func ast_Slice_uint8(obj *[]uint8) (libjson.Value, error) {
 
-	get := func() ([]libjson.Value, error) {
-		if *obj == nil {
-			return nil, nil
+	get := func() []byte {
+		bs := make([]byte, len(*obj))
+		for i, b := range *obj {
+			bs[i] = byte(b)
 		}
-		result := []libjson.Value{}
-		for i := range *obj {
-			obj := &(*obj)[i]
-			//FIXME: do any of these ACTUALLY return an error?
-			jv, err := ast_Struct((*struct{})(obj))
-			if err != nil {
-				return nil, err
-			}
-			result = append(result, jv)
+		return bs
+	}
+	set := func(bs []byte) {
+		*obj = make([]uint8, len(bs))
+		for i, b := range bs {
+			(*obj)[i] = uint8(b)
 		}
-		return result, nil
 	}
-	add := func() libjson.Value {
-		var x struct{}
-		*obj = append(*obj, x)
-		obj := &(*obj)[len(*obj)-1]
-		jv, _ := ast_Struct((*struct{})(obj))
-		//FIXME: handle error?
-		return jv
-	}
+
 	var jv libjson.Value
 	if *obj != nil {
-		jv = libjson.NewArray(get, add)
+		jv = libjson.NewBytes(get, set)
 	}
 	setNull := func(b bool) (libjson.Value, error) {
 		if b {
 			*obj = nil
 			return nil, nil
 		}
-		*obj = []struct{}{}
-		return libjson.NewArray(get, add), nil
+		*obj = []uint8{}
+		return libjson.NewBytes(get, set), nil
 	}
 	return libjson.NewNullable(jv, setNull), nil
-
-}
-
-func ast_Struct(obj *struct{}) (libjson.Value, error) {
-
-	result := libjson.Object{}
-	_ = obj
-
-	return result, nil
 
 }

@@ -122,7 +122,7 @@ func ast_Slice_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5
 	}
 	var jv libjson.Value
 	if *obj != nil {
-		return libjson.NewArray(get, add), nil
+		jv = libjson.NewArray(get, add)
 	}
 	setNull := func(b bool) (libjson.Value, error) {
 		if b {

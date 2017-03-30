@@ -2,8 +2,10 @@ package libjson
 
 import (
 	"bytes"
+	"encoding/base64"
 	"fmt"
 	"strconv"
+	"strings"
 	"unicode"
 	"unicode/utf16"
 	"unicode/utf8"
@@ -119,9 +121,18 @@ func (value String) Parse(data []byte) error {
 // Instead, they are replaced by the Unicode replacement
 // character U+FFFD.
 func (value String) ParseStream(scan *ByteScanner) error {
+	str, err := scanString(scan)
+	if err != nil {
+		return err
+	}
+	value.set(str)
+	return nil
+}
+
+func scanString(scan *ByteScanner) (string, error) {
 	if len(scan.Data()) < 2 || scan.Peek() != '"' {
 		//FIXME: return a type, print string
-		return fmt.Errorf("data is not a JSON string")
+		return "", fmt.Errorf("data is not a JSON string")
 	}
 	discardCurrent(scan)
 
@@ -129,26 +140,25 @@ func (value String) ParseStream(scan *ByteScanner) error {
 	for len(scan.Data()) > 0 {
 		if scan.Peek() == '"' {
 			if _, err := buf.Write(scan.Save()); err != nil {
-				return err //FIXME:
+				return "", err //FIXME:
 			}
-			value.set(buf.String())
 			discardCurrent(scan)
-			return nil
+			return buf.String(), nil
 		}
 		if scan.Peek() != '\\' {
 			scan.Advance()
 			continue
 		}
 		if _, err := buf.Write(scan.Save()); err != nil {
-			return err //FIXME:
+			return "", err //FIXME:
 		}
 		if err := unescape(scan, &buf); err != nil {
-			return err //FIXME
+			return "", err //FIXME
 		}
 	}
 
 	//FIXME: use a type, don't consume if error
-	return fmt.Errorf("unterminated JSON string (%q)", string(scan.Save()))
+	return "", fmt.Errorf("unterminated JSON string (%q)", string(scan.Save()))
 }
 
 func (value String) Empty() bool {
@@ -619,7 +629,6 @@ func (value Array) Parse(data []byte) error {
 }
 
 func (value Array) ParseStream(scan *ByteScanner) error {
-	//FIXME: handle []byte
 	if len(scan.Data()) < 2 || scan.Peek() != '[' {
 		//FIXME: use a type, print value...
 		return fmt.Errorf("data is not a JSON array: %v", string(scan.Data()))
@@ -657,6 +666,105 @@ func (value Array) ParseStream(scan *ByteScanner) error {
 func (value Array) Empty() bool {
 	ar, _ := value.get()
 	return len(ar) == 0
+}
+
+type Bytes struct {
+	get func() []byte
+	set func([]byte)
+}
+
+func NewBytes(get func() []byte, set func([]byte)) Bytes {
+	return Bytes{
+		get: get,
+		set: set,
+	}
+}
+
+func (value Bytes) Render(buf *bytes.Buffer) error {
+	if _, err := buf.WriteRune('"'); err != nil {
+		return err
+	}
+	b64 := base64.NewEncoder(base64.StdEncoding, buf)
+	if _, err := b64.Write(value.get()); err != nil {
+		return err
+	}
+	if err := b64.Close(); err != nil {
+		return err
+	}
+	if _, err := buf.WriteRune('"'); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (value Bytes) Parse(data []byte) error {
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
+	return nil
+}
+
+func (value Bytes) ParseStream(scan *ByteScanner) error {
+	if len(scan.Data()) < 2 {
+		//FIXME: use a type, print value...
+		return fmt.Errorf("data is not a JSON array: %v", string(scan.Data()))
+	}
+	switch scan.Peek() {
+	case '[':
+		// Handle input like `[ 49, 50, 51 ]`
+		return value.parseFromArray(scan)
+	case '"':
+		// Handle input like `"MTIz"`
+		return value.parseFromString(scan)
+	default:
+		//FIXME: use a type, print value...
+		return fmt.Errorf("data is not a JSON array: %v", string(scan.Data()))
+	}
+}
+
+func (value Bytes) parseFromArray(scan *ByteScanner) error {
+	bs := []byte{}
+
+	get := func() ([]Value, error) {
+		// This will not get called.
+		return nil, nil
+	}
+	add := func() Value {
+		bs = append(bs, byte(0))
+		elem := &bs[len(bs)-1]
+		return NewInt(
+			func() float64 {
+				return float64(*elem)
+			},
+			func(f float64) {
+				*elem = byte(f)
+			})
+	}
+	return NewArray(get, add).ParseStream(scan)
+}
+
+func (value Bytes) parseFromString(scan *ByteScanner) error {
+	str, err := scanString(scan)
+	if err != nil {
+		return err
+	}
+	b64 := base64.NewDecoder(base64.StdEncoding, strings.NewReader(str))
+	bs := make([]byte, len(str))
+	if n, err := b64.Read(bs); err != nil {
+		return err
+	} else {
+		bs = bs[:n]
+	}
+	value.set(bs)
+	return nil
+}
+
+func (value Bytes) Empty() bool {
+	return len(value.get()) == 0
 }
 
 type Raw string

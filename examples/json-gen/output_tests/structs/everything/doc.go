@@ -96,6 +96,7 @@ type Inner struct {
 		SlicePtrString      []*string
 		SliceStringPtrAlias SlicePtrStringAlias
 		SliceStringPtr      *[]string
+		SliceByte           []byte
 	}
 	StructPtr *struct {
 		Byte                byte
@@ -137,12 +138,14 @@ type Inner struct {
 		SlicePtrString      []*string
 		SliceStringPtrAlias SlicePtrStringAlias
 		SliceStringPtr      *[]string
+		SliceByte           []byte
 	}
 	SliceString         []string
 	SliceStringAlias    SliceStringAlias
 	SlicePtrString      []*string
 	SliceStringPtrAlias SlicePtrStringAlias
 	SliceStringPtr      *[]string
+	SliceByte           []byte
 }
 
 //+k8s:json-gen=false

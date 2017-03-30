@@ -111,7 +111,7 @@ func ast_Slice_Struct(obj *[]struct{}) (libjson.Value, error) {
 	}
 	var jv libjson.Value
 	if *obj != nil {
-		return libjson.NewArray(get, add), nil
+		jv = libjson.NewArray(get, add)
 	}
 	setNull := func(b bool) (libjson.Value, error) {
 		if b {
