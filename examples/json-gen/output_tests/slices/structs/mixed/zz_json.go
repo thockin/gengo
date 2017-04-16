@@ -156,7 +156,7 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	F8 *struct{ F string }
 }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 int32
 	{
@@ -504,7 +504,7 @@ func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
 func ast_Struct_F_string(obj *struct{ F string }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F string
 	{

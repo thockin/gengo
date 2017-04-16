@@ -28,7 +28,7 @@ import (
 
 func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F k8s.io/gengo/examples/json-gen/output_tests/cross_pkg/struct/a.T
 	{
@@ -86,7 +86,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 
 func ast_a_T(obj *a.T) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F string
 	{

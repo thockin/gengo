@@ -27,7 +27,7 @@ import (
 
 func ast_empties_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 *struct{}
 	{
@@ -169,7 +169,7 @@ func ast_Pointer_Struct(obj **struct{}) (libjson.Value, error) {
 
 func ast_Struct(obj *struct{}) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 	_ = obj
 
 	return result, nil

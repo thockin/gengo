@@ -93,7 +93,7 @@ func ast_Slice_struct_alias_Outer(obj *[]Outer) (libjson.Value, error) {
 
 func ast_struct_alias_Outer(obj *Outer) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 k8s.io/gengo/examples/json-gen/./output_tests/slices/structs/struct_alias.Inner
 	{
@@ -161,7 +161,7 @@ func ast_struct_alias_Outer(obj *Outer) (libjson.Value, error) {
 
 func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 int32
 	{
@@ -509,7 +509,7 @@ func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
 func ast_Struct_F_string(obj *struct{ F string }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F string
 	{

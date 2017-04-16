@@ -27,7 +27,7 @@ import (
 
 func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// Byte byte
 	{
@@ -1777,7 +1777,7 @@ func ast_Struct_Struct_Struct_Struct_Struct_Struct_Struct_String_string(obj *str
 	}
 }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// Struct struct{Struct struct{Struct struct{String string}}}
 	{
@@ -1933,7 +1933,7 @@ func ast_Pointer_Slice_string(obj **[]string) (libjson.Value, error) {
 
 func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// Byte byte
 	{
@@ -3225,7 +3225,7 @@ func ast_Struct_Struct_Struct_Struct_Struct_String_string(obj *struct {
 	Struct struct{ Struct struct{ String string } }
 }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// Struct struct{Struct struct{String string}}
 	{
@@ -3304,7 +3304,7 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	SliceByte           []byte
 }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// Byte byte
 	{
@@ -4725,7 +4725,7 @@ func ast_Slice_byte(obj *[]byte) (libjson.Value, error) {
 
 func ast_Struct_Struct_Struct_String_string(obj *struct{ Struct struct{ String string } }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// Struct struct{String string}
 	{
@@ -4763,7 +4763,7 @@ func ast_Struct_Struct_Struct_String_string(obj *struct{ Struct struct{ String s
 
 func ast_Struct(obj *struct{}) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 	_ = obj
 
 	return result, nil
@@ -4772,7 +4772,7 @@ func ast_Struct(obj *struct{}) (libjson.Value, error) {
 
 func ast_Struct_String_string(obj *struct{ String string }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// String string
 	{

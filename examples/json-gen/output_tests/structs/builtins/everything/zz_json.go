@@ -27,7 +27,7 @@ import (
 
 func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// Byte1 byte
 	{

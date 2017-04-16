@@ -303,22 +303,38 @@ func hasUnmarshalMethod(t *types.Type) bool {
 	return false
 }
 
-// hasTextMarshalMethod returns true if an appropriate MarshalText() method is
-// defined for the given type.
-func hasTextMarshalMethod(t *types.Type) bool {
+// hasTextMarshalMethods returns true if appropriate MarshalText() and
+// UnmarshalText() methods are defined for the given type.
+func hasTextMarshalMethods(t *types.Type) bool {
+	hasMarshal := false
+	hasUnmarshal := false
 	for mn, mt := range t.Methods {
-		if mn != "MarshalText" {
-			continue
+		if mn == "MarshalText" {
+			if len(mt.Signature.Parameters) != 0 {
+				glog.Errorf("wrong params")
+				return false
+			}
+			if len(mt.Signature.Results) != 2 ||
+				mt.Signature.Results[0].Name != nameOfByteSlice ||
+				mt.Signature.Results[1].Name != nameOfError {
+				glog.Errorf("wrong returns")
+				return false
+			}
+			hasMarshal = true
+		} else if mn == "UnmarshalText" {
+			if len(mt.Signature.Parameters) != 1 || mt.Signature.Parameters[0].Name != nameOfByteSlice {
+				glog.Errorf("wrong params")
+				return false
+			}
+			if len(mt.Signature.Results) != 1 || mt.Signature.Results[0].Name != nameOfError {
+				glog.Errorf("wrong returns")
+				return false
+			}
+			hasUnmarshal = true
 		}
-		if len(mt.Signature.Parameters) != 0 {
-			return false
+		if hasMarshal && hasUnmarshal {
+			return true
 		}
-		if len(mt.Signature.Results) != 2 ||
-			mt.Signature.Results[0].Name != nameOfByteSlice ||
-			mt.Signature.Results[1].Name != nameOfError {
-			return false
-		}
-		return true
 	}
 	return false
 }
@@ -493,20 +509,15 @@ func (g *jsonGenerator) emitBodyFor(t *types.Type, c *generator.Context) string 
 		f = g.emitBodyForStruct
 	case types.Slice:
 		f = g.emitBodyForSlice
-		/*
-			case types.Map:
-				f = g.emitBodyForMap
-			default:
-				// A reasonable argument could be made to just ignore it, but I'd
-				// rather know if this happens.  The likely case is interfaces which,
-				// obviously, we can't codegen for.
-				panic("unsupported kind: " + string(t.Kind) + " for type " + string(t.String()))
-		*/
+	case types.Map:
+		f = g.emitBodyForMap
+	default:
+		// A reasonable argument could be made to just ignore it, but I'd
+		// rather know if this happens.  The likely case is interfaces which,
+		// obviously, we can't codegen for.
+		panic("unsupported kind: " + string(t.Kind) + " for type " + string(t.String()))
 	}
-	if f != nil {
-		return f(t, c)
-	}
-	return "//FIXME\nreturn libjson.Raw(`\"fixme\"`), nil"
+	return f(t, c)
 }
 
 func (g *jsonGenerator) emitCallFor(t *types.Type, c *generator.Context) string {
@@ -540,7 +551,7 @@ func (g *jsonGenerator) emitBodyForPointer(t *types.Type, c *generator.Context) 
 
 func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) string {
 	result := `
-		result := libjson.Object{}
+		result := libjson.NewObject()
 		`
 
 	if len(t.Members) == 0 {
@@ -834,7 +845,7 @@ func (g *jsonGenerator) emitBodyForSlice(t *types.Type, c *generator.Context) st
 				*obj = nil
 				return nil, nil
 			}
-			*obj = []` + formatName(c, "raw", t.Elem) + `{}
+			*obj = ` + formatName(c, "raw", t) + `{}
 			return libjson.NewArray(get, add), nil
 		}
 		return libjson.NewNullable(jv, setNull), nil
@@ -849,7 +860,6 @@ func rootType(t *types.Type) *types.Type {
 	return t
 }
 
-/* FIXME: not done yet
 func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) string {
 	//FIXME: need root Type here and elsewhere?
 	result := ""
@@ -857,78 +867,134 @@ func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) stri
 	// Map keys must be derived from string, encoding.TextMarshaler, or integral types.
 	if rootType(t.Key) == types.String {
 		result += `
-			stringify := func(s ` + formatName(c, "raw", t.Key) + `) (string, error) {
-				return string(s), nil
+			keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+				return string(k), nil
+			}
+			keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+				return ` + formatName(c, "raw", t.Key) + `(s), nil
 			}
 			`
-	} else if hasTextMarshalMethod(t.Key) {
-		glog.V(3).Infof("type %v has a MarshalText() method", t)
-		result += `
-			stringify := func(tm ` + formatName(c, "raw", t.Key) + `) (string, error) {
-				if b, err := tm.MarshalText(); err != nil {
-					return "", fmt.Errorf("failed %T.MarshalText: %v", obj, err)
-				} else {
-					return string(b), nil
+		/* FIXME: need an example of this - can't make it work
+		} else if hasTextMarshalMethods(t.Key) {
+			glog.V(3).Infof("type %v has MarshalText() and UnmarshalText() methods", t)
+			g.imports.Add("fmt")
+			result += `
+				keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+					if b, err := k.MarshalText(); err != nil {
+						return "", fmt.Errorf("failed %T.MarshalText: %v", k, err)
+					} else {
+						return string(b), nil
+					}
 				}
-			}
-			`
+				keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+					var k ` + formatName(c, "raw", t.Key) + `
+					if err := k.UnmarshalText([]byte(s)); err != nil {
+						return k, fmt.Errorf("failed %T.UnmarshalText: %v", k, err)
+					}
+					return k, nil
+				}
+				`
+		*/
 	} else {
 		switch rootType(t.Key) {
 		case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
 			g.imports.Add("strconv")
 			result += `
-			stringify := func(i ` + formatName(c, "raw", t.Key) + `) (string, error) {
-				return strconv.FormatInt(int64(i), 10), nil
-			}
-			`
+				keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+					return strconv.FormatInt(int64(k), 10), nil
+				}
+				keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+					i, err := strconv.ParseInt(s, 10, 64)
+					return ` + formatName(c, "raw", t.Key) + `(i), err
+				}
+				`
 		case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr:
 			g.imports.Add("strconv")
 			result += `
-			stringify := func(i ` + formatName(c, "raw", t.Key) + `) (string, error) {
-				return strconv.FormatUint(uint64(i), 10), nil
-			}
-			`
+				keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+					return strconv.FormatUint(uint64(k), 10), nil
+				}
+				keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+					i, err := strconv.ParseUint(s, 10, 64)
+					return ` + formatName(c, "raw", t.Key) + `(i), err
+				}
+				`
 		default:
-			glog.Error("WARNING: map key %v is not string, int, or TextMarshaler: ignoring", t.Key)
+			// If we hit this, the user really needs to know.
+			panic("map key " + t.Key.String() + " is not string, int, uint, or TextMarshaler")
 		}
 	}
 
-	//TODO(thockin): It would be nice to sort ints by numeric value.  The
-	//standard `sort` package doesn't have functions for a int64 and uint64,
-	//and I am too lazy to emit those myself right now.  Idea is to move the
-	//defn of `keys` into the above sections and provide a `keyify` func and a
-	//`sort` func.  Main loop extracts into `keys` via `keyify`, and then calls
-	//`sort`, then emits via stringify.
-	g.imports.Add("sort")
 	return result + `
-		m := make(map[string]libjson.Value, len(obj))
-		keys := make([]string, 0, len(obj))
-		for k, v := range obj {
-			ks, err := stringify(k)
-			if err != nil {
-				return nil, err
+		var keys []` + formatName(c, "raw", t.Key) + `
+		var vals []` + formatName(c, "raw", t.Elem) + `
+		add := func(ks string) libjson.Value {
+			if k, err := keyFromString(ks); err != nil {
+				panic(err) //FIXME
+			} else {
+				keys = append(keys, k)
 			}
-			keys = append(keys, ks)
-			obj := v
-			jv, err := ` + g.emitCallFor(t.Elem, c) + `
-			if err != nil {
-				return nil, err
-			}
-			m[ks] = jv
+			var x ` + formatName(c, "raw", t.Elem) + `
+			vals = append(vals, x)
+			obj := &vals[len(vals)-1]
+			jv, _ := ` + g.emitCallFor(t.Elem, c) + `
+			//FIXME: handle error?
+			return jv
 		}
-		result := libjson.Object{}
-		sort.Strings(keys)
-		for _, ks := range keys {
-			nv := libjson.NamedValue{
-				Name: libjson.String(ks),
-				Value: m[ks],
+		get := func() (map[string]libjson.Value, error) {
+			if *obj == nil && keys == nil {
+				return nil, nil
 			}
-			result = append(result, nv)
+			result := map[string]libjson.Value{}
+			for k, v := range *obj {
+				obj := new(` + formatName(c, "raw", t.Elem) + `)
+				*obj = v
+				//FIXME: do any of these ACTUALLY return an error?
+				jv, err := ` + g.emitCallFor(t.Elem, c) + `
+				if err != nil {
+					return nil, err
+				}
+				if ks, err := keyToString(k); err != nil {
+					panic(err)
+				} else {
+					result[ks] = jv
+				}
+			}
+			for i := range keys {
+				obj := &vals[i]
+				//FIXME: do any of these ACTUALLY return an error?
+				jv, err := ` + g.emitCallFor(t.Elem, c) + `
+				if err != nil {
+					return nil, err
+				}
+				if ks, err := keyToString(keys[i]); err != nil {
+					panic(err)
+				} else {
+					result[ks] = jv
+				}
+			}
+			return result, nil
 		}
-	    return result, nil
+		finishParse := func() {
+			for i := range keys {
+				(*obj)[keys[i]] = vals[i]
+			}
+		}
+		var jv libjson.Value
+		if *obj != nil {
+			jv = libjson.NewMap(add, get, finishParse)
+		}
+		setNull := func(b bool) (libjson.Value, error) {
+			if b {
+				*obj = nil
+				return nil, nil
+			}
+			*obj = ` + formatName(c, "raw", t) + `{}
+			return libjson.NewMap(add, get, finishParse), nil
+		}
+		return libjson.NewNullable(jv, setNull), nil
 		`
 }
-*/
 
 func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {
 	sw := generator.NewSnippetWriter(w, c, "$", "$")

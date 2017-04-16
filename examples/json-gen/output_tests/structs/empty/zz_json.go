@@ -27,7 +27,7 @@ import (
 
 func ast_empty_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 	_ = obj
 
 	return result, nil

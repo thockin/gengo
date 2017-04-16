@@ -135,7 +135,7 @@ func ast_Slice_Struct(obj *[]struct{}) (libjson.Value, error) {
 
 func ast_Struct(obj *struct{}) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 	_ = obj
 
 	return result, nil

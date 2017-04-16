@@ -27,7 +27,7 @@ import (
 
 func ast_int32s_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 int32
 	{

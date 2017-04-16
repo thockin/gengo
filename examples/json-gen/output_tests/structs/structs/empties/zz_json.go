@@ -27,7 +27,7 @@ import (
 
 func ast_empties_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 struct{}
 	{
@@ -145,7 +145,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 
 func ast_Struct(obj *struct{}) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 	_ = obj
 
 	return result, nil

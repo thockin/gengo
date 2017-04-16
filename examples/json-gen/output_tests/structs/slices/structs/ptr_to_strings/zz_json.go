@@ -27,7 +27,7 @@ import (
 
 func ast_ptr_to_strings_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F []struct{F1 *string; F2 *string; F3 *string}
 	{
@@ -155,7 +155,7 @@ func ast_Struct_F1_Pointer_string_F2_Pointer_string_F3_Pointer_string(obj *struc
 	F3 *string
 }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 *string
 	{

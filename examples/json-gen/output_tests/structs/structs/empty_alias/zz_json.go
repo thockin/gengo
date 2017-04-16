@@ -27,7 +27,7 @@ import (
 
 func ast_empty_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F k8s.io/gengo/examples/json-gen/./output_tests/structs/structs/empty_alias.Inner
 	{
@@ -85,7 +85,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 
 func ast_empty_alias_Inner(obj *Inner) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 	_ = obj
 
 	return result, nil

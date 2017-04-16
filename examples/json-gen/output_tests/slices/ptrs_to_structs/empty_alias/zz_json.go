@@ -117,7 +117,7 @@ func ast_Pointer_empty_alias_Elem(obj **Elem) (libjson.Value, error) {
 
 func ast_empty_alias_Elem(obj *Elem) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 	_ = obj
 
 	return result, nil

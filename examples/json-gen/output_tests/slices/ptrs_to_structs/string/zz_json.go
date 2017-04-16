@@ -150,7 +150,7 @@ func ast_Struct_F1_string_F2_string(obj *struct {
 	F2 string
 }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 string
 	{

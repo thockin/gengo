@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode"
@@ -440,6 +441,10 @@ func (value Bool) Empty() bool {
 
 type Object []NamedValue
 
+func NewObject() Object {
+	return Object{}
+}
+
 type NamedValue struct {
 	Name  String
 	Value Value
@@ -578,6 +583,7 @@ func (value Object) Empty() bool {
 type Array struct {
 	get func() ([]Value, error)
 	add func() Value
+	//FIXME: add len()
 }
 
 func NewArray(get func() ([]Value, error), add func() Value) Array {
@@ -765,6 +771,128 @@ func (value Bytes) parseFromString(scan *ByteScanner) error {
 
 func (value Bytes) Empty() bool {
 	return len(value.get()) == 0
+}
+
+type Map struct {
+	add         func(k string) Value
+	get         func() (map[string]Value, error)
+	finishParse func()
+	//FIXME: add len()
+}
+
+func NewMap(add func(k string) Value, get func() (map[string]Value, error), finishParse func()) Map {
+	return Map{
+		add:         add,
+		get:         get,
+		finishParse: finishParse,
+	}
+}
+
+func (value Map) Render(buf *bytes.Buffer) error {
+	mp, err := value.get()
+	if err != nil {
+		return err
+	} else if mp == nil {
+		if err := write(buf, nullBytes); err != nil {
+			return err
+		}
+		return nil
+	}
+
+	if err := writeString(buf, "{"); err != nil {
+		return err
+	}
+	keys := []string{}
+	for k := range mp {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for i, k := range keys {
+		if i > 0 {
+			if err := writeString(buf, ","); err != nil {
+				return err
+			}
+		}
+		if err := writeString(buf, `"`+escape(k)+`"`); err != nil {
+			return err
+		}
+		if err := writeString(buf, ":"); err != nil {
+			return err
+		}
+		if err := mp[k].Render(buf); err != nil {
+			return err
+		}
+	}
+	if err := writeString(buf, "}"); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (value Map) Parse(data []byte) error {
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
+	return nil
+}
+
+func (value Map) ParseStream(scan *ByteScanner) error {
+	if len(scan.Data()) < 2 || scan.Peek() != '{' {
+		//FIXME: use a type, print value...
+		return fmt.Errorf("data is not a JSON object: %v", string(scan.Data()))
+	}
+	discardCurrent(scan)
+
+	// This assumes the map is empty.
+	for len(scan.Data()) > 0 {
+		discardWhitespace(scan)
+		if scan.Peek() == '}' {
+			discardCurrent(scan)
+			value.finishParse()
+			return nil
+		}
+
+		// Read the key.
+		key, err := scanString(scan)
+		if err != nil {
+			return err //FIXME
+		}
+
+		// Read the colon.
+		discardWhitespace(scan)
+		if scan.Peek() != ':' {
+			return fmt.Errorf("data is not a JSON object")
+		}
+		discardCurrent(scan)
+		discardWhitespace(scan)
+
+		// Read the value.
+		jv := value.add(key)
+		if err := jv.ParseStream(scan); err != nil {
+			return err
+		}
+
+		// Prep for the next field.
+		discardWhitespace(scan)
+		//FIXME: test what happens at end-of-buffer
+		if r := scan.Peek(); r == ',' || r == '}' {
+			if scan.Peek() == ',' {
+				discardCurrent(scan)
+			}
+		} else {
+			return fmt.Errorf("data is not a JSON object") //FIXME: parse error
+		}
+	}
+	return fmt.Errorf("data is not a JSON object") //FIXME: parse error
+}
+
+func (value Map) Empty() bool {
+	mp, _ := value.get()
+	return len(mp) == 0
 }
 
 type Raw string

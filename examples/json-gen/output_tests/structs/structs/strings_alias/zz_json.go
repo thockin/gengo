@@ -27,7 +27,7 @@ import (
 
 func ast_strings_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F k8s.io/gengo/examples/json-gen/./output_tests/structs/structs/strings_alias.Inner
 	{
@@ -85,7 +85,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 
 func ast_strings_alias_Inner(obj *Inner) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 string
 	{

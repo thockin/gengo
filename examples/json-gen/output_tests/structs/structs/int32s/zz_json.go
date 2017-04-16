@@ -27,7 +27,7 @@ import (
 
 func ast_int32s_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F struct{F1 int32; F2 int32; F3 int32}
 	{
@@ -93,7 +93,7 @@ func ast_Struct_F1_int32_F2_int32_F3_int32(obj *struct {
 	F3 int32
 }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 int32
 	{

@@ -171,7 +171,7 @@ func ast_Struct_F1_struct_Elem_F2_struct_Elem(obj *struct {
 	F2 Elem
 }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 k8s.io/gengo/examples/json-gen/./output_tests/slices/slices/structs/struct.Elem
 	{
@@ -239,7 +239,7 @@ func ast_Struct_F1_struct_Elem_F2_struct_Elem(obj *struct {
 
 func ast_struct_Elem(obj *Elem) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F1 int32
 	{
@@ -587,7 +587,7 @@ func ast_Pointer_string(obj **string) (libjson.Value, error) {
 
 func ast_Struct_F_string(obj *struct{ F string }) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F string
 	{

@@ -27,7 +27,7 @@ import (
 
 func ast_empty_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F *k8s.io/gengo/examples/json-gen/./output_tests/structs/ptrs_to_structs/empty_alias.Inner
 	{
@@ -109,7 +109,7 @@ func ast_Pointer_empty_alias_Inner(obj **Inner) (libjson.Value, error) {
 
 func ast_empty_alias_Inner(obj *Inner) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 	_ = obj
 
 	return result, nil

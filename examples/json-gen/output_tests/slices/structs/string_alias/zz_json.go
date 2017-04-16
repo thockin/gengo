@@ -93,7 +93,7 @@ func ast_Slice_string_alias_Elem(obj *[]Elem) (libjson.Value, error) {
 
 func ast_string_alias_Elem(obj *Elem) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F string
 	{

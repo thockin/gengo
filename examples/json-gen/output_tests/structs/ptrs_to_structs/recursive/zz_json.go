@@ -27,7 +27,7 @@ import (
 
 func ast_recursive_Ttest(obj *Ttest) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// F k8s.io/gengo/examples/json-gen/./output_tests/structs/ptrs_to_structs/recursive.Inner
 	{
@@ -85,7 +85,7 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 
 func ast_recursive_Inner(obj *Inner) (libjson.Value, error) {
 
-	result := libjson.Object{}
+	result := libjson.NewObject()
 
 	// Inner *k8s.io/gengo/examples/json-gen/./output_tests/structs/ptrs_to_structs/recursive.Inner
 	{
