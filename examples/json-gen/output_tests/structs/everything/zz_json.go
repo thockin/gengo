@@ -32,7 +32,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Byte byte
 	{
 		obj := &obj.Byte
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -62,7 +61,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// BytePtr *byte
 	{
 		obj := &obj.BytePtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -92,7 +90,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -122,7 +119,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -152,7 +148,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Bool bool
 	{
 		obj := &obj.Bool
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -182,7 +177,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// BoolPtr *bool
 	{
 		obj := &obj.BoolPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -212,7 +206,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -242,7 +235,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -272,7 +264,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int8 int8
 	{
 		obj := &obj.Int8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -302,7 +293,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int8Ptr *int8
 	{
 		obj := &obj.Int8Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -332,7 +322,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int16 int16
 	{
 		obj := &obj.Int16
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -362,7 +351,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int16Ptr *int16
 	{
 		obj := &obj.Int16Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -392,7 +380,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int32 int32
 	{
 		obj := &obj.Int32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -422,7 +409,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int32Ptr *int32
 	{
 		obj := &obj.Int32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -452,7 +438,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -482,7 +467,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -512,7 +496,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -542,7 +525,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint8Ptr *uint8
 	{
 		obj := &obj.Uint8Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -572,7 +554,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -602,7 +583,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint16Ptr *uint16
 	{
 		obj := &obj.Uint16Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -632,7 +612,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -662,7 +641,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint32Ptr *uint32
 	{
 		obj := &obj.Uint32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -692,7 +670,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Float32 float32
 	{
 		obj := &obj.Float32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -722,7 +699,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Float32Ptr *float32
 	{
 		obj := &obj.Float32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -752,7 +728,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -782,7 +757,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -812,7 +786,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Float64 float64
 	{
 		obj := &obj.Float64
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -842,7 +815,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Float64Ptr *float64
 	{
 		obj := &obj.Float64Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -872,7 +844,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// String string
 	{
 		obj := &obj.String
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -902,7 +873,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// StringPtr *string
 	{
 		obj := &obj.StringPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -932,7 +902,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -962,7 +931,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -992,7 +960,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner
 	{
 		obj := &obj.StructPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1022,7 +989,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Struct struct{Struct struct{Struct struct{Struct struct{String string}}}}
 	{
 		obj := &obj.Struct
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1056,7 +1022,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// SliceString []string
 	{
 		obj := &obj.SliceString
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1086,7 +1051,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias
 	{
 		obj := &obj.SliceStringAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1116,7 +1080,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// SlicePtrString []*string
 	{
 		obj := &obj.SlicePtrString
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1146,7 +1109,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias
 	{
 		obj := &obj.SliceStringPtrAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1176,7 +1138,6 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	// SliceStringPtr *[]string
 	{
 		obj := &obj.SliceStringPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1782,7 +1743,6 @@ func ast_Struct_Struct_Struct_Struct_Struct_Struct_Struct_String_string(obj *str
 	// Struct struct{Struct struct{Struct struct{String string}}}
 	{
 		obj := &obj.Struct
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1938,7 +1898,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Byte byte
 	{
 		obj := &obj.Byte
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1968,7 +1927,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// BytePtr *byte
 	{
 		obj := &obj.BytePtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -1998,7 +1956,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2028,7 +1985,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2058,7 +2014,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Bool bool
 	{
 		obj := &obj.Bool
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2088,7 +2043,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// BoolPtr *bool
 	{
 		obj := &obj.BoolPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2118,7 +2072,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2148,7 +2101,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2178,7 +2130,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Int8 int8
 	{
 		obj := &obj.Int8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2208,7 +2159,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Int8Ptr *int8
 	{
 		obj := &obj.Int8Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2238,7 +2188,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Int16 int16
 	{
 		obj := &obj.Int16
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2268,7 +2217,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Int16Ptr *int16
 	{
 		obj := &obj.Int16Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2298,7 +2246,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Int32 int32
 	{
 		obj := &obj.Int32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2328,7 +2275,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Int32Ptr *int32
 	{
 		obj := &obj.Int32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2358,7 +2304,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2388,7 +2333,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2418,7 +2362,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2448,7 +2391,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Uint8Ptr *uint8
 	{
 		obj := &obj.Uint8Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2478,7 +2420,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2508,7 +2449,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Uint16Ptr *uint16
 	{
 		obj := &obj.Uint16Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2538,7 +2478,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2568,7 +2507,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Uint32Ptr *uint32
 	{
 		obj := &obj.Uint32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2598,7 +2536,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Float32 float32
 	{
 		obj := &obj.Float32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2628,7 +2565,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Float32Ptr *float32
 	{
 		obj := &obj.Float32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2658,7 +2594,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2688,7 +2623,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2718,7 +2652,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Float64 float64
 	{
 		obj := &obj.Float64
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2748,7 +2681,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Float64Ptr *float64
 	{
 		obj := &obj.Float64Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2778,7 +2710,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// String string
 	{
 		obj := &obj.String
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2808,7 +2739,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// StringPtr *string
 	{
 		obj := &obj.StringPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2838,7 +2768,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2868,7 +2797,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2898,7 +2826,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// Struct struct{Byte byte; BytePtr *byte; ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; Bool bool; BoolPtr *bool; BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; Int8 int8; Int8Ptr *int8; Int16 int16; Int16Ptr *int16; Int32 int32; Int32Ptr *int32; Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Uint8 uint8; Uint8Ptr *uint8; Uint16 uint16; Uint16Ptr *uint16; Uint32 uint32; Uint32Ptr *uint32; Float32 float32; Float32Ptr *float32; Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float64 float64; Float64Ptr *float64; String string; StringPtr *string; StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; Struct struct{}; StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner; SliceString []string; SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias; SlicePtrString []*string; SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias; SliceStringPtr *[]string; SliceByte []byte}
 	{
 		obj := &obj.Struct
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -2969,7 +2896,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// StructPtr *struct{Byte byte; BytePtr *byte; ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; Bool bool; BoolPtr *bool; BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; Int8 int8; Int8Ptr *int8; Int16 int16; Int16Ptr *int16; Int32 int32; Int32Ptr *int32; Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Uint8 uint8; Uint8Ptr *uint8; Uint16 uint16; Uint16Ptr *uint16; Uint32 uint32; Uint32Ptr *uint32; Float32 float32; Float32Ptr *float32; Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float64 float64; Float64Ptr *float64; String string; StringPtr *string; StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; Struct struct{}; StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner; SliceString []string; SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias; SlicePtrString []*string; SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias; SliceStringPtr *[]string; SliceByte []byte}
 	{
 		obj := &obj.StructPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3040,7 +2966,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// SliceString []string
 	{
 		obj := &obj.SliceString
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3070,7 +2995,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias
 	{
 		obj := &obj.SliceStringAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3100,7 +3024,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// SlicePtrString []*string
 	{
 		obj := &obj.SlicePtrString
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3130,7 +3053,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias
 	{
 		obj := &obj.SliceStringPtrAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3160,7 +3082,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// SliceStringPtr *[]string
 	{
 		obj := &obj.SliceStringPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3190,7 +3111,6 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	// SliceByte []byte
 	{
 		obj := &obj.SliceByte
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3230,7 +3150,6 @@ func ast_Struct_Struct_Struct_Struct_Struct_String_string(obj *struct {
 	// Struct struct{Struct struct{String string}}
 	{
 		obj := &obj.Struct
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3309,7 +3228,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Byte byte
 	{
 		obj := &obj.Byte
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3339,7 +3257,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// BytePtr *byte
 	{
 		obj := &obj.BytePtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3369,7 +3286,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3399,7 +3315,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3429,7 +3344,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Bool bool
 	{
 		obj := &obj.Bool
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3459,7 +3373,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// BoolPtr *bool
 	{
 		obj := &obj.BoolPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3489,7 +3402,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3519,7 +3431,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3549,7 +3460,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Int8 int8
 	{
 		obj := &obj.Int8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3579,7 +3489,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Int8Ptr *int8
 	{
 		obj := &obj.Int8Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3609,7 +3518,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Int16 int16
 	{
 		obj := &obj.Int16
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3639,7 +3547,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Int16Ptr *int16
 	{
 		obj := &obj.Int16Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3669,7 +3576,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Int32 int32
 	{
 		obj := &obj.Int32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3699,7 +3605,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Int32Ptr *int32
 	{
 		obj := &obj.Int32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3729,7 +3634,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3759,7 +3663,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3789,7 +3692,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3819,7 +3721,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Uint8Ptr *uint8
 	{
 		obj := &obj.Uint8Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3849,7 +3750,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3879,7 +3779,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Uint16Ptr *uint16
 	{
 		obj := &obj.Uint16Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3909,7 +3808,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3939,7 +3837,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Uint32Ptr *uint32
 	{
 		obj := &obj.Uint32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3969,7 +3866,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Float32 float32
 	{
 		obj := &obj.Float32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -3999,7 +3895,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Float32Ptr *float32
 	{
 		obj := &obj.Float32Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4029,7 +3924,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4059,7 +3953,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4089,7 +3982,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Float64 float64
 	{
 		obj := &obj.Float64
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4119,7 +4011,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Float64Ptr *float64
 	{
 		obj := &obj.Float64Ptr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4149,7 +4040,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// String string
 	{
 		obj := &obj.String
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4179,7 +4069,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// StringPtr *string
 	{
 		obj := &obj.StringPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4209,7 +4098,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4239,7 +4127,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4269,7 +4156,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// Struct struct{}
 	{
 		obj := &obj.Struct
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4299,7 +4185,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner
 	{
 		obj := &obj.StructPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4329,7 +4214,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// SliceString []string
 	{
 		obj := &obj.SliceString
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4359,7 +4243,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias
 	{
 		obj := &obj.SliceStringAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4389,7 +4272,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// SlicePtrString []*string
 	{
 		obj := &obj.SlicePtrString
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4419,7 +4301,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias
 	{
 		obj := &obj.SliceStringPtrAlias
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4449,7 +4330,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// SliceStringPtr *[]string
 	{
 		obj := &obj.SliceStringPtr
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4479,7 +4359,6 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	// SliceByte []byte
 	{
 		obj := &obj.SliceByte
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4730,7 +4609,6 @@ func ast_Struct_Struct_Struct_String_string(obj *struct{ Struct struct{ String s
 	// Struct struct{String string}
 	{
 		obj := &obj.Struct
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -4777,7 +4655,6 @@ func ast_Struct_String_string(obj *struct{ String string }) (libjson.Value, erro
 	// String string
 	{
 		obj := &obj.String
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

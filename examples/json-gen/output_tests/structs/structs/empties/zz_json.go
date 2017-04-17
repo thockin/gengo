@@ -32,7 +32,6 @@ func ast_empties_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F1 struct{}
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -62,7 +61,6 @@ func ast_empties_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F2 struct{}
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -92,7 +90,6 @@ func ast_empties_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F3 struct{}
 	{
 		obj := &obj.F3
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

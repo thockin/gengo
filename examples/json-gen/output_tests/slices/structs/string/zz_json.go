@@ -119,7 +119,6 @@ func ast_Struct_F1_string_F2_string(obj *struct {
 	// F1 string
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -149,7 +148,6 @@ func ast_Struct_F1_string_F2_string(obj *struct {
 	// F2 string
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

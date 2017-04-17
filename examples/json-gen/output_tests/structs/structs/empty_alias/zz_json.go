@@ -32,7 +32,6 @@ func ast_empty_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F k8s.io/gengo/examples/json-gen/./output_tests/structs/structs/empty_alias.Inner
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

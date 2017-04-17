@@ -32,7 +32,6 @@ func ast_int32s_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F []struct{F1 int32; F2 int32; F3 int32}
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -160,7 +159,6 @@ func ast_Struct_F1_int32_F2_int32_F3_int32(obj *struct {
 	// F1 int32
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -190,7 +188,6 @@ func ast_Struct_F1_int32_F2_int32_F3_int32(obj *struct {
 	// F2 int32
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -220,7 +217,6 @@ func ast_Struct_F1_int32_F2_int32_F3_int32(obj *struct {
 	// F3 int32
 	{
 		obj := &obj.F3
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

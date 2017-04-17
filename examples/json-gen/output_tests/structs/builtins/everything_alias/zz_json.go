@@ -32,7 +32,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Byte1 byte
 	{
 		obj := &obj.Byte1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -62,7 +61,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Byte2 byte
 	{
 		obj := &obj.Byte2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -92,7 +90,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Bool1 bool
 	{
 		obj := &obj.Bool1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -122,7 +119,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Bool2 bool
 	{
 		obj := &obj.Bool2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -152,7 +148,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int8 int8
 	{
 		obj := &obj.Int8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -182,7 +177,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int16 int16
 	{
 		obj := &obj.Int16
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -212,7 +206,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Int32 int32
 	{
 		obj := &obj.Int32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -242,7 +235,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -272,7 +264,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -302,7 +293,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -332,7 +322,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Float32 float32
 	{
 		obj := &obj.Float32
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -362,7 +351,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// Float64 float64
 	{
 		obj := &obj.Float64
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -392,7 +380,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// String1 string
 	{
 		obj := &obj.String1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -422,7 +409,6 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// String2 string
 	{
 		obj := &obj.String2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

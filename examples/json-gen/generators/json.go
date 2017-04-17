@@ -567,7 +567,6 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 			// ` + field.FieldName + ` ` + field.Type.String() + `
 			{
 			    obj := &obj.` + field.FieldName + `
-				_ = obj //FIXME: remove when other Kinds are done
 			`
 
 		if field.OmitEmpty {

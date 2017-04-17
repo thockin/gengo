@@ -33,7 +33,6 @@ func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F k8s.io/gengo/examples/json-gen/output_tests/cross_pkg/struct/a.T
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -91,7 +90,6 @@ func ast_a_T(obj *a.T) (libjson.Value, error) {
 	// F string
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

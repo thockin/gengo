@@ -32,7 +32,6 @@ func ast_empty_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F struct{}
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

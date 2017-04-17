@@ -32,7 +32,6 @@ func ast_strings_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F k8s.io/gengo/examples/json-gen/./output_tests/structs/structs/strings_alias.Inner
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -90,7 +89,6 @@ func ast_strings_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F1 string
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -120,7 +118,6 @@ func ast_strings_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F2 string
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -150,7 +147,6 @@ func ast_strings_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F3 string
 	{
 		obj := &obj.F3
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

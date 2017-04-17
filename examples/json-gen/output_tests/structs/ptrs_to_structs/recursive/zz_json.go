@@ -32,7 +32,6 @@ func ast_recursive_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F k8s.io/gengo/examples/json-gen/./output_tests/structs/ptrs_to_structs/recursive.Inner
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -90,7 +89,6 @@ func ast_recursive_Inner(obj *Inner) (libjson.Value, error) {
 	// Inner *k8s.io/gengo/examples/json-gen/./output_tests/structs/ptrs_to_structs/recursive.Inner
 	{
 		obj := &obj.Inner
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

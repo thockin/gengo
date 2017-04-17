@@ -161,7 +161,6 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	// F1 int32
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -191,7 +190,6 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	// F2 *int32
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -221,7 +219,6 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	// F3 float32
 	{
 		obj := &obj.F3
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -251,7 +248,6 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	// F4 *float32
 	{
 		obj := &obj.F4
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -281,7 +277,6 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	// F5 string
 	{
 		obj := &obj.F5
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -311,7 +306,6 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	// F6 *string
 	{
 		obj := &obj.F6
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -341,7 +335,6 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	// F7 struct{F string}
 	{
 		obj := &obj.F7
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -371,7 +364,6 @@ func ast_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_strin
 	// F8 *struct{F string}
 	{
 		obj := &obj.F8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -509,7 +501,6 @@ func ast_Struct_F_string(obj *struct{ F string }) (libjson.Value, error) {
 	// F string
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

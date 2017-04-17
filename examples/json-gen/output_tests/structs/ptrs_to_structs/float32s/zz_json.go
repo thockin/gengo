@@ -32,7 +32,6 @@ func ast_float32s_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F *struct{F1 float32; F2 float32; F3 float32}
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -138,7 +137,6 @@ func ast_Struct_F1_float32_F2_float32_F3_float32(obj *struct {
 	// F1 float32
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -168,7 +166,6 @@ func ast_Struct_F1_float32_F2_float32_F3_float32(obj *struct {
 	// F2 float32
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -198,7 +195,6 @@ func ast_Struct_F1_float32_F2_float32_F3_float32(obj *struct {
 	// F3 float32
 	{
 		obj := &obj.F3
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

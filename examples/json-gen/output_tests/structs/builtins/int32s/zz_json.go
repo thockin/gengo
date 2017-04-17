@@ -32,7 +32,6 @@ func ast_int32s_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F1 int32
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -62,7 +61,6 @@ func ast_int32s_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F2 int32
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -92,7 +90,6 @@ func ast_int32s_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F3 int32
 	{
 		obj := &obj.F3
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

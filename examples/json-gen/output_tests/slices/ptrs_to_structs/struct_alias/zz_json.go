@@ -122,7 +122,6 @@ func ast_struct_alias_Outer(obj *Outer) (libjson.Value, error) {
 	// F1 k8s.io/gengo/examples/json-gen/./output_tests/slices/ptrs_to_structs/struct_alias.Inner
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -152,7 +151,6 @@ func ast_struct_alias_Outer(obj *Outer) (libjson.Value, error) {
 	// F2 k8s.io/gengo/examples/json-gen/./output_tests/slices/ptrs_to_structs/struct_alias.Inner
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -190,7 +188,6 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F1 int32
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -220,7 +217,6 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F2 *int32
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -250,7 +246,6 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F3 float32
 	{
 		obj := &obj.F3
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -280,7 +275,6 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F4 *float32
 	{
 		obj := &obj.F4
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -310,7 +304,6 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F5 string
 	{
 		obj := &obj.F5
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -340,7 +333,6 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F6 *string
 	{
 		obj := &obj.F6
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -370,7 +362,6 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F7 struct{F string}
 	{
 		obj := &obj.F7
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -400,7 +391,6 @@ func ast_struct_alias_Inner(obj *Inner) (libjson.Value, error) {
 	// F8 *struct{F string}
 	{
 		obj := &obj.F8
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -538,7 +528,6 @@ func ast_Struct_F_string(obj *struct{ F string }) (libjson.Value, error) {
 	// F string
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

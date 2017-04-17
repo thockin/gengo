@@ -140,7 +140,6 @@ func ast_string_alias_Elem(obj *Elem) (libjson.Value, error) {
 	// F string
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 

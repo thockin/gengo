@@ -32,7 +32,6 @@ func ast_strings_Ttest(obj *Ttest) (libjson.Value, error) {
 	// F *struct{F1 string; F2 string; F3 string}
 	{
 		obj := &obj.F
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -138,7 +137,6 @@ func ast_Struct_F1_string_F2_string_F3_string(obj *struct {
 	// F1 string
 	{
 		obj := &obj.F1
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -168,7 +166,6 @@ func ast_Struct_F1_string_F2_string_F3_string(obj *struct {
 	// F2 string
 	{
 		obj := &obj.F2
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
@@ -198,7 +195,6 @@ func ast_Struct_F1_string_F2_string_F3_string(obj *struct {
 	// F3 string
 	{
 		obj := &obj.F3
-		_ = obj //FIXME: remove when other Kinds are done
 
 		empty := func(libjson.Value) bool { return false }
 
