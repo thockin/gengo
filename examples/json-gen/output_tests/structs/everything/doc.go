@@ -23,6 +23,9 @@ type SliceStringAlias []string
 type SlicePtrStringAlias []*string
 
 //+k8s:json-gen=false
+type MapStringStringAlias map[string]string
+
+//+k8s:json-gen=false
 type Inner struct {
 	Byte            byte
 	BytePtr         *byte
@@ -99,53 +102,61 @@ type Inner struct {
 		SliceByte           []byte
 	}
 	StructPtr *struct {
-		Byte                byte
-		BytePtr             *byte
-		ByteAlias           ByteAlias
-		ByteAliasPtr        *ByteAlias
-		Bool                bool
-		BoolPtr             *bool
-		BoolAlias           BoolAlias
-		BoolAliasPtr        *BoolAlias
-		Int8                int8
-		Int8Ptr             *int8
-		Int16               int16
-		Int16Ptr            *int16
-		Int32               int32
-		Int32Ptr            *int32
-		Int32Alias          Int32Alias
-		Int32AliasPtr       *Int32Alias
-		Uint8               uint8
-		Uint8Ptr            *uint8
-		Uint16              uint16
-		Uint16Ptr           *uint16
-		Uint32              uint32
-		Uint32Ptr           *uint32
-		Float32             float32
-		Float32Ptr          *float32
-		Float32Alias        Float32Alias
-		Float32AliasPtr     *Float32Alias
-		Float64             float64
-		Float64Ptr          *float64
-		String              string
-		StringPtr           *string
-		StringAlias         StringAlias
-		StringAliasPtr      *StringAlias
-		Struct              struct{}
-		StructPtr           *Inner
-		SliceString         []string
-		SliceStringAlias    SliceStringAlias
-		SlicePtrString      []*string
-		SliceStringPtrAlias SlicePtrStringAlias
-		SliceStringPtr      *[]string
-		SliceByte           []byte
+		Byte                    byte
+		BytePtr                 *byte
+		ByteAlias               ByteAlias
+		ByteAliasPtr            *ByteAlias
+		Bool                    bool
+		BoolPtr                 *bool
+		BoolAlias               BoolAlias
+		BoolAliasPtr            *BoolAlias
+		Int8                    int8
+		Int8Ptr                 *int8
+		Int16                   int16
+		Int16Ptr                *int16
+		Int32                   int32
+		Int32Ptr                *int32
+		Int32Alias              Int32Alias
+		Int32AliasPtr           *Int32Alias
+		Uint8                   uint8
+		Uint8Ptr                *uint8
+		Uint16                  uint16
+		Uint16Ptr               *uint16
+		Uint32                  uint32
+		Uint32Ptr               *uint32
+		Float32                 float32
+		Float32Ptr              *float32
+		Float32Alias            Float32Alias
+		Float32AliasPtr         *Float32Alias
+		Float64                 float64
+		Float64Ptr              *float64
+		String                  string
+		StringPtr               *string
+		StringAlias             StringAlias
+		StringAliasPtr          *StringAlias
+		Struct                  struct{}
+		StructPtr               *Inner
+		SliceString             []string
+		SliceStringAlias        SliceStringAlias
+		SlicePtrString          []*string
+		SliceStringPtrAlias     SlicePtrStringAlias
+		SliceStringPtr          *[]string
+		SliceByte               []byte
+		MapStringString         map[string]string
+		MapStringStringPtr      *map[string]string
+		MapStringStringAlias    MapStringStringAlias
+		MapStringStringAliasPtr *MapStringStringAlias
 	}
-	SliceString         []string
-	SliceStringAlias    SliceStringAlias
-	SlicePtrString      []*string
-	SliceStringPtrAlias SlicePtrStringAlias
-	SliceStringPtr      *[]string
-	SliceByte           []byte
+	SliceString             []string
+	SliceStringAlias        SliceStringAlias
+	SlicePtrString          []*string
+	SliceStringPtrAlias     SlicePtrStringAlias
+	SliceStringPtr          *[]string
+	SliceByte               []byte
+	MapStringString         map[string]string
+	MapStringStringPtr      *map[string]string
+	MapStringStringAlias    MapStringStringAlias
+	MapStringStringAliasPtr *MapStringStringAlias
 }
 
 //+k8s:json-gen=false
@@ -192,11 +203,15 @@ type Tstd struct {
 			}
 		}
 	}
-	SliceString         []string
-	SliceStringAlias    SliceStringAlias
-	SlicePtrString      []*string
-	SliceStringPtrAlias SlicePtrStringAlias
-	SliceStringPtr      *[]string
+	SliceString             []string
+	SliceStringAlias        SliceStringAlias
+	SlicePtrString          []*string
+	SliceStringPtrAlias     SlicePtrStringAlias
+	SliceStringPtr          *[]string
+	MapStringString         map[string]string
+	MapStringStringPtr      *map[string]string
+	MapStringStringAlias    MapStringStringAlias
+	MapStringStringAliasPtr *MapStringStringAlias
 }
 
 type Ttest Tstd
