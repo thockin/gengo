@@ -49,7 +49,10 @@ func Test_Roundtrip(t *testing.T) {
 const indentStr = ">  "
 
 func fingerprint(obj interface{}) string {
-	c := spew.ConfigState{SortKeys: true}
+	c := spew.ConfigState{
+		SortKeys: true,
+		SpewKeys: true,
+	}
 	return c.Sprintf("%v", obj)
 }
 

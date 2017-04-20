@@ -310,31 +310,29 @@ func hasTextMarshalMethods(t *types.Type) bool {
 	hasUnmarshal := false
 	for mn, mt := range t.Methods {
 		if mn == "MarshalText" {
-			if len(mt.Signature.Parameters) != 0 {
-				glog.Errorf("wrong params")
-				return false
+			if len(mt.Signature.Parameters) == 0 &&
+				len(mt.Signature.Results) == 2 &&
+				mt.Signature.Results[0].Name == nameOfByteSlice &&
+				mt.Signature.Results[1].Name == nameOfError {
+				hasMarshal = true
 			}
-			if len(mt.Signature.Results) != 2 ||
-				mt.Signature.Results[0].Name != nameOfByteSlice ||
-				mt.Signature.Results[1].Name != nameOfError {
-				glog.Errorf("wrong returns")
-				return false
-			}
-			hasMarshal = true
 		} else if mn == "UnmarshalText" {
-			if len(mt.Signature.Parameters) != 1 || mt.Signature.Parameters[0].Name != nameOfByteSlice {
-				glog.Errorf("wrong params")
-				return false
+			if len(mt.Signature.Parameters) == 1 &&
+				mt.Signature.Parameters[0].Name == nameOfByteSlice &&
+				len(mt.Signature.Results) == 1 &&
+				mt.Signature.Results[0].Name == nameOfError {
+				hasUnmarshal = true
 			}
-			if len(mt.Signature.Results) != 1 || mt.Signature.Results[0].Name != nameOfError {
-				glog.Errorf("wrong returns")
-				return false
-			}
-			hasUnmarshal = true
 		}
 		if hasMarshal && hasUnmarshal {
 			return true
 		}
+	}
+	if hasMarshal {
+		panic("type " + t.String() + " has MarshalText method but not UnmarshalText")
+	}
+	if hasUnmarshal {
+		panic("type " + t.String() + " has UnmarshalText method but not MarshalText")
 	}
 	return false
 }
@@ -860,7 +858,6 @@ func rootType(t *types.Type) *types.Type {
 }
 
 func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) string {
-	//FIXME: need root Type here and elsewhere?
 	result := ""
 
 	// Map keys must be derived from string, encoding.TextMarshaler, or integral types.
@@ -873,27 +870,25 @@ func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) stri
 				return ` + formatName(c, "raw", t.Key) + `(s), nil
 			}
 			`
-		/* FIXME: need an example of this - can't make it work
-		} else if hasTextMarshalMethods(t.Key) {
-			glog.V(3).Infof("type %v has MarshalText() and UnmarshalText() methods", t)
-			g.imports.Add("fmt")
-			result += `
-				keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
-					if b, err := k.MarshalText(); err != nil {
-						return "", fmt.Errorf("failed %T.MarshalText: %v", k, err)
-					} else {
-						return string(b), nil
-					}
+	} else if hasTextMarshalMethods(t.Key) {
+		glog.V(3).Infof("type %v has MarshalText() and UnmarshalText() methods", t)
+		g.imports.Add("fmt")
+		result += `
+			keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+				if b, err := k.MarshalText(); err != nil {
+					return "", fmt.Errorf("failed %T.MarshalText: %v", k, err)
+				} else {
+					return string(b), nil
 				}
-				keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
-					var k ` + formatName(c, "raw", t.Key) + `
-					if err := k.UnmarshalText([]byte(s)); err != nil {
-						return k, fmt.Errorf("failed %T.UnmarshalText: %v", k, err)
-					}
-					return k, nil
+			}
+			keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+				var k ` + formatName(c, "raw", t.Key) + `
+				if err := k.UnmarshalText([]byte(s)); err != nil {
+					return k, fmt.Errorf("failed %T.UnmarshalText: %v", k, err)
 				}
-				`
-		*/
+				return k, nil
+			}
+			`
 	} else {
 		switch rootType(t.Key) {
 		case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
