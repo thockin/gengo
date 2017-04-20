@@ -22,12 +22,11 @@ package test
 
 import (
 	bytes "bytes"
-	fmt "fmt"
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	jv, err := ast_text_marshal_Ttest(&obj)
+	jv, err := ast_text_marshal_string_alias_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -39,33 +38,25 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	jv, err := ast_text_marshal_Ttest(obj)
+	jv, err := ast_text_marshal_string_alias_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return jv.Parse(data)
 }
 
-func ast_text_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Map_text_marshal_KeyType_To_string((*map[KeyType]string)(obj))
+func ast_text_marshal_string_alias_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Map_text_marshal_string_alias_KeyType_To_string((*map[KeyType]string)(obj))
 }
 
-func ast_Map_text_marshal_KeyType_To_string(obj *map[KeyType]string) (libjson.Value, error) {
+func ast_Map_text_marshal_string_alias_KeyType_To_string(obj *map[KeyType]string) (libjson.Value, error) {
 
 	keyToString := func(k KeyType) (string, error) {
-		if b, err := k.MarshalText(); err != nil {
-			return "", fmt.Errorf("failed %T.MarshalText: %v", k, err)
-		} else {
-			return string(b), nil
-		}
+		return string(k), nil
 	}
 
 	keyFromString := func(s string) (KeyType, error) {
-		var k KeyType
-		if err := k.UnmarshalText([]byte(s)); err != nil {
-			return k, fmt.Errorf("failed %T.UnmarshalText: %v", k, err)
-		}
-		return k, nil
+		return KeyType(s), nil
 	}
 
 	var keys []KeyType

@@ -27,7 +27,7 @@ import (
 )
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	jv, err := ast_text_marshal_alias_Ttest(&obj)
+	jv, err := ast_text_marshal_struct_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -39,18 +39,18 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 }
 
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	jv, err := ast_text_marshal_alias_Ttest(obj)
+	jv, err := ast_text_marshal_struct_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return jv.Parse(data)
 }
 
-func ast_text_marshal_alias_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Map_text_marshal_alias_KeyType_To_string((*map[KeyType]string)(obj))
+func ast_text_marshal_struct_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Map_text_marshal_struct_KeyType_To_string((*map[KeyType]string)(obj))
 }
 
-func ast_Map_text_marshal_alias_KeyType_To_string(obj *map[KeyType]string) (libjson.Value, error) {
+func ast_Map_text_marshal_struct_KeyType_To_string(obj *map[KeyType]string) (libjson.Value, error) {
 
 	keyToString := func(k KeyType) (string, error) {
 		if b, err := k.MarshalText(); err != nil {
