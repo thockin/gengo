@@ -26,10 +26,6 @@ import (
 	strconv "strconv"
 )
 
-func ast_bool_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Map_uint8_To_bool((*map[uint8]bool)(obj))
-}
-
 func (obj Ttest) MarshalJSON() ([]byte, error) {
 	jv, err := ast_bool_Ttest(&obj)
 	if err != nil {
@@ -48,6 +44,10 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return jv.Parse(data)
+}
+
+func ast_bool_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Map_uint8_To_bool((*map[uint8]bool)(obj))
 }
 
 func ast_Map_uint8_To_bool(obj *map[uint8]bool) (libjson.Value, error) {

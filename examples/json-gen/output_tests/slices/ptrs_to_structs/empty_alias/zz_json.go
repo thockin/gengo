@@ -25,10 +25,6 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_empty_alias_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Slice_Pointer_empty_alias_Elem((*[]*Elem)(obj))
-}
-
 func (obj Ttest) MarshalJSON() ([]byte, error) {
 	jv, err := ast_empty_alias_Ttest(&obj)
 	if err != nil {
@@ -47,6 +43,10 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return jv.Parse(data)
+}
+
+func ast_empty_alias_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Slice_Pointer_empty_alias_Elem((*[]*Elem)(obj))
 }
 
 func ast_Slice_Pointer_empty_alias_Elem(obj *[]*Elem) (libjson.Value, error) {

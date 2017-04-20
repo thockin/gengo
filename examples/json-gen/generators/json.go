@@ -373,8 +373,8 @@ func (g *jsonGenerator) GenerateType(c *generator.Context, t *types.Type, w io.W
 	}
 
 	sw := generator.NewSnippetWriter(w, c, "$", "$")
-	g.emitAST(t, c, sw)
 	g.emitMethods(t, sw)
+	g.emitAST(t, c, sw)
 	return sw.Error()
 }
 

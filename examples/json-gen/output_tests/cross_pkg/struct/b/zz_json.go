@@ -26,6 +26,26 @@ import (
 	a "k8s.io/gengo/examples/json-gen/output_tests/cross_pkg/struct/a"
 )
 
+func (obj Ttest) MarshalJSON() ([]byte, error) {
+	jv, err := ast_b_Ttest(&obj)
+	if err != nil {
+		return nil, err
+	}
+	var buf bytes.Buffer
+	if err := jv.Render(&buf); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
+}
+
+func (obj *Ttest) UnmarshalJSON(data []byte) error {
+	jv, err := ast_b_Ttest(obj)
+	if err != nil {
+		return err
+	}
+	return jv.Parse(data)
+}
+
 func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	result := libjson.NewObject()
@@ -61,26 +81,6 @@ func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	return result, nil
 
-}
-
-func (obj Ttest) MarshalJSON() ([]byte, error) {
-	jv, err := ast_b_Ttest(&obj)
-	if err != nil {
-		return nil, err
-	}
-	var buf bytes.Buffer
-	if err := jv.Render(&buf); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}
-
-func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	jv, err := ast_b_Ttest(obj)
-	if err != nil {
-		return err
-	}
-	return jv.Parse(data)
 }
 
 func ast_a_T(obj *a.T) (libjson.Value, error) {

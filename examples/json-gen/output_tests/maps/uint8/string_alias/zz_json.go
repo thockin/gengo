@@ -26,10 +26,6 @@ import (
 	strconv "strconv"
 )
 
-func ast_string_alias_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Map_uint8_To_string_alias_StringAlias((*map[uint8]StringAlias)(obj))
-}
-
 func (obj Ttest) MarshalJSON() ([]byte, error) {
 	jv, err := ast_string_alias_Ttest(&obj)
 	if err != nil {
@@ -48,6 +44,10 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return jv.Parse(data)
+}
+
+func ast_string_alias_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Map_uint8_To_string_alias_StringAlias((*map[uint8]StringAlias)(obj))
 }
 
 func ast_Map_uint8_To_string_alias_StringAlias(obj *map[uint8]StringAlias) (libjson.Value, error) {

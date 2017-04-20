@@ -25,19 +25,6 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_mixed_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Slice_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string((*[]struct {
-		F1 int32
-		F2 *int32
-		F3 float32
-		F4 *float32
-		F5 string
-		F6 *string
-		F7 struct{ F string }
-		F8 *struct{ F string }
-	})(obj))
-}
-
 func (obj Ttest) MarshalJSON() ([]byte, error) {
 	jv, err := ast_mixed_Ttest(&obj)
 	if err != nil {
@@ -56,6 +43,19 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return jv.Parse(data)
+}
+
+func ast_mixed_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Slice_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string((*[]struct {
+		F1 int32
+		F2 *int32
+		F3 float32
+		F4 *float32
+		F5 string
+		F6 *string
+		F7 struct{ F string }
+		F8 *struct{ F string }
+	})(obj))
 }
 
 func ast_Slice_Struct_F1_int32_F2_Pointer_int32_F3_float32_F4_Pointer_float32_F5_string_F6_Pointer_string_F7_Struct_F_string_F8_Pointer_Struct_F_string(obj *[]struct {

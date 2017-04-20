@@ -25,10 +25,6 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_ptr_struct_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Map_string_To_Pointer_ptr_struct_Struct((*map[string]*Struct)(obj))
-}
-
 func (obj Ttest) MarshalJSON() ([]byte, error) {
 	jv, err := ast_ptr_struct_Ttest(&obj)
 	if err != nil {
@@ -47,6 +43,10 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return jv.Parse(data)
+}
+
+func ast_ptr_struct_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Map_string_To_Pointer_ptr_struct_Struct((*map[string]*Struct)(obj))
 }
 
 func ast_Map_string_To_Pointer_ptr_struct_Struct(obj *map[string]*Struct) (libjson.Value, error) {

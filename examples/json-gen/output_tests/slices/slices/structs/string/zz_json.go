@@ -25,13 +25,6 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_string_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_Slice_Slice_Struct_F1_string_F2_string((*[][]struct {
-		F1 string
-		F2 string
-	})(obj))
-}
-
 func (obj Ttest) MarshalJSON() ([]byte, error) {
 	jv, err := ast_string_Ttest(&obj)
 	if err != nil {
@@ -50,6 +43,13 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return jv.Parse(data)
+}
+
+func ast_string_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_Slice_Slice_Struct_F1_string_F2_string((*[][]struct {
+		F1 string
+		F2 string
+	})(obj))
 }
 
 func ast_Slice_Slice_Struct_F1_string_F2_string(obj *[][]struct {

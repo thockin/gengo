@@ -25,10 +25,6 @@ import (
 	libjson "k8s.io/gengo/examples/json-gen/libjson"
 )
 
-func ast_byte_alias_Ttest(obj *Ttest) (libjson.Value, error) {
-	return ast_byte((*byte)(obj))
-}
-
 func (obj Ttest) MarshalJSON() ([]byte, error) {
 	jv, err := ast_byte_alias_Ttest(&obj)
 	if err != nil {
@@ -47,6 +43,10 @@ func (obj *Ttest) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return jv.Parse(data)
+}
+
+func ast_byte_alias_Ttest(obj *Ttest) (libjson.Value, error) {
+	return ast_byte((*byte)(obj))
 }
 
 func ast_byte(obj *byte) (libjson.Value, error) {
