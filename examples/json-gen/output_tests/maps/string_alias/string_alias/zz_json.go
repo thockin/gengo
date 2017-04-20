@@ -54,6 +54,7 @@ func ast_Map_string_alias_StringAlias_To_string_alias_StringAlias(obj *map[Strin
 	keyToString := func(k StringAlias) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (StringAlias, error) {
 		return StringAlias(s), nil
 	}

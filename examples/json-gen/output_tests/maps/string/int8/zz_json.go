@@ -54,6 +54,7 @@ func ast_Map_string_To_int8(obj *map[string]int8) (libjson.Value, error) {
 	keyToString := func(k string) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (string, error) {
 		return string(s), nil
 	}

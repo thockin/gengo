@@ -54,6 +54,7 @@ func ast_Map_bool_StringAlias_To_bool(obj *map[StringAlias]bool) (libjson.Value,
 	keyToString := func(k StringAlias) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (StringAlias, error) {
 		return StringAlias(s), nil
 	}

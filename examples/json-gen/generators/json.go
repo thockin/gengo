@@ -265,11 +265,10 @@ func isRootedUnder(pkg string, roots []string) bool {
 var nameOfByteSlice = types.Name{Name: "[]byte"}
 var nameOfError = types.Name{Name: "error"}
 
-// hasMarshalMethod returns true if an appropriate MarshalJSON() method is
-// defined for the given type.
-func hasMarshalMethod(t *types.Type) bool {
+// hasMarshalMethod looks for a method with the same signature as MarshalJSON.
+func hasMarshalMethod(t *types.Type, name string) bool {
 	for mn, mt := range t.Methods {
-		if mn != "MarshalJSON" {
+		if mn != name {
 			continue
 		}
 		if len(mt.Signature.Parameters) != 0 {
@@ -285,11 +284,10 @@ func hasMarshalMethod(t *types.Type) bool {
 	return false
 }
 
-// hasUnmarshalMethod returns true if an appropriate UnmarshalJSON() method is
-// defined for the given type.
-func hasUnmarshalMethod(t *types.Type) bool {
+// hasUnmarshalMethod looks for a method with the same signature as UnmarshalJSON.
+func hasUnmarshalMethod(t *types.Type, name string) bool {
 	for mn, mt := range t.Methods {
-		if mn != "UnmarshalJSON" {
+		if mn != name {
 			continue
 		}
 		if len(mt.Signature.Parameters) != 1 || mt.Signature.Parameters[0].Name != nameOfByteSlice {
@@ -303,38 +301,28 @@ func hasUnmarshalMethod(t *types.Type) bool {
 	return false
 }
 
-// hasTextMarshalMethods returns true if appropriate MarshalText() and
-// UnmarshalText() methods are defined for the given type.
-func hasTextMarshalMethods(t *types.Type) bool {
-	hasMarshal := false
-	hasUnmarshal := false
-	for mn, mt := range t.Methods {
-		if mn == "MarshalText" {
-			if len(mt.Signature.Parameters) == 0 &&
-				len(mt.Signature.Results) == 2 &&
-				mt.Signature.Results[0].Name == nameOfByteSlice &&
-				mt.Signature.Results[1].Name == nameOfError {
-				hasMarshal = true
-			}
-		} else if mn == "UnmarshalText" {
-			if len(mt.Signature.Parameters) == 1 &&
-				mt.Signature.Parameters[0].Name == nameOfByteSlice &&
-				len(mt.Signature.Results) == 1 &&
-				mt.Signature.Results[0].Name == nameOfError {
-				hasUnmarshal = true
-			}
-		}
-		if hasMarshal && hasUnmarshal {
-			return true
-		}
-	}
-	if hasMarshal {
-		panic("type " + t.String() + " has MarshalText method but not UnmarshalText")
-	}
-	if hasUnmarshal {
-		panic("type " + t.String() + " has UnmarshalText method but not MarshalText")
-	}
-	return false
+// hasJSONMarshalMethod returns true if an appropriate MarshalJSON() method is
+// defined for the given type.
+func hasJSONMarshalMethod(t *types.Type) bool {
+	return hasMarshalMethod(t, "MarshalJSON")
+}
+
+// hasJSONUnmarshalMethod returns true if an appropriate UnmarshalJSON() method is
+// defined for the given type.
+func hasJSONUnmarshalMethod(t *types.Type) bool {
+	return hasUnmarshalMethod(t, "UnmarshalJSON")
+}
+
+// hasTextMarshalMethod returns true if an appropriate MarshalText() method is
+// defined for the given type.
+func hasTextMarshalMethod(t *types.Type) bool {
+	return hasMarshalMethod(t, "MarshalText")
+}
+
+// hasTextUnmarshalMethod returns true if an appropriate UnmarshalText() method is
+// defined for the given type.
+func hasTextUnmarshalMethod(t *types.Type) bool {
+	return hasUnmarshalMethod(t, "UnmarshalText")
 }
 
 func (g *jsonGenerator) isOtherPackage(importLine string) bool {
@@ -421,7 +409,7 @@ func (g *jsonGenerator) emitMethods(t *types.Type, sw *generator.SnippetWriter) 
 		glog.Errorf("not emitting methods for pointer type %v", t)
 		return
 	}
-	if !hasMarshalMethod(t) {
+	if !hasJSONMarshalMethod(t) {
 		g.imports.Add("bytes")
 		sw.Do(`
 		func (obj $.type|raw$) MarshalJSON() ([]byte, error) {
@@ -437,7 +425,7 @@ func (g *jsonGenerator) emitMethods(t *types.Type, sw *generator.SnippetWriter) 
 		}
 		`, argsFromType(t))
 	}
-	if !hasUnmarshalMethod(t) {
+	if !hasJSONUnmarshalMethod(t) {
 		g.imports.Add("bytes")
 		sw.Do(`
 		func (obj *$.type|raw$) UnmarshalJSON(data []byte) error {
@@ -461,7 +449,7 @@ func formatName(c *generator.Context, namer string, t *types.Type) string {
 func (g *jsonGenerator) emitBodyFor(t *types.Type, c *generator.Context) string {
 	/*
 		// If the type implements Marshaler on its own, use that.
-		if hasMarshalMethod(t) {
+		if hasJSONMarshalMethod(t) {
 			glog.V(3).Infof("type %v has a MarshalJSON() method", t)
 			g.imports.Add("fmt")
 			return `
@@ -860,64 +848,8 @@ func rootType(t *types.Type) *types.Type {
 func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) string {
 	result := ""
 
-	// Map keys must be derived from string, encoding.TextMarshaler, or integral types.
-	if rootType(t.Key) == types.String {
-		result += `
-			keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
-				return string(k), nil
-			}
-			keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
-				return ` + formatName(c, "raw", t.Key) + `(s), nil
-			}
-			`
-	} else if hasTextMarshalMethods(t.Key) {
-		glog.V(3).Infof("type %v has MarshalText() and UnmarshalText() methods", t)
-		g.imports.Add("fmt")
-		result += `
-			keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
-				if b, err := k.MarshalText(); err != nil {
-					return "", fmt.Errorf("failed %T.MarshalText: %v", k, err)
-				} else {
-					return string(b), nil
-				}
-			}
-			keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
-				var k ` + formatName(c, "raw", t.Key) + `
-				if err := k.UnmarshalText([]byte(s)); err != nil {
-					return k, fmt.Errorf("failed %T.UnmarshalText: %v", k, err)
-				}
-				return k, nil
-			}
-			`
-	} else {
-		switch rootType(t.Key) {
-		case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
-			g.imports.Add("strconv")
-			result += `
-				keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
-					return strconv.FormatInt(int64(k), 10), nil
-				}
-				keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
-					i, err := strconv.ParseInt(s, 10, 64)
-					return ` + formatName(c, "raw", t.Key) + `(i), err
-				}
-				`
-		case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr:
-			g.imports.Add("strconv")
-			result += `
-				keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
-					return strconv.FormatUint(uint64(k), 10), nil
-				}
-				keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
-					i, err := strconv.ParseUint(s, 10, 64)
-					return ` + formatName(c, "raw", t.Key) + `(i), err
-				}
-				`
-		default:
-			// If we hit this, the user really needs to know.
-			panic("map key " + t.Key.String() + " is not string, int, uint, or TextMarshaler")
-		}
-	}
+	result += g.emitKeyToString(t, c)
+	result += g.emitKeyFromString(t, c)
 
 	return result + `
 		var keys []` + formatName(c, "raw", t.Key) + `
@@ -988,6 +920,94 @@ func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) stri
 		}
 		return libjson.NewNullable(jv, setNull), nil
 		`
+}
+
+func (g *jsonGenerator) emitKeyToString(t *types.Type, c *generator.Context) string {
+	// Map keys must be derived from string, encoding.TextMarshaler, or integral types.
+	if hasTextMarshalMethod(t.Key) {
+		glog.V(3).Infof("type %v has MarshalText() method", t)
+		g.imports.Add("fmt")
+		return `
+			keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+				if b, err := k.MarshalText(); err != nil {
+					return "", fmt.Errorf("failed %T.MarshalText: %v", k, err)
+				} else {
+					return string(b), nil
+				}
+			}
+			`
+	} else if rootType(t.Key) == types.String {
+		return `
+			keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+				return string(k), nil
+			}
+			`
+	} else {
+		switch rootType(t.Key) {
+		case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
+			g.imports.Add("strconv")
+			return `
+				keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+					return strconv.FormatInt(int64(k), 10), nil
+				}
+				`
+		case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr:
+			g.imports.Add("strconv")
+			return `
+				keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
+					return strconv.FormatUint(uint64(k), 10), nil
+				}
+				`
+		default:
+			// If we hit this, the user really needs to know.
+			panic("map key " + t.Key.String() + " is not string, int, uint, or TextMarshaler")
+		}
+	}
+}
+
+func (g *jsonGenerator) emitKeyFromString(t *types.Type, c *generator.Context) string {
+	// Map keys must be derived from string, encoding.TextUnmarshaler, or integral types.
+	if hasTextUnmarshalMethod(t.Key) {
+		glog.V(3).Infof("type %v has UnmarshalText() methods", t)
+		g.imports.Add("fmt")
+		return `
+			keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+				var k ` + formatName(c, "raw", t.Key) + `
+				if err := k.UnmarshalText([]byte(s)); err != nil {
+					return k, fmt.Errorf("failed %T.UnmarshalText: %v", k, err)
+				}
+				return k, nil
+			}
+			`
+	} else if rootType(t.Key) == types.String {
+		return `
+			keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+				return ` + formatName(c, "raw", t.Key) + `(s), nil
+			}
+			`
+	} else {
+		switch rootType(t.Key) {
+		case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
+			g.imports.Add("strconv")
+			return `
+				keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+					i, err := strconv.ParseInt(s, 10, 64)
+					return ` + formatName(c, "raw", t.Key) + `(i), err
+				}
+				`
+		case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr:
+			g.imports.Add("strconv")
+			return `
+				keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
+					i, err := strconv.ParseUint(s, 10, 64)
+					return ` + formatName(c, "raw", t.Key) + `(i), err
+				}
+				`
+		default:
+			// If we hit this, the user really needs to know.
+			panic("map key " + t.Key.String() + " is not string, int, uint, or TextUnmarshaler")
+		}
+	}
 }
 
 func (g *jsonGenerator) Finalize(c *generator.Context, w io.Writer) error {

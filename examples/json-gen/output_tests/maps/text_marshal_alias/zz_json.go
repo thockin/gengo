@@ -59,6 +59,7 @@ func ast_Map_text_marshal_alias_KeyType_To_string(obj *map[KeyType]string) (libj
 			return string(b), nil
 		}
 	}
+
 	keyFromString := func(s string) (KeyType, error) {
 		var k KeyType
 		if err := k.UnmarshalText([]byte(s)); err != nil {

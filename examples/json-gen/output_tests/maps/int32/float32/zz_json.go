@@ -55,6 +55,7 @@ func ast_Map_int32_To_float32(obj *map[int32]float32) (libjson.Value, error) {
 	keyToString := func(k int32) (string, error) {
 		return strconv.FormatInt(int64(k), 10), nil
 	}
+
 	keyFromString := func(s string) (int32, error) {
 		i, err := strconv.ParseInt(s, 10, 64)
 		return int32(i), err

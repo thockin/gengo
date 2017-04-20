@@ -55,6 +55,7 @@ func ast_Map_uint8_To_string_alias_StringAlias(obj *map[uint8]StringAlias) (libj
 	keyToString := func(k uint8) (string, error) {
 		return strconv.FormatUint(uint64(k), 10), nil
 	}
+
 	keyFromString := func(s string) (uint8, error) {
 		i, err := strconv.ParseUint(s, 10, 64)
 		return uint8(i), err

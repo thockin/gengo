@@ -54,6 +54,7 @@ func ast_Map_string_StringAlias_To_string(obj *map[StringAlias]string) (libjson.
 	keyToString := func(k StringAlias) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (StringAlias, error) {
 		return StringAlias(s), nil
 	}

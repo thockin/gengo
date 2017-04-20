@@ -54,6 +54,7 @@ func ast_Map_float64_StringAlias_To_float64(obj *map[StringAlias]float64) (libjs
 	keyToString := func(k StringAlias) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (StringAlias, error) {
 		return StringAlias(s), nil
 	}

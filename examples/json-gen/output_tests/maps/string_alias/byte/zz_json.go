@@ -54,6 +54,7 @@ func ast_Map_byte_StringAlias_To_byte(obj *map[StringAlias]byte) (libjson.Value,
 	keyToString := func(k StringAlias) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (StringAlias, error) {
 		return StringAlias(s), nil
 	}

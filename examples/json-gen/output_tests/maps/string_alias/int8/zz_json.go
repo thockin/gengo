@@ -54,6 +54,7 @@ func ast_Map_int8_StringAlias_To_int8(obj *map[StringAlias]int8) (libjson.Value,
 	keyToString := func(k StringAlias) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (StringAlias, error) {
 		return StringAlias(s), nil
 	}

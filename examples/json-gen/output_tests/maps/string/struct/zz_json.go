@@ -54,6 +54,7 @@ func ast_Map_string_To_struct_Struct(obj *map[string]Struct) (libjson.Value, err
 	keyToString := func(k string) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (string, error) {
 		return string(s), nil
 	}
@@ -422,6 +423,7 @@ func ast_Map_string_To_string(obj *map[string]string) (libjson.Value, error) {
 	keyToString := func(k string) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (string, error) {
 		return string(s), nil
 	}

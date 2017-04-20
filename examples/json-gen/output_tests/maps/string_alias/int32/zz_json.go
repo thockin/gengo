@@ -54,6 +54,7 @@ func ast_Map_int32_StringAlias_To_int32(obj *map[StringAlias]int32) (libjson.Val
 	keyToString := func(k StringAlias) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (StringAlias, error) {
 		return StringAlias(s), nil
 	}

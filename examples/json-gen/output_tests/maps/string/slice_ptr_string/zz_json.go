@@ -54,6 +54,7 @@ func ast_Map_string_To_Slice_Pointer_string(obj *map[string][]*string) (libjson.
 	keyToString := func(k string) (string, error) {
 		return string(k), nil
 	}
+
 	keyFromString := func(s string) (string, error) {
 		return string(s), nil
 	}
