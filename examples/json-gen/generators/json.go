@@ -349,6 +349,7 @@ func argsFromType(t *types.Type) generator.Args {
 }
 
 func (g *jsonGenerator) Init(c *generator.Context, w io.Writer) error {
+	glog.V(0).Infof("processing %s", g.targetPackage)
 	g.imports.Add("k8s.io/gengo/examples/json-gen/libjson")
 	return nil
 }
@@ -410,6 +411,7 @@ func (g *jsonGenerator) emitMethods(t *types.Type, sw *generator.SnippetWriter) 
 		return
 	}
 	if !hasJSONMarshalMethod(t) {
+		glog.V(0).Infof("emitting %s.MarshalJSON()", t.Name.Name)
 		g.imports.Add("bytes")
 		sw.Do(`
 		func (obj $.type|raw$) MarshalJSON() ([]byte, error) {
@@ -426,6 +428,7 @@ func (g *jsonGenerator) emitMethods(t *types.Type, sw *generator.SnippetWriter) 
 		`, argsFromType(t))
 	}
 	if !hasJSONUnmarshalMethod(t) {
+		glog.V(0).Infof("emitting %s.UnmarshalJSON()", t.Name.Name)
 		g.imports.Add("bytes")
 		sw.Do(`
 		func (obj *$.type|raw$) UnmarshalJSON(data []byte) error {
