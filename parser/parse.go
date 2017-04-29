@@ -567,6 +567,14 @@ func (b *Builder) walkType(u types.Universe, useName *types.Name, in tc.Type) *t
 				CommentLines: splitLines(b.priorCommentLines(f.Pos(), 1).Text()),
 			}
 			out.Members = append(out.Members, m)
+			if f.Anonymous() {
+				for mn, mt := range m.Type.Methods {
+					if out.Methods == nil {
+						out.Methods = map[string]*types.Type{}
+					}
+					out.Methods[mn] = mt
+				}
+			}
 		}
 		return out
 	case *tc.Map:
