@@ -36,7 +36,6 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 	}
 	return buf.Bytes(), nil
 }
-
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
 	jv, err := ast_uint8_Ttest(obj)
 	if err != nil {

@@ -410,35 +410,41 @@ func (g *jsonGenerator) emitMethods(t *types.Type, sw *generator.SnippetWriter) 
 		glog.Errorf("not emitting methods for pointer type %v", t)
 		return
 	}
-	if !hasJSONMarshalMethod(t) {
-		glog.V(0).Infof("emitting %s.MarshalJSON()", t.Name.Name)
+	// If the type has both JSON methods, do not emit our own.
+	if m, u := hasJSONMarshalMethod(t), hasJSONUnmarshalMethod(t); m || u {
+		// We don't handle asymmetric types for now.  Someone show me a
+		// use-case.
+		if m && !u {
+			//FIXME: better to return
+			panic(fmt.Sprintf("type %v has a MarshalJSON method but not UnmarshalJSON"))
+		}
+		if !m && u {
+			//FIXME: better to return
+			panic(fmt.Sprintf("type %v has an UnmarshalJSON method but not MarshalJSON"))
+		}
+	} else {
+		glog.V(0).Infof("emitting JSON methods for %s", t.Name.Name)
 		g.imports.Add("bytes")
 		sw.Do(`
-		func (obj $.type|raw$) MarshalJSON() ([]byte, error) {
-			jv, err := ast_$.type|public$(&obj)
-			if err != nil {
-				return nil, err
+			func (obj $.type|raw$) MarshalJSON() ([]byte, error) {
+				jv, err := ast_$.type|public$(&obj)
+				if err != nil {
+					return nil, err
+				}
+				var buf bytes.Buffer
+				if err := jv.Render(&buf); err != nil {
+					return nil, err
+				}
+				return buf.Bytes(), nil
 			}
-			var buf bytes.Buffer
-			if err := jv.Render(&buf); err != nil {
-				return nil, err
+			func (obj *$.type|raw$) UnmarshalJSON(data []byte) error {
+				jv, err := ast_$.type|public$(obj)
+				if err != nil {
+					return err
+				}
+				return jv.Parse(data)
 			}
-			return buf.Bytes(), nil
-		}
-		`, argsFromType(t))
-	}
-	if !hasJSONUnmarshalMethod(t) {
-		glog.V(0).Infof("emitting %s.UnmarshalJSON()", t.Name.Name)
-		g.imports.Add("bytes")
-		sw.Do(`
-		func (obj *$.type|raw$) UnmarshalJSON(data []byte) error {
-			jv, err := ast_$.type|public$(obj)
-			if err != nil {
-				return err
-			}
-			return jv.Parse(data)
-		}
-		`, argsFromType(t))
+			`, argsFromType(t))
 	}
 }
 
@@ -450,19 +456,23 @@ func formatName(c *generator.Context, namer string, t *types.Type) string {
 // emitBodyFor emits a block of code which returns a libjson.Value
 // representing an instance of t, or an error.
 func (g *jsonGenerator) emitBodyFor(t *types.Type, c *generator.Context) string {
-	/*
-		// If the type implements Marshaler on its own, use that.
-		if hasJSONMarshalMethod(t) {
-			glog.V(3).Infof("type %v has a MarshalJSON() method", t)
-			g.imports.Add("fmt")
-			return `
-				if b, err := obj.MarshalJSON(); err != nil {
-					return nil, fmt.Errorf("failed %T.MarshalJSON: %v", obj, err)
-				} else {
-					return libjson.Raw(string(b)), nil
-				}
-				`
+	// If the type implements json.Marshaler and json.Unmarshaler on its own,
+	// use them.
+	if m, u := hasJSONMarshalMethod(t), hasJSONUnmarshalMethod(t); m || u {
+		if m && !u {
+			//FIXME: better to return
+			panic(fmt.Sprintf("type %v has a MarshalJSON method but not UnmarshalJSON"))
 		}
+		if !m && u {
+			//FIXME: better to return
+			panic(fmt.Sprintf("type %v has an UnmarshalJSON method but not MarshalJSON"))
+		}
+		glog.V(3).Infof("type %v has JSON methods", t)
+		return `
+			return libjson.NewRaw(obj), nil
+			`
+	}
+	/*
 		if hasTextMarshalMethod(t) {
 			glog.V(3).Infof("type %v has a MarshalText() method", t)
 			return `
@@ -928,7 +938,7 @@ func (g *jsonGenerator) emitBodyForMap(t *types.Type, c *generator.Context) stri
 func (g *jsonGenerator) emitKeyToString(t *types.Type, c *generator.Context) string {
 	// Map keys must be derived from string, encoding.TextMarshaler, or integral types.
 	if hasTextMarshalMethod(t.Key) {
-		glog.V(3).Infof("type %v has MarshalText() method", t)
+		glog.V(3).Infof("type %v has a MarshalText() method", t)
 		g.imports.Add("fmt")
 		return `
 			keyToString := func(k ` + formatName(c, "raw", t.Key) + `) (string, error) {
@@ -963,7 +973,7 @@ func (g *jsonGenerator) emitKeyToString(t *types.Type, c *generator.Context) str
 				`
 		default:
 			// If we hit this, the user really needs to know.
-			panic("map key " + t.Key.String() + " is not string, int, uint, or TextMarshaler")
+			panic("map key " + t.Key.String() + " is not string, int, uint, or encoding.TextMarshaler")
 		}
 	}
 }
@@ -971,7 +981,7 @@ func (g *jsonGenerator) emitKeyToString(t *types.Type, c *generator.Context) str
 func (g *jsonGenerator) emitKeyFromString(t *types.Type, c *generator.Context) string {
 	// Map keys must be derived from string, encoding.TextUnmarshaler, or integral types.
 	if hasTextUnmarshalMethod(t.Key) {
-		glog.V(3).Infof("type %v has UnmarshalText() methods", t)
+		glog.V(3).Infof("type %v has an UnmarshalText() method", t)
 		g.imports.Add("fmt")
 		return `
 			keyFromString := func(s string) (` + formatName(c, "raw", t.Key) + `, error) {
@@ -1008,7 +1018,7 @@ func (g *jsonGenerator) emitKeyFromString(t *types.Type, c *generator.Context) s
 				`
 		default:
 			// If we hit this, the user really needs to know.
-			panic("map key " + t.Key.String() + " is not string, int, uint, or TextUnmarshaler")
+			panic("map key " + t.Key.String() + " is not string, int, uint, or encoding.TextUnmarshaler")
 		}
 	}
 }

@@ -17,125 +17,497 @@ limitations under the License.
 package libjson
 
 import (
-	"bytes"
-	"math"
 	"testing"
 )
 
-func Test_Render(t *testing.T) {
+func Test_advanceWhitespace(t *testing.T) {
 	testCases := []struct {
-		in    Value
-		out   string
-		empty bool
-		err   bool
-	}{
-		{
-			in:    String(""),
-			out:   `""`,
-			empty: true,
-		},
-		{
-			in:    String("abc123"),
-			out:   `"abc123"`,
-			empty: false,
-		},
-		{
-			in:    String("abc 123"),
-			out:   `"abc 123"`,
-			empty: false,
-		},
-		{
-			in:    String("abc<>&\\\n\r\t\u2028\u2029\u2030\x00\x1f"),
-			out:   "\"abc\\u003c\\u003e\\u0026\\\\\\n\\r\\t\\u2028\\u2029\u2030\\u0000\\u001f\"",
-			empty: false,
-		},
-		{
-			in:    Number(0),
-			out:   "0",
-			empty: true,
-		},
-		{
-			in:    Number(1),
-			out:   "1",
-			empty: false,
-		},
-		{
-			in:    Number(math.Exp2(53) - 1),
-			out:   "9007199254740991",
-			empty: false,
-		},
-		{
-			in:    Number(-math.Exp2(53)),
-			out:   "-9007199254740992",
-			empty: false,
-		},
-		{
-			in:    Number(3.5),
-			out:   "3.5",
-			empty: false,
-		},
-		{
-			in:    Bool(true),
-			out:   "true",
-			empty: false,
-		},
-		{
-			in:    Bool(false),
-			out:   "false",
-			empty: true,
-		},
-		{
-			in:    Null{},
-			out:   "null",
-			empty: true,
-		},
-		{
-			in:    Object{},
-			out:   `{}`,
-			empty: true,
-		},
-		{
-			in: Object{
-				NamedValue{"k1", String("v1")},
-				NamedValue{"k2", Number(2)},
-				NamedValue{"k3", Bool(true)},
-			},
-			out:   `{"k1":"v1","k2":2,"k3":true}`,
-			empty: false,
-		},
-		{
-			in:    Array{},
-			out:   `[]`,
-			empty: true,
-		},
-		{
-			in:    Array{String("v1"), String("v2"), String("v3")},
-			out:   `["v1","v2","v3"]`,
-			empty: false,
-		},
-		{
-			in:    Raw(``),
-			out:   ``,
-			empty: true,
-		},
-		{
-			in:    Raw(`{"a": 1, "b": 2}`),
-			out:   `{"a": 1, "b": 2}`,
-			empty: false,
-		},
-	}
+		input  string
+		expect string
+	}{{
+		input:  "abc",
+		expect: "abc",
+	}, {
+		input:  " abc",
+		expect: "abc",
+	}, {
+		input:  "  abc",
+		expect: "abc",
+	}, {
+		input:  "  a b c ",
+		expect: "a b c ",
+	}, {
+		input:  "\t\tabc",
+		expect: "abc",
+	}, {
+		input:  "\n\nabc",
+		expect: "abc",
+	}, {
+		input:  "    ",
+		expect: "",
+	}}
 
 	for i, tc := range testCases {
-		var buf bytes.Buffer
-		err := tc.in.Render(&buf)
-		if err != nil && tc.err == false {
-			t.Errorf("[%d] unexpected error: %v", i, err)
-		} else if err == nil && tc.err == true {
-			t.Errorf("[%d] expected error, got nil", i)
-		} else if buf.String() != tc.out {
-			t.Errorf("[%d] expected %q, got %q", i, tc.out, buf.String())
-		} else if tc.in.Empty() != tc.empty {
-			t.Errorf("[%d] expected Empty() = %t", i, tc.in.Empty())
+		scan := NewByteScanner([]byte(tc.input))
+		advanceWhitespace(scan)
+		if string(scan.Data()) != tc.expect {
+			t.Errorf("[%d] expected %q, got %q", i, tc.expect, string(scan.Data()))
+		}
+	}
+}
+
+func Test_advanceNull(t *testing.T) {
+	testCases := []struct {
+		input  string
+		expect string
+		err    bool
+	}{{
+		input:  "null",
+		expect: "",
+	}, {
+		input:  "null ",
+		expect: " ",
+	}, {
+		input: "nullnull ",
+		err:   true,
+	}, {
+		input: "Null",
+		err:   true,
+	}, {
+		input: "nULL",
+		err:   true,
+	}}
+
+	for i, tc := range testCases {
+		scan := NewByteScanner([]byte(tc.input))
+		if err := advanceToken(scan, advanceNull); err != nil {
+			if tc.err == false {
+				t.Errorf("[%d] expected success, got %v", i, err)
+			}
+		} else {
+			if tc.err == true {
+				t.Errorf("[%d] expected error, got success", i)
+			} else if err == nil && string(scan.Data()) != tc.expect {
+				t.Errorf("[%d] expected %q, got %q", i, tc.expect, string(scan.Data()))
+			}
+		}
+	}
+}
+
+func Test_advanceBool(t *testing.T) {
+	testCases := []struct {
+		input  string
+		expect string
+		err    bool
+	}{{
+		input:  "true",
+		expect: "",
+	}, {
+		input:  "true ",
+		expect: " ",
+	}, {
+		input: "truefalse",
+		err:   true,
+	}, {
+		input: "True",
+		err:   true,
+	}, {
+		input: "tRUE",
+		err:   true,
+	}, {
+		input:  "false",
+		expect: "",
+	}, {
+		input:  "false ",
+		expect: " ",
+	}, {
+		input: "falsetrue",
+		err:   true,
+	}, {
+		input: "False",
+		err:   true,
+	}, {
+		input: "fALSE",
+		err:   true,
+	}}
+
+	for i, tc := range testCases {
+		scan := NewByteScanner([]byte(tc.input))
+		if err := advanceToken(scan, advanceBool); err != nil {
+			if tc.err == false {
+				t.Errorf("[%d] expected success, got %v", i, err)
+			}
+		} else {
+			if tc.err == true {
+				t.Errorf("[%d] expected error, got success", i)
+			} else if err == nil && string(scan.Data()) != tc.expect {
+				t.Errorf("[%d] expected %q, got %q", i, tc.expect, string(scan.Data()))
+			}
+		}
+	}
+}
+
+func Test_advanceNumber(t *testing.T) {
+	testCases := []struct {
+		input  string
+		expect string
+		err    bool
+	}{{
+		input:  "0",
+		expect: "",
+	}, {
+		input:  "-0",
+		expect: "",
+	}, {
+		input:  "0 ",
+		expect: " ",
+	}, {
+		input:  "-0 ",
+		expect: " ",
+	}, {
+		input:  "123",
+		expect: "",
+	}, {
+		input:  "-123",
+		expect: "",
+	}, {
+		input:  "123.456",
+		expect: "",
+	}, {
+		input:  "123.456 ",
+		expect: " ",
+	}, {
+		input:  "123.000",
+		expect: "",
+	}, {
+		input:  "-123.456",
+		expect: "",
+	}, {
+		input:  "-123.456 ",
+		expect: " ",
+	}, {
+		input: "123.-456",
+		err:   true,
+	}, {
+		input:  "123e456",
+		expect: "",
+	}, {
+		input:  "123e456 ",
+		expect: " ",
+	}, {
+		input:  "123e000",
+		expect: "",
+	}, {
+		input:  "123e001",
+		expect: "",
+	}, {
+		input:  "123.456e789",
+		expect: "",
+	}, {
+		input:  "123.456e789 ",
+		expect: " ",
+	}, {
+		input:  "123.456e000",
+		expect: "",
+	}, {
+		input:  "123.456E789",
+		expect: "",
+	}, {
+		input:  "123.456E000",
+		expect: "",
+	}, {
+		input:  "123.456e+789",
+		expect: "",
+	}, {
+		input:  "123.456e-789",
+		expect: "",
+	}, {
+		input:  "123.456e+000",
+		expect: "",
+	}, {
+		input:  "123.456e-000",
+		expect: "",
+	}, {
+		input:  "123.456E+000",
+		expect: "",
+	}, {
+		input:  "123.456E-000",
+		expect: "",
+	}, {
+		input: "123xyz",
+		err:   true,
+	}, {
+		input: "0x12345678",
+		err:   true,
+	}, {
+		input: "00",
+		err:   true,
+	}, {
+		input: "0755",
+		err:   true,
+	}, {
+		input: ".007",
+		err:   true,
+	}, {
+		input: "0.",
+		err:   true,
+	}, {
+		input: "0e",
+		err:   true,
+	}}
+
+	for i, tc := range testCases {
+		scan := NewByteScanner([]byte(tc.input))
+		if err := advanceToken(scan, advanceNumber); err != nil {
+			if tc.err == false {
+				t.Errorf("[%d] expected success, got %v", i, err)
+			}
+		} else {
+			if tc.err == true {
+				t.Errorf("[%d] expected error, got success", i)
+			} else if err == nil && string(scan.Data()) != tc.expect {
+				t.Errorf("[%d] expected %q, got %q", i, tc.expect, string(scan.Data()))
+			}
+		}
+	}
+}
+
+func Test_advanceString(t *testing.T) {
+	testCases := []struct {
+		input  string
+		expect string
+		err    bool
+	}{{
+		input:  `"abc"`,
+		expect: ``,
+	}, {
+		input:  `"abc" `,
+		expect: ` `,
+	}, {
+		input:  `"abc\n123\tdef\u1234\"\"" `,
+		expect: ` `,
+	}, {
+		input: `"abc"123`,
+		err:   true,
+	}}
+
+	for i, tc := range testCases {
+		scan := NewByteScanner([]byte(tc.input))
+		if err := advanceToken(scan, advanceString); err != nil {
+			if tc.err == false {
+				t.Errorf("[%d] expected success, got %v", i, err)
+			}
+		} else {
+			if tc.err == true {
+				t.Errorf("[%d] expected error, got success", i)
+			} else if err == nil && string(scan.Data()) != tc.expect {
+				t.Errorf("[%d] expected %q, got %q", i, tc.expect, string(scan.Data()))
+			}
+		}
+	}
+}
+
+func Test_advanceArray(t *testing.T) {
+	testCases := []struct {
+		input  string
+		expect string
+		err    bool
+	}{{
+		input:  `[]`,
+		expect: ``,
+	}, {
+		input:  `[] `,
+		expect: ` `,
+	}, {
+		input:  `[ ]`,
+		expect: ``,
+	}, {
+		input:  `["abc"]`,
+		expect: ``,
+	}, {
+		input:  `[ "abc"]`,
+		expect: ``,
+	}, {
+		input:  `["abc" ]`,
+		expect: ``,
+	}, {
+		input:  `[ "abc" ]`,
+		expect: ``,
+	}, {
+		input: `["abc",]`,
+		err:   true,
+	}, {
+		input: `["abc" ,]`,
+		err:   true,
+	}, {
+		input: `["abc", ]`,
+		err:   true,
+	}, {
+		input:  `["abc", "def","ghi"]`,
+		expect: ``,
+	}, {
+		input:  "[ \n \"abc\" \n , \n \"def\" \n , \n \"ghi\" \n ]",
+		expect: ``,
+	}, {
+		input: `["abc"]123`,
+		err:   true,
+	}, {
+		input:  `[[]]`,
+		expect: ``,
+	}, {
+		input:  `[[ ]]`,
+		expect: ``,
+	}, {
+		input:  `[ [ ] ]`,
+		expect: ``,
+	}, {
+		input:  `[["abc"]]`,
+		expect: ``,
+	}, {
+		input:  `[ [ "abc" ] ]`,
+		expect: ``,
+	}, {
+		input: `[["abc",]]`,
+		err:   true,
+	}, {
+		input: `[["abc"],]`,
+		err:   true,
+	}, {
+		input:  `[ ["abc", "def"], ["ghi", "jkl"] ]`,
+		expect: ``,
+	}, {
+		input:  `[ ["abc", 123], ["def", false] ]`,
+		expect: ``,
+	}, {
+		input: `[ "abc", abc, "def", def ]`,
+		err:   true,
+	}, {
+		input: `[["abc"]["def"]]`,
+		err:   true,
+	}, {
+		input: `["abc"]["def"]`,
+		err:   true,
+	}}
+
+	for i, tc := range testCases {
+		scan := NewByteScanner([]byte(tc.input))
+		if err := advanceToken(scan, advanceArray); err != nil {
+			if tc.err == false {
+				t.Errorf("[%d] expected success, got %v", i, err)
+			}
+		} else {
+			if tc.err == true {
+				t.Errorf("[%d] expected error, got success", i)
+			} else if err == nil && string(scan.Data()) != tc.expect {
+				t.Errorf("[%d] expected %q, got %q", i, tc.expect, string(scan.Data()))
+			}
+		}
+	}
+}
+
+func Test_advanceObject(t *testing.T) {
+	testCases := []struct {
+		input  string
+		expect string
+		err    bool
+	}{{
+		input:  `{}`,
+		expect: ``,
+	}, {
+		input:  `{} `,
+		expect: ` `,
+	}, {
+		input:  `{ }`,
+		expect: ``,
+	}, {
+		input:  `{"abc":123}`,
+		expect: ``,
+	}, {
+		input:  `{ "abc":123}`,
+		expect: ``,
+	}, {
+		input:  `{"abc" :123}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": 123}`,
+		expect: ``,
+	}, {
+		input:  `{"abc":123 }`,
+		expect: ``,
+	}, {
+		input:  `{ "abc" : 123 }`,
+		expect: ``,
+	}, {
+		input:  "{\n\t\"abc\"\n\t:\n\t123\n\t}",
+		expect: ``,
+	}, {
+		input: `{"abc":123,}`,
+		err:   true,
+	}, {
+		input: `{"abc":123 ,}`,
+		err:   true,
+	}, {
+		input: `{"abc":123, }`,
+		err:   true,
+	}, {
+		input:  `{"abc": "def"}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": true}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": false}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": null}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": []}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": [[[]]]}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": [1,2,3]}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": {"abc":{"abc":{}}}}`,
+		expect: ``,
+	}, {
+		input:  `{"abc": {"1":23}}`,
+		expect: ``,
+	}, {
+		input:  `{"a":1, "b":2, "c":3}`,
+		expect: ``,
+	}, {
+		input:  `{ "a" : 1 , "b" : 2 , "c" : 3 }`,
+		expect: ``,
+	}, {
+		input: `{"abc":123}xyz`,
+		err:   true,
+	}, {
+		input: `{"abc"}`,
+		err:   true,
+	}, {
+		input: `{"abc":123}{"def":456}`,
+		err:   true,
+	}, {
+		input: `{"abc":123 "def":456}`,
+		err:   true,
+	}}
+
+	for i, tc := range testCases {
+		scan := NewByteScanner([]byte(tc.input))
+		if err := advanceToken(scan, advanceObject); err != nil {
+			if tc.err == false {
+				t.Errorf("[%d] expected success, got %v", i, err)
+			}
+		} else {
+			if tc.err == true {
+				t.Errorf("[%d] expected error, got success", i)
+			} else if err == nil && string(scan.Data()) != tc.expect {
+				t.Errorf("[%d] expected %q, got %q", i, tc.expect, string(scan.Data()))
+			}
 		}
 	}
 }

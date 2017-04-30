@@ -26,7 +26,7 @@ import (
 )
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	jv, err := ast_recursive_Ttest(&obj)
+	jv, err := ast_json_marshal_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -37,26 +37,26 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	jv, err := ast_recursive_Ttest(obj)
+	jv, err := ast_json_marshal_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return jv.Parse(data)
 }
 
-func ast_recursive_Ttest(obj *Ttest) (libjson.Value, error) {
+func ast_json_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	result := libjson.NewObject()
 
-	// F k8s.io/gengo/examples/json-gen/./output_tests/structs/ptrs_to_structs/recursive.Inner
+	// S string
 	{
-		obj := &obj.F
+		obj := &obj.S
 
 		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_recursive_Inner((*Inner)(obj))
+		jv, err := ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -66,34 +66,26 @@ func ast_recursive_Ttest(obj *Ttest) (libjson.Value, error) {
 				return nil, err
 			}
 			p := new(string)
-			*p = "F"
+			*p = "S"
 			nv := libjson.NamedValue{
 				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
 				Value: fv,
 			}
 			result = append(result, nv)
 		} else {
-			panic("TIM: F was empty")
+			panic("TIM: S was empty")
 		} //FIXME:
 	}
 
-	return result, nil
-
-}
-
-func ast_recursive_Inner(obj *Inner) (libjson.Value, error) {
-
-	result := libjson.NewObject()
-
-	// Inner *k8s.io/gengo/examples/json-gen/./output_tests/structs/ptrs_to_structs/recursive.Inner
+	// M k8s.io/gengo/examples/json-gen/./output_tests/structs/json_marshal.Marshaler
 	{
-		obj := &obj.Inner
+		obj := &obj.M
 
 		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_Pointer_recursive_Inner((**Inner)(obj))
+		jv, err := ast_json_marshal_Marshaler((*Marshaler)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -103,14 +95,43 @@ func ast_recursive_Inner(obj *Inner) (libjson.Value, error) {
 				return nil, err
 			}
 			p := new(string)
-			*p = "Inner"
+			*p = "M"
 			nv := libjson.NamedValue{
 				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
 				Value: fv,
 			}
 			result = append(result, nv)
 		} else {
-			panic("TIM: Inner was empty")
+			panic("TIM: M was empty")
+		} //FIXME:
+	}
+
+	// I int8
+	{
+		obj := &obj.I
+
+		empty := func(libjson.Value) bool { return false }
+
+		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
+
+		jv, err := ast_int8((*int8)(obj))
+		if err != nil {
+			return nil, err
+		}
+		if !empty(jv) {
+			fv, err := finalize(jv)
+			if err != nil {
+				return nil, err
+			}
+			p := new(string)
+			*p = "I"
+			nv := libjson.NamedValue{
+				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+				Value: fv,
+			}
+			result = append(result, nv)
+		} else {
+			panic("TIM: I was empty")
 		} //FIXME:
 	}
 
@@ -118,26 +139,24 @@ func ast_recursive_Inner(obj *Inner) (libjson.Value, error) {
 
 }
 
-func ast_Pointer_recursive_Inner(obj **Inner) (libjson.Value, error) {
+func ast_string(obj *string) (libjson.Value, error) {
+	return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil
+}
 
-	var jv libjson.Value
-	var err error
-	if *obj != nil {
-		obj := *obj
-		jv, err = ast_recursive_Inner((*Inner)(obj))
-		if err != nil {
-			return nil, err
-		}
+func ast_json_marshal_Marshaler(obj *Marshaler) (libjson.Value, error) {
+
+	return libjson.NewRaw(obj), nil
+
+}
+
+func ast_int8(obj *int8) (libjson.Value, error) {
+
+	get := func() float64 {
+		return float64(*obj)
 	}
-	setNull := func(b bool) (libjson.Value, error) {
-		if b {
-			*obj = nil
-			return nil, nil
-		}
-		*obj = new(Inner)
-		obj := *obj
-		return ast_recursive_Inner((*Inner)(obj))
+	set := func(f float64) {
+		*obj = int8(f)
 	}
-	return libjson.NewNullable(jv, setNull), nil
+	return libjson.NewInt(get, set), nil
 
 }

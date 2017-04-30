@@ -3,6 +3,7 @@ package libjson
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"sort"
 	"strconv"
@@ -256,7 +257,7 @@ func unescape(scan *ByteScanner, buf *bytes.Buffer) error {
 }
 
 func unescapeHex(scan *ByteScanner, buf *bytes.Buffer) error {
-	discardCurrent(scan) // get rund of the 'u'
+	discardCurrent(scan) // get rid of the 'u'
 
 	if len(scan.Data()) < 4 {
 		return fmt.Errorf("ran out of data") //FIXME:
@@ -565,12 +566,20 @@ func isSpace(r rune) bool {
 	return false
 }
 
+func isDigit(r rune) bool {
+	switch r {
+	case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+		return true
+	}
+	return false
+}
+
 func isValueDelim(r rune) bool {
 	if isSpace(r) {
 		return true
 	}
 	switch r {
-	case ',', '}', ']':
+	case ',', '}', ']', ':':
 		return true
 	}
 	return false
@@ -895,23 +904,294 @@ func (value Map) Empty() bool {
 	return len(mp) == 0
 }
 
-type Raw string
+type Raw struct {
+	SelfEncoder
+}
+
+type SelfEncoder interface {
+	json.Marshaler
+	json.Unmarshaler
+}
+
+func NewRaw(obj SelfEncoder) Raw {
+	return Raw{obj}
+}
 
 func (value Raw) Render(buf *bytes.Buffer) error {
-	return writeString(buf, string(value))
+	jb, err := value.MarshalJSON()
+	if err != nil {
+		return err
+	}
+	return writeString(buf, string(jb))
 }
 
 func (value Raw) Parse(data []byte) error {
+	scan := NewByteScanner(data)
+	if err := value.ParseStream(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) != 0 {
+		return fmt.Errorf("found trailing data in input: %q", string(scan.Data()))
+	}
 	return nil
 }
 
 func (value Raw) ParseStream(scan *ByteScanner) error {
-	panic("not implemented")
+	if err := advanceValue(scan); err != nil {
+		return err
+	}
+	return value.UnmarshalJSON(scan.Save())
+}
+
+// Assumes scan is on a non-whitespace character, and leaves scan past this JSON
+// value.
+func advanceValue(scan *ByteScanner) error {
+	// Use the first character as a hint.
+	switch scan.Peek() {
+	case 'n':
+		return advanceToken(scan, advanceNull)
+	case 't', 'f':
+		return advanceToken(scan, advanceBool)
+	case '-', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+		return advanceToken(scan, advanceNumber)
+	case '"':
+		return advanceToken(scan, advanceString)
+	case '[':
+		return advanceToken(scan, advanceArray)
+	case '{':
+		return advanceToken(scan, advanceObject)
+	}
+	return fmt.Errorf("data is not a JSON value: %c", scan.Peek())
+}
+
+// Advances a full token.
+func advanceToken(scan *ByteScanner, fn func(*ByteScanner) error) error {
+	if err := fn(scan); err != nil {
+		return err
+	}
+	if len(scan.Data()) == 0 || isValueDelim(scan.Peek()) {
+		return nil
+	}
+	return fmt.Errorf("data is not a JSON value")
+}
+
+// Assumes scan is on a 'n' character and leaves scan past the token.
+func advanceNull(scan *ByteScanner) error {
+	if scan.Peek() == 'n' {
+		scan.Advance()
+		if scan.Peek() == 'u' {
+			scan.Advance()
+			if scan.Peek() == 'l' {
+				scan.Advance()
+				if scan.Peek() == 'l' {
+					scan.Advance()
+					return nil
+				}
+			}
+		}
+	}
+	return fmt.Errorf("data is not a JSON null") //FIXME: parse error
+}
+
+// Assumes scan is on a 't' or 'f' character and leaves scan past the bool.
+func advanceBool(scan *ByteScanner) error {
+	if scan.Peek() == 't' {
+		scan.Advance()
+		if scan.Peek() == 'r' {
+			scan.Advance()
+			if scan.Peek() == 'u' {
+				scan.Advance()
+				if scan.Peek() == 'e' {
+					scan.Advance()
+					return nil
+				}
+			}
+		}
+	} else if scan.Peek() == 'f' {
+		scan.Advance()
+		if scan.Peek() == 'a' {
+			scan.Advance()
+			if scan.Peek() == 'l' {
+				scan.Advance()
+				if scan.Peek() == 's' {
+					scan.Advance()
+					if scan.Peek() == 'e' {
+						scan.Advance()
+						return nil
+					}
+				}
+			}
+		}
+	}
+	return fmt.Errorf("data is not a JSON bool") //FIXME: parse error
+}
+
+// Assumes scan is on a numeric character and leaves scan past the final '"'.
+func advanceNumber(scan *ByteScanner) error {
+	// optional negative
+	if scan.Peek() == '-' {
+		scan.Advance()
+	}
+
+	// required whole number portion
+	if scan.Peek() == '0' {
+		scan.Advance() // simple 0
+	} else {
+		// need at least 1 digit
+		if advanceDigits(scan) == 0 {
+			return fmt.Errorf("data is not a JSON number") //FIXME: parse error
+		}
+	}
+
+	// optional decimal portion
+	if scan.Peek() == '.' {
+		scan.Advance()
+		// need at least 1 digit
+		if advanceDigits(scan) == 0 {
+			return fmt.Errorf("data is not a JSON number") //FIXME: parse error
+		}
+	}
+
+	// optional exponent portion
+	if r := scan.Peek(); r == 'e' || r == 'E' {
+		scan.Advance()
+		// optional sign
+		if r := scan.Peek(); r == '+' || r == '-' {
+			scan.Advance()
+		}
+		// need at least 1 digit
+		if advanceDigits(scan) == 0 {
+			return fmt.Errorf("data is not a JSON number") //FIXME: parse error
+		}
+	}
 	return nil
 }
 
+// Leaves scan past any decimal digits. Returns the number of digits it
+// advanced.
+func advanceDigits(scan *ByteScanner) int {
+	n := 0
+	for isDigit(scan.Peek()) {
+		n++
+		scan.Advance()
+	}
+	return n
+}
+
+// Assumes scan is on a '"' character and leaves scan past the final '"'.
+func advanceString(scan *ByteScanner) error {
+	if scan.Peek() != '"' {
+		return fmt.Errorf("data is not a JSON string")
+	}
+	scan.Advance()
+
+	for scan.Peek() != utf8.RuneError {
+		if scan.Peek() == '"' {
+			scan.Advance()
+			return nil
+		}
+		if scan.Peek() == '\\' {
+			scan.Advance() // consume the escape character
+		}
+		scan.Advance()
+	}
+	return fmt.Errorf("ran out of data") //FIXME:
+}
+
+// Leaves scan past any whitespace. Returns the number of characters it
+// advanced.
+func advanceWhitespace(scan *ByteScanner) int {
+	n := 0
+	for len(scan.Data()) > 0 && isSpace(scan.Peek()) {
+		n++
+		scan.Advance()
+	}
+	return n
+}
+
+// Assumes scan is on a '[' character and leaves scan past the final ']'.
+func advanceArray(scan *ByteScanner) error {
+	if scan.Peek() != '[' {
+		return fmt.Errorf("data is not a JSON array")
+	}
+	scan.Advance()
+	advanceWhitespace(scan)
+
+	n := 0
+	for scan.Peek() != utf8.RuneError {
+		if scan.Peek() == ']' {
+			scan.Advance()
+			return nil
+		}
+
+		if n > 0 {
+			// prep for the next element
+			if scan.Peek() != ',' {
+				return fmt.Errorf("data is not a JSON array") //FIXME: parse error
+			}
+			scan.Advance()
+			advanceWhitespace(scan)
+		}
+
+		// consume the next whole value
+		if err := advanceValue(scan); err != nil {
+			return err
+		}
+		advanceWhitespace(scan)
+		n++
+	}
+	return fmt.Errorf("ran out of data") //FIXME:
+}
+
+// Assumes scan is on a '{' character and leaves scan past the final '}'.
+func advanceObject(scan *ByteScanner) error {
+	if scan.Peek() != '{' {
+		return fmt.Errorf("data is not a JSON object")
+	}
+	scan.Advance()
+	advanceWhitespace(scan)
+
+	n := 0
+	for scan.Peek() != utf8.RuneError {
+		if scan.Peek() == '}' {
+			scan.Advance()
+			return nil
+		}
+
+		if n > 0 {
+			// prep for the next member
+			if scan.Peek() != ',' {
+				return fmt.Errorf("data is not a JSON object") //FIXME: parse error
+			}
+			scan.Advance()
+			advanceWhitespace(scan)
+		}
+
+		// consume the next key
+		if err := advanceToken(scan, advanceString); err != nil {
+			return err
+		}
+		advanceWhitespace(scan)
+
+		// required colon
+		if scan.Peek() != ':' {
+			return fmt.Errorf("data is not a JSON object") //FIXME: parse error
+		}
+		scan.Advance()
+		advanceWhitespace(scan)
+
+		// consume the next whole value
+		if err := advanceValue(scan); err != nil {
+			return err
+		}
+		advanceWhitespace(scan)
+		n++
+	}
+	return fmt.Errorf("ran out of data") //FIXME:
+}
+
 func (value Raw) Empty() bool {
-	return len(value) == 0
+	return false
 }
 
 func write(buf *bytes.Buffer, val []byte) error {
