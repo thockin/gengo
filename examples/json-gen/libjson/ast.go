@@ -3,7 +3,6 @@ package libjson
 import (
 	"bytes"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"sort"
 	"strconv"
@@ -905,20 +904,19 @@ func (value Map) Empty() bool {
 }
 
 type Raw struct {
-	SelfEncoder
+	marshal   func() ([]byte, error)
+	unmarshal func([]byte) error
 }
 
-type SelfEncoder interface {
-	json.Marshaler
-	json.Unmarshaler
-}
-
-func NewRaw(obj SelfEncoder) Raw {
-	return Raw{obj}
+func NewRaw(marshal func() ([]byte, error), unmarshal func([]byte) error) Raw {
+	return Raw{
+		marshal:   marshal,
+		unmarshal: unmarshal,
+	}
 }
 
 func (value Raw) Render(buf *bytes.Buffer) error {
-	jb, err := value.MarshalJSON()
+	jb, err := value.marshal()
 	if err != nil {
 		return err
 	}
@@ -940,7 +938,7 @@ func (value Raw) ParseStream(scan *ByteScanner) error {
 	if err := advanceValue(scan); err != nil {
 		return err
 	}
-	return value.UnmarshalJSON(scan.Save())
+	return value.unmarshal(scan.Save())
 }
 
 // Assumes scan is on a non-whitespace character, and leaves scan past this JSON

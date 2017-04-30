@@ -467,23 +467,37 @@ func (g *jsonGenerator) emitBodyFor(t *types.Type, c *generator.Context) string 
 			//FIXME: better to return
 			panic(fmt.Sprintf("type %v has an UnmarshalJSON method but not MarshalJSON"))
 		}
-		glog.V(3).Infof("type %v has JSON methods", t)
+		glog.V(3).Infof("type %v has JSON marshaling methods", t)
 		return `
-			return libjson.NewRaw(obj), nil
+			return libjson.NewRaw(obj.MarshalJSON, obj.UnmarshalJSON), nil
 			`
 	}
-	/*
-		if hasTextMarshalMethod(t) {
-			glog.V(3).Infof("type %v has a MarshalText() method", t)
-			return `
-				if b, err := obj.MarshalText(); err != nil {
-					return nil, fmt.Errorf("failed %T.MarshalText: %v", obj, err)
-				} else {
-					return libjson.String(string(b)), nil
-				}
-				`
+	// If the type implements encoding.TextMarshaler and encoding.TextUnmarshaler,
+	// use them.
+	if m, u := hasTextMarshalMethod(t), hasTextUnmarshalMethod(t); m || u {
+		if m && !u {
+			//FIXME: better to return
+			panic(fmt.Sprintf("type %v has a MarshalText method but not UnmarshalText"))
 		}
-	*/
+		if !m && u {
+			//FIXME: better to return
+			panic(fmt.Sprintf("type %v has an UnmarshalText method but not MarshalText"))
+		}
+		glog.V(3).Infof("type %v has text marshaling methods", t)
+		return `
+			marshal := func() ([]byte, error) {
+				t, err := obj.MarshalText()
+				if err != nil {
+					return nil, err
+				}
+				return append(append([]byte{'"'}, t...), '"'), nil
+			}
+			unmarshal := func(text []byte) error {
+				return obj.UnmarshalText(text[1:len(text)-1])
+			}
+			return libjson.NewRaw(marshal, unmarshal), nil
+			`
+	}
 
 	// Just call another function for simple cases.
 	if t.Kind == types.Alias {

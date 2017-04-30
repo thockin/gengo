@@ -26,7 +26,7 @@ import (
 )
 
 func (obj Ttest) MarshalJSON() ([]byte, error) {
-	jv, err := ast_json_marshal_Ttest(&obj)
+	jv, err := ast_text_marshal_Ttest(&obj)
 	if err != nil {
 		return nil, err
 	}
@@ -37,14 +37,14 @@ func (obj Ttest) MarshalJSON() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 func (obj *Ttest) UnmarshalJSON(data []byte) error {
-	jv, err := ast_json_marshal_Ttest(obj)
+	jv, err := ast_text_marshal_Ttest(obj)
 	if err != nil {
 		return err
 	}
 	return jv.Parse(data)
 }
 
-func ast_json_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
+func ast_text_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
 
 	result := libjson.NewObject()
 
@@ -77,7 +77,7 @@ func ast_json_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
 		} //FIXME:
 	}
 
-	// M k8s.io/gengo/examples/json-gen/./output_tests/structs/json_marshal.Marshaler
+	// M k8s.io/gengo/examples/json-gen/./output_tests/structs/text_marshal.Marshaler
 	{
 		obj := &obj.M
 
@@ -85,7 +85,7 @@ func ast_json_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
-		jv, err := ast_json_marshal_Marshaler((*Marshaler)(obj))
+		jv, err := ast_text_marshal_Marshaler((*Marshaler)(obj))
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +143,19 @@ func ast_string(obj *string) (libjson.Value, error) {
 	return libjson.NewString(func() string { return *obj }, func(s string) { *obj = s }), nil
 }
 
-func ast_json_marshal_Marshaler(obj *Marshaler) (libjson.Value, error) {
+func ast_text_marshal_Marshaler(obj *Marshaler) (libjson.Value, error) {
 
-	return libjson.NewRaw(obj.MarshalJSON, obj.UnmarshalJSON), nil
+	marshal := func() ([]byte, error) {
+		t, err := obj.MarshalText()
+		if err != nil {
+			return nil, err
+		}
+		return append(append([]byte{'"'}, t...), '"'), nil
+	}
+	unmarshal := func(text []byte) error {
+		return obj.UnmarshalText(text[1 : len(text)-1])
+	}
+	return libjson.NewRaw(marshal, unmarshal), nil
 
 }
 
