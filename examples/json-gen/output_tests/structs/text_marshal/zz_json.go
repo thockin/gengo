@@ -52,36 +52,29 @@ func ast_text_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
 	{
 		obj := &obj.S
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "S"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: S was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "S"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// M k8s.io/gengo/examples/json-gen/./output_tests/structs/text_marshal.Marshaler
 	{
 		obj := &obj.M
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -89,28 +82,23 @@ func ast_text_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "M"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: M was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "M"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// I int8
 	{
 		obj := &obj.I
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -118,21 +106,18 @@ func ast_text_marshal_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "I"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: I was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "I"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil

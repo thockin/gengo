@@ -446,8 +446,9 @@ func NewObject() Object {
 }
 
 type NamedValue struct {
-	Name  String
-	Value Value
+	Name      String
+	Value     Value
+	OmitEmpty bool
 }
 
 func (value Object) Render(buf *bytes.Buffer) error {
@@ -455,6 +456,9 @@ func (value Object) Render(buf *bytes.Buffer) error {
 		return err
 	}
 	for i, nv := range value {
+		if nv.OmitEmpty && nv.Value.Empty() {
+			continue
+		}
 		if i > 0 {
 			if err := writeString(buf, ","); err != nil {
 				return err

@@ -52,123 +52,101 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 	{
 		obj := &obj.Byte1
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_byte((*byte)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Byte1"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Byte1 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Byte1"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Byte2 byte
 	{
 		obj := &obj.Byte2
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_byte((*byte)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Byte2"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Byte2 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Byte2"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Bool1 bool
 	{
 		obj := &obj.Bool1
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_bool((*bool)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Bool1"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Bool1 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Bool1"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Bool2 bool
 	{
 		obj := &obj.Bool2
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_bool((*bool)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Bool2"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Bool2 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Bool2"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8 int8
 	{
 		obj := &obj.Int8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -176,28 +154,23 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16 int16
 	{
 		obj := &obj.Int16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -205,28 +178,23 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32 int32
 	{
 		obj := &obj.Int32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -234,28 +202,23 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -263,28 +226,23 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -292,28 +250,23 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -321,28 +274,23 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32 float32
 	{
 		obj := &obj.Float32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -350,28 +298,23 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64 float64
 	{
 		obj := &obj.Float64
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -379,79 +322,66 @@ func ast_everything_alias_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// String1 string
 	{
 		obj := &obj.String1
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "String1"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: String1 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "String1"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// String2 string
 	{
 		obj := &obj.String2
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "String2"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: String2 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "String2"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil

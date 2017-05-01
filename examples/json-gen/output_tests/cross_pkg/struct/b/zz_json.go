@@ -53,29 +53,24 @@ func ast_b_Ttest(obj *Ttest) (libjson.Value, error) {
 	{
 		obj := &obj.F
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_a_T((*a.T)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "F"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: F was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "F"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil
@@ -90,29 +85,24 @@ func ast_a_T(obj *a.T) (libjson.Value, error) {
 	{
 		obj := &obj.F
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "F"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: F was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "F"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil

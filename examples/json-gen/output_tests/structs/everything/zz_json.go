@@ -52,36 +52,29 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 	{
 		obj := &obj.Byte
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_byte((*byte)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Byte"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Byte was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Byte"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BytePtr *byte
 	{
 		obj := &obj.BytePtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -89,28 +82,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BytePtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BytePtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BytePtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -118,28 +106,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "ByteAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: ByteAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "ByteAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -147,28 +130,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "ByteAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: ByteAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "ByteAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Bool bool
 	{
 		obj := &obj.Bool
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -176,28 +154,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Bool"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Bool was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Bool"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolPtr *bool
 	{
 		obj := &obj.BoolPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -205,28 +178,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -234,28 +202,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -263,28 +226,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8 int8
 	{
 		obj := &obj.Int8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -292,28 +250,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8Ptr *int8
 	{
 		obj := &obj.Int8Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -321,28 +274,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16 int16
 	{
 		obj := &obj.Int16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -350,28 +298,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16Ptr *int16
 	{
 		obj := &obj.Int16Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -379,28 +322,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32 int32
 	{
 		obj := &obj.Int32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -408,28 +346,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32Ptr *int32
 	{
 		obj := &obj.Int32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -437,28 +370,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -466,28 +394,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32Alias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32Alias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32Alias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -495,28 +418,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32AliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32AliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32AliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -524,28 +442,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8Ptr *uint8
 	{
 		obj := &obj.Uint8Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -553,28 +466,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -582,28 +490,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16Ptr *uint16
 	{
 		obj := &obj.Uint16Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -611,28 +514,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -640,28 +538,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32Ptr *uint32
 	{
 		obj := &obj.Uint32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -669,28 +562,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32 float32
 	{
 		obj := &obj.Float32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -698,28 +586,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32Ptr *float32
 	{
 		obj := &obj.Float32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -727,28 +610,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -756,28 +634,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32Alias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32Alias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32Alias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -785,28 +658,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32AliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32AliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32AliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64 float64
 	{
 		obj := &obj.Float64
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -814,28 +682,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64Ptr *float64
 	{
 		obj := &obj.Float64Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -843,28 +706,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// String string
 	{
 		obj := &obj.String
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -872,28 +730,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "String"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: String was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "String"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringPtr *string
 	{
 		obj := &obj.StringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -901,28 +754,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -930,28 +778,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -959,28 +802,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner
 	{
 		obj := &obj.StructPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -988,28 +826,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StructPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StructPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StructPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Struct struct{Struct struct{Struct struct{Struct struct{String string}}}}
 	{
 		obj := &obj.Struct
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1021,28 +854,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Struct"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Struct was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Struct"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceString []string
 	{
 		obj := &obj.SliceString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1050,28 +878,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias
 	{
 		obj := &obj.SliceStringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1079,28 +902,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SlicePtrString []*string
 	{
 		obj := &obj.SlicePtrString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1108,28 +926,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SlicePtrString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SlicePtrString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SlicePtrString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias
 	{
 		obj := &obj.SliceStringPtrAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1137,28 +950,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringPtrAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringPtrAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringPtrAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringPtr *[]string
 	{
 		obj := &obj.SliceStringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1166,28 +974,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringString map[string]string
 	{
 		obj := &obj.MapStringString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1195,28 +998,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringPtr *map[string]string
 	{
 		obj := &obj.MapStringStringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1224,28 +1022,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.MapStringStringAlias
 	{
 		obj := &obj.MapStringStringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1253,28 +1046,23 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.MapStringStringAlias
 	{
 		obj := &obj.MapStringStringAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -1282,21 +1070,18 @@ func ast_everything_Ttest(obj *Ttest) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil
@@ -1859,8 +1644,6 @@ func ast_Struct_Struct_Struct_Struct_Struct_Struct_Struct_String_string(obj *str
 	{
 		obj := &obj.Struct
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_Struct_Struct_Struct_Struct_Struct_String_string((*struct {
@@ -1869,21 +1652,18 @@ func ast_Struct_Struct_Struct_Struct_Struct_Struct_Struct_String_string(obj *str
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Struct"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Struct was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Struct"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil
@@ -2146,36 +1926,29 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 	{
 		obj := &obj.Byte
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_byte((*byte)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Byte"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Byte was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Byte"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BytePtr *byte
 	{
 		obj := &obj.BytePtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2183,28 +1956,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BytePtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BytePtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BytePtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2212,28 +1980,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "ByteAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: ByteAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "ByteAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2241,28 +2004,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "ByteAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: ByteAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "ByteAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Bool bool
 	{
 		obj := &obj.Bool
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2270,28 +2028,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Bool"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Bool was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Bool"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolPtr *bool
 	{
 		obj := &obj.BoolPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2299,28 +2052,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2328,28 +2076,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2357,28 +2100,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8 int8
 	{
 		obj := &obj.Int8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2386,28 +2124,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8Ptr *int8
 	{
 		obj := &obj.Int8Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2415,28 +2148,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16 int16
 	{
 		obj := &obj.Int16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2444,28 +2172,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16Ptr *int16
 	{
 		obj := &obj.Int16Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2473,28 +2196,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32 int32
 	{
 		obj := &obj.Int32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2502,28 +2220,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32Ptr *int32
 	{
 		obj := &obj.Int32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2531,28 +2244,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2560,28 +2268,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32Alias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32Alias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32Alias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2589,28 +2292,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32AliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32AliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32AliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2618,28 +2316,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8Ptr *uint8
 	{
 		obj := &obj.Uint8Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2647,28 +2340,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2676,28 +2364,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16Ptr *uint16
 	{
 		obj := &obj.Uint16Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2705,28 +2388,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2734,28 +2412,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32Ptr *uint32
 	{
 		obj := &obj.Uint32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2763,28 +2436,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32 float32
 	{
 		obj := &obj.Float32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2792,28 +2460,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32Ptr *float32
 	{
 		obj := &obj.Float32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2821,28 +2484,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2850,28 +2508,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32Alias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32Alias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32Alias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2879,28 +2532,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32AliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32AliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32AliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64 float64
 	{
 		obj := &obj.Float64
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2908,28 +2556,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64Ptr *float64
 	{
 		obj := &obj.Float64Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2937,28 +2580,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// String string
 	{
 		obj := &obj.String
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2966,28 +2604,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "String"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: String was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "String"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringPtr *string
 	{
 		obj := &obj.StringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -2995,28 +2628,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3024,28 +2652,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3053,28 +2676,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Struct struct{Byte byte; BytePtr *byte; ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; Bool bool; BoolPtr *bool; BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; Int8 int8; Int8Ptr *int8; Int16 int16; Int16Ptr *int16; Int32 int32; Int32Ptr *int32; Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Uint8 uint8; Uint8Ptr *uint8; Uint16 uint16; Uint16Ptr *uint16; Uint32 uint32; Uint32Ptr *uint32; Float32 float32; Float32Ptr *float32; Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float64 float64; Float64Ptr *float64; String string; StringPtr *string; StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; Struct struct{}; StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner; SliceString []string; SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias; SlicePtrString []*string; SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias; SliceStringPtr *[]string; SliceByte []byte}
 	{
 		obj := &obj.Struct
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3123,28 +2741,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Struct"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Struct was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Struct"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StructPtr *struct{Byte byte; BytePtr *byte; ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias; Bool bool; BoolPtr *bool; BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias; Int8 int8; Int8Ptr *int8; Int16 int16; Int16Ptr *int16; Int32 int32; Int32Ptr *int32; Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias; Uint8 uint8; Uint8Ptr *uint8; Uint16 uint16; Uint16Ptr *uint16; Uint32 uint32; Uint32Ptr *uint32; Float32 float32; Float32Ptr *float32; Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias; Float64 float64; Float64Ptr *float64; String string; StringPtr *string; StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias; Struct struct{}; StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner; SliceString []string; SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias; SlicePtrString []*string; SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias; SliceStringPtr *[]string; SliceByte []byte; MapStringString map[string]string; MapStringStringPtr *map[string]string; MapStringStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.MapStringStringAlias; MapStringStringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.MapStringStringAlias}
 	{
 		obj := &obj.StructPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3197,28 +2810,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StructPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StructPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StructPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceString []string
 	{
 		obj := &obj.SliceString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3226,28 +2834,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias
 	{
 		obj := &obj.SliceStringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3255,28 +2858,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SlicePtrString []*string
 	{
 		obj := &obj.SlicePtrString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3284,28 +2882,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SlicePtrString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SlicePtrString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SlicePtrString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias
 	{
 		obj := &obj.SliceStringPtrAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3313,28 +2906,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringPtrAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringPtrAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringPtrAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringPtr *[]string
 	{
 		obj := &obj.SliceStringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3342,28 +2930,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceByte []byte
 	{
 		obj := &obj.SliceByte
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3371,28 +2954,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceByte"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceByte was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceByte"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringString map[string]string
 	{
 		obj := &obj.MapStringString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3400,28 +2978,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringPtr *map[string]string
 	{
 		obj := &obj.MapStringStringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3429,28 +3002,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.MapStringStringAlias
 	{
 		obj := &obj.MapStringStringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3458,28 +3026,23 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.MapStringStringAlias
 	{
 		obj := &obj.MapStringStringAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3487,21 +3050,18 @@ func ast_everything_Inner(obj *Inner) (libjson.Value, error) {
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil
@@ -3518,29 +3078,24 @@ func ast_Struct_Struct_Struct_Struct_Struct_String_string(obj *struct {
 	{
 		obj := &obj.Struct
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_Struct_Struct_Struct_String_string((*struct{ Struct struct{ String string } })(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Struct"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Struct was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Struct"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil
@@ -3596,36 +3151,29 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	{
 		obj := &obj.Byte
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_byte((*byte)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Byte"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Byte was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Byte"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BytePtr *byte
 	{
 		obj := &obj.BytePtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3633,28 +3181,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BytePtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BytePtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BytePtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3662,28 +3205,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "ByteAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: ByteAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "ByteAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3691,28 +3229,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "ByteAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: ByteAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "ByteAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Bool bool
 	{
 		obj := &obj.Bool
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3720,28 +3253,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Bool"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Bool was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Bool"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolPtr *bool
 	{
 		obj := &obj.BoolPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3749,28 +3277,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3778,28 +3301,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3807,28 +3325,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8 int8
 	{
 		obj := &obj.Int8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3836,28 +3349,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8Ptr *int8
 	{
 		obj := &obj.Int8Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3865,28 +3373,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16 int16
 	{
 		obj := &obj.Int16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3894,28 +3397,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16Ptr *int16
 	{
 		obj := &obj.Int16Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3923,28 +3421,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32 int32
 	{
 		obj := &obj.Int32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3952,28 +3445,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32Ptr *int32
 	{
 		obj := &obj.Int32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -3981,28 +3469,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4010,28 +3493,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32Alias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32Alias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32Alias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4039,28 +3517,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32AliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32AliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32AliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4068,28 +3541,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8Ptr *uint8
 	{
 		obj := &obj.Uint8Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4097,28 +3565,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4126,28 +3589,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16Ptr *uint16
 	{
 		obj := &obj.Uint16Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4155,28 +3613,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4184,28 +3637,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32Ptr *uint32
 	{
 		obj := &obj.Uint32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4213,28 +3661,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32 float32
 	{
 		obj := &obj.Float32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4242,28 +3685,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32Ptr *float32
 	{
 		obj := &obj.Float32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4271,28 +3709,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4300,28 +3733,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32Alias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32Alias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32Alias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4329,28 +3757,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32AliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32AliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32AliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64 float64
 	{
 		obj := &obj.Float64
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4358,28 +3781,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64Ptr *float64
 	{
 		obj := &obj.Float64Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4387,28 +3805,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// String string
 	{
 		obj := &obj.String
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4416,28 +3829,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "String"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: String was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "String"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringPtr *string
 	{
 		obj := &obj.StringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4445,28 +3853,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4474,28 +3877,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4503,28 +3901,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Struct struct{}
 	{
 		obj := &obj.Struct
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4532,28 +3925,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Struct"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Struct was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Struct"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner
 	{
 		obj := &obj.StructPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4561,28 +3949,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StructPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StructPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StructPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceString []string
 	{
 		obj := &obj.SliceString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4590,28 +3973,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias
 	{
 		obj := &obj.SliceStringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4619,28 +3997,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SlicePtrString []*string
 	{
 		obj := &obj.SlicePtrString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4648,28 +4021,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SlicePtrString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SlicePtrString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SlicePtrString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias
 	{
 		obj := &obj.SliceStringPtrAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4677,28 +4045,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringPtrAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringPtrAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringPtrAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringPtr *[]string
 	{
 		obj := &obj.SliceStringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4706,28 +4069,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceByte []byte
 	{
 		obj := &obj.SliceByte
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -4735,21 +4093,18 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceByte"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceByte was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceByte"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil
@@ -4993,29 +4348,24 @@ func ast_Struct_Struct_Struct_String_string(obj *struct{ Struct struct{ String s
 	{
 		obj := &obj.Struct
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_Struct_String_string((*struct{ String string })(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Struct"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Struct was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Struct"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil
@@ -5084,36 +4434,29 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 	{
 		obj := &obj.Byte
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_byte((*byte)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Byte"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Byte was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Byte"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BytePtr *byte
 	{
 		obj := &obj.BytePtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5121,28 +4464,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BytePtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BytePtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BytePtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// ByteAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5150,28 +4488,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "ByteAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: ByteAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "ByteAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// ByteAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.ByteAlias
 	{
 		obj := &obj.ByteAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5179,28 +4512,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "ByteAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: ByteAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "ByteAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Bool bool
 	{
 		obj := &obj.Bool
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5208,28 +4536,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Bool"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Bool was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Bool"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolPtr *bool
 	{
 		obj := &obj.BoolPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5237,28 +4560,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5266,28 +4584,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// BoolAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.BoolAlias
 	{
 		obj := &obj.BoolAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5295,28 +4608,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "BoolAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: BoolAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "BoolAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8 int8
 	{
 		obj := &obj.Int8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5324,28 +4632,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int8Ptr *int8
 	{
 		obj := &obj.Int8Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5353,28 +4656,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int8Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int8Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int8Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16 int16
 	{
 		obj := &obj.Int16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5382,28 +4680,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int16Ptr *int16
 	{
 		obj := &obj.Int16Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5411,28 +4704,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int16Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int16Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int16Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32 int32
 	{
 		obj := &obj.Int32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5440,28 +4728,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32Ptr *int32
 	{
 		obj := &obj.Int32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5469,28 +4752,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32Alias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5498,28 +4776,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32Alias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32Alias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32Alias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Int32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Int32Alias
 	{
 		obj := &obj.Int32AliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5527,28 +4800,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Int32AliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Int32AliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Int32AliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8 uint8
 	{
 		obj := &obj.Uint8
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5556,28 +4824,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint8Ptr *uint8
 	{
 		obj := &obj.Uint8Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5585,28 +4848,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint8Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint8Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint8Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16 uint16
 	{
 		obj := &obj.Uint16
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5614,28 +4872,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint16Ptr *uint16
 	{
 		obj := &obj.Uint16Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5643,28 +4896,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint16Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint16Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint16Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32 uint32
 	{
 		obj := &obj.Uint32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5672,28 +4920,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Uint32Ptr *uint32
 	{
 		obj := &obj.Uint32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5701,28 +4944,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Uint32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Uint32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Uint32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32 float32
 	{
 		obj := &obj.Float32
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5730,28 +4968,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32Ptr *float32
 	{
 		obj := &obj.Float32Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5759,28 +4992,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32Alias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32Alias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5788,28 +5016,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32Alias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32Alias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32Alias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float32AliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Float32Alias
 	{
 		obj := &obj.Float32AliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5817,28 +5040,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float32AliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float32AliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float32AliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64 float64
 	{
 		obj := &obj.Float64
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5846,28 +5064,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64 was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Float64Ptr *float64
 	{
 		obj := &obj.Float64Ptr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5875,28 +5088,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Float64Ptr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Float64Ptr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Float64Ptr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// String string
 	{
 		obj := &obj.String
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5904,28 +5112,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "String"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: String was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "String"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringPtr *string
 	{
 		obj := &obj.StringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5933,28 +5136,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5962,28 +5160,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.StringAlias
 	{
 		obj := &obj.StringAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -5991,28 +5184,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StringAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StringAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StringAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// Struct struct{}
 	{
 		obj := &obj.Struct
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6020,28 +5208,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "Struct"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: Struct was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "Struct"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// StructPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.Inner
 	{
 		obj := &obj.StructPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6049,28 +5232,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "StructPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: StructPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "StructPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceString []string
 	{
 		obj := &obj.SliceString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6078,28 +5256,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SliceStringAlias
 	{
 		obj := &obj.SliceStringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6107,28 +5280,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SlicePtrString []*string
 	{
 		obj := &obj.SlicePtrString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6136,28 +5304,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SlicePtrString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SlicePtrString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SlicePtrString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringPtrAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.SlicePtrStringAlias
 	{
 		obj := &obj.SliceStringPtrAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6165,28 +5328,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringPtrAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringPtrAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringPtrAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceStringPtr *[]string
 	{
 		obj := &obj.SliceStringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6194,28 +5352,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceStringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceStringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceStringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// SliceByte []byte
 	{
 		obj := &obj.SliceByte
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6223,28 +5376,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "SliceByte"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: SliceByte was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "SliceByte"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringString map[string]string
 	{
 		obj := &obj.MapStringString
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6252,28 +5400,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringString"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringString was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringString"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringPtr *map[string]string
 	{
 		obj := &obj.MapStringStringPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6281,28 +5424,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringAlias k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.MapStringStringAlias
 	{
 		obj := &obj.MapStringStringAlias
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6310,28 +5448,23 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringAlias"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringAlias was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringAlias"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	// MapStringStringAliasPtr *k8s.io/gengo/examples/json-gen/./output_tests/structs/everything.MapStringStringAlias
 	{
 		obj := &obj.MapStringStringAliasPtr
-
-		empty := func(libjson.Value) bool { return false }
 
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
@@ -6339,21 +5472,18 @@ func ast_Struct_Byte_byte_BytePtr_Pointer_byte_ByteAlias_everything_ByteAlias_By
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "MapStringStringAliasPtr"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: MapStringStringAliasPtr was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "MapStringStringAliasPtr"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil
@@ -6368,29 +5498,24 @@ func ast_Struct_String_string(obj *struct{ String string }) (libjson.Value, erro
 	{
 		obj := &obj.String
 
-		empty := func(libjson.Value) bool { return false }
-
 		finalize := func(jv libjson.Value) (libjson.Value, error) { return jv, nil }
 
 		jv, err := ast_string((*string)(obj))
 		if err != nil {
 			return nil, err
 		}
-		if !empty(jv) {
-			fv, err := finalize(jv)
-			if err != nil {
-				return nil, err
-			}
-			p := new(string)
-			*p = "String"
-			nv := libjson.NamedValue{
-				Name:  libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-				Value: fv,
-			}
-			result = append(result, nv)
-		} else {
-			panic("TIM: String was empty")
-		} //FIXME:
+		fv, err := finalize(jv)
+		if err != nil {
+			return nil, err
+		}
+		p := new(string)
+		*p = "String"
+		nv := libjson.NamedValue{
+			Name:      libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+			Value:     fv,
+			OmitEmpty: false,
+		}
+		result = append(result, nv)
 	}
 
 	return result, nil

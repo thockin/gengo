@@ -575,23 +575,13 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 	structMeta := collectFields(t, 0, "")
 	for _, name := range structMeta.FieldNames {
 		field := structMeta.Fields[name]
-		glog.V(4).Infof("descending into field %v.%s", t, field.FieldName)
+		glog.V(4).Infof("descending into field %v.%s (omitempty=%v)", t, field.FieldName, field.OmitEmpty)
+
 		result += `
 			// ` + field.FieldName + ` ` + field.Type.String() + `
 			{
 			    obj := &obj.` + field.FieldName + `
 			`
-
-		if field.OmitEmpty {
-			glog.V(4).Infof("field %v.%s has omitempty tag", t, field.FieldName)
-			result += `
-				empty := func(jv libjson.Value) bool { return jv.Empty() }
-				`
-		} else {
-			result += `
-				empty := func(libjson.Value) bool { return false }
-				`
-		}
 
 		if field.String {
 			glog.V(4).Infof("field %v.%s has string tag", t, field.FieldName)
@@ -612,25 +602,23 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 				`
 		}
 
-		//FIXME: the empty test fails for decode?
 		result += `
 				jv, err := ` + g.emitCallFor(field.Type, c) + `
 				if err != nil {
 					return nil, err
 				}
-				if !empty(jv) {
-					fv, err := finalize(jv)
-					if err != nil {
-						return nil, err
-					}
-					p := new(string)
-					*p = "` + name + `"
-					nv := libjson.NamedValue{
-						Name: libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
-						Value: fv,
-					}
-					result = append(result, nv)
-				} else { panic("TIM: ` + name + ` was empty") } //FIXME:
+				fv, err := finalize(jv)
+				if err != nil {
+					return nil, err
+				}
+				p := new(string)
+				*p = "` + name + `"
+				nv := libjson.NamedValue{
+					Name: libjson.NewString(func() string { return *p }, func(s string) { *p = s }),
+					Value: fv,
+					OmitEmpty: ` + fmt.Sprintf("%v", field.OmitEmpty) + `, 
+				}
+				result = append(result, nv)
 			}
 			`
 	}
@@ -715,7 +703,7 @@ func collectFields(t *types.Type, nesting int, fieldpath string) structMeta {
 				continue
 			}
 			fm.Tagged = true
-			fm.OmitEmpty = tag.omitempty
+			fm.OmitEmpty = tag.omitEmpty
 			fm.String = tag.asString
 		}
 		if name == "" {
@@ -747,7 +735,7 @@ func prefixFieldName(name string, path string) string {
 
 type jsonTag struct {
 	name      string
-	omitempty bool
+	omitEmpty bool
 	asString  bool
 }
 
@@ -763,7 +751,7 @@ func parseTag(str string) jsonTag {
 	}
 	for i := 1; i < len(parts); i++ {
 		if parts[i] == "omitempty" {
-			result.omitempty = true
+			result.omitEmpty = true
 		} else if parts[i] == "string" {
 			result.asString = true
 		} else {
