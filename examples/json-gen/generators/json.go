@@ -575,7 +575,7 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 	structMeta := collectFields(t, 0, "")
 	for _, name := range structMeta.FieldNames {
 		field := structMeta.Fields[name]
-		glog.V(4).Infof("descending into field %v.%s (omitempty=%v)", t, field.FieldName, field.OmitEmpty)
+		glog.V(4).Infof("descending into field %v.%s (omitempty=%v, string=%v)", t, field.FieldName, field.OmitEmpty, field.String)
 
 		result += `
 			// ` + field.FieldName + ` ` + field.Type.String() + `
@@ -584,16 +584,31 @@ func (g *jsonGenerator) emitBodyForStruct(t *types.Type, c *generator.Context) s
 			`
 
 		if field.String {
-			glog.V(4).Infof("field %v.%s has string tag", t, field.FieldName)
+			switch field.Type {
+			case types.String:
+			case types.Bool:
+			case types.Int, types.Int64, types.Int32, types.Int16, types.Int8:
+			case types.Uint, types.Uint64, types.Uint32, types.Uint16, types.Uint8, types.Uintptr, types.Byte:
+			case types.Float32, types.Float64:
+			default:
+				//FIXME:
+				panic("only bool, int, uint, float, and string fields may use the 'string' tag")
+			}
+
 			result += `
 				finalize := func(jv libjson.Value) (libjson.Value, error) {
-					buf := bytes.Buffer{}
-					if err := jv.Render(&buf); err != nil {
-						return nil, err
+					//FIXME: if jv is on the stack, reuses?
+					enc := func() string {
+						buf := bytes.Buffer{}
+						if err := jv.Render(&buf); err != nil {
+							return "" //FIXME:
+						}
+						return buf.String()
 					}
-					p := new(string)
-					*p = buf.String()
-					return libjson.NewString(func() string { return *p }, func(s string) { *p = s }), nil
+					dec := func(s string) {
+						_ = jv.Parse([]byte(s)) //FIXME:
+					}
+					return libjson.NewString(enc, dec), nil
 				}
 				`
 		} else {
